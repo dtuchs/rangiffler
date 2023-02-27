@@ -1,0 +1,13 @@
+server:
+  port: 8080
+  error:
+    include:
+      message: true
+
+spring:
+  application:
+    name: rangiffler-gateway
+
+logging:
+  level:
+    root: DEBUG

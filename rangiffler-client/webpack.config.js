@@ -17,17 +17,23 @@ module.exports = {
     output: {
         filename: filename("js"),
         path: path.resolve(__dirname, "dist"),
+        publicPath: "/",
+
     },
     resolve: {
         extensions: [".tsx", ".ts", ".jsx", ".js"],
         alias: {
-            "@fonts": path.resolve(__dirname, "src/fonts"),
-            "@img": path.resolve(__dirname, "src/img"),
+            "@img": path.resolve(__dirname, "src/static/img"),
+            "@fonts": path.resolve(__dirname, "src/static/fonts/"),
         },
     },
     devServer: {
         port: 3001,
         hot: IS_DEV,
+        static: __dirname + "/dist/",
+        historyApiFallback: {
+            index: "index.html"
+        },
     },
     devtool: "source-map",
     optimization: {
@@ -59,7 +65,7 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.css$/,
+                test: /\.(scss|css)$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
             },
             {
