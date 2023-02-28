@@ -9,7 +9,7 @@ import { PeopleTab } from "../PeopleTab/index";
 
 export const PeopleContent: FC = () => {
     const [tab, setTab] = useState("friends");
-    const [setProfileOpen] = useState<boolean>(false);
+    const [profileOpen, setProfileOpen] = useState<boolean>(false);
 
     const [friendsData, setFriendsData] = useState<User[]>([]);
 

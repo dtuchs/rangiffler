@@ -1,7 +1,7 @@
 import {
     Avatar,
     Grid, IconButton,
-    Paper,
+    Paper, Stack,
     Table, TableBody,
     TableCell,
     TableContainer,
@@ -9,21 +9,20 @@ import {
     TableRow
 } from "@mui/material";
 import React, { FC, useState } from "react";
-import WorldMap from "react-svg-worldmap";
 import { User } from "../../types/types";
+import { Map } from "../Map/index";
 import { PhotoCard, PhotoCardType } from "../PhoroCard/index";
 import { Photos } from "../Photos/index";
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 
 export type FriendsTabType = {
   friends: User[];
-  handleRemoveFriend: (user: User) => user;
+  handleRemoveFriend: (user: User) => void;
 };
 export const FriendsTab:FC<FriendsTabType> = ({friends, handleRemoveFriend}) => {
 
     const [popupOpen, setPopupOpen] = useState<boolean>(false);
     const [selectedItem, setSelectedItem] = useState<PhotoCardType | null>(null);
-    const [zoomed, setZoomed] =  useState<boolean>(false);
 
     const data = [
         { country: "cn", value: 10 },
@@ -52,17 +51,12 @@ export const FriendsTab:FC<FriendsTabType> = ({friends, handleRemoveFriend}) => 
         <>
             {popupOpen && <PhotoCard {...selectedItem} onClose={handleClosePopup}/>}
             <Grid container direction='row' columns={2} spacing={2}>
-                <Grid item style={{margin: "0 auto"}} onClick={() => setZoomed((prevState) => !prevState)}>
-                    <WorldMap
-                        backgroundColor="#eeedea"
-                        color="#3c5548"
-                        value-suffix="photos"
-                        size={zoomed ? "xxl" : "xl"}
-                        data={data}
-                    />
+                <Grid item style={{margin: "0 auto"}}>
+                    <Map data={data}/>
                 </Grid>
                 <Grid item>
                     <TableContainer component={Paper} sx={{ maxHeight: "50vh"}}>
+                        {friends?.length > 0 ? (
                         <Table stickyHeader aria-label="friends table">
                             <TableHead>
                                 <TableRow>
@@ -92,7 +86,12 @@ export const FriendsTab:FC<FriendsTabType> = ({friends, handleRemoveFriend}) => 
                                     </TableRow>
                                 ))}
                             </TableBody>
-                        </Table>
+                        </Table> ) :
+                            (
+                                <Stack sx={{ margin: "16px auto", width: "200px", textAlign: "center"}}>
+                                    No friends yet
+                                </Stack>
+                            )}
                     </TableContainer>
                 </Grid>
             </Grid>

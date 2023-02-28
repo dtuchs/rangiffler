@@ -10,13 +10,16 @@ import {
     IconButton,
     TextField
 } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
+import { User } from "../../types/types";
 
 export type ProfileType = {
     onClose: () => void;
+    user: User;
 };
-export const Profile: FC<ProfileType> = ({onClose}) => {
+export const Profile: FC<ProfileType> = ({onClose, user}) => {
 
+    const [profileData, setProfileData] = useState<User>(user);
 
     return (
         <Box sx={{
@@ -51,8 +54,8 @@ export const Profile: FC<ProfileType> = ({onClose}) => {
                                         marginBottom: "8px",
                                     }}>
                                         <Avatar sx={{ width: 450, height: 450 }}
-                                                src="https://randomuser.me/api/portraits/women/54.jpg"
-                                                alt="Anna Travelling"
+                                                src={profileData?.avatar}
+                                                alt={profileData?.username}
                                                 variant="rounded"
                                         />
                                     </Grid>
@@ -63,7 +66,10 @@ export const Profile: FC<ProfileType> = ({onClose}) => {
                                                 margin: "12px",
                                             }}
                                             label="Username"
-                                            size="small"/>
+                                            size="small"
+                                            value={profileData?.username}
+                                            onChange={event => setProfileData({...profileData, username: event.target.value})}
+                                        />
                                     </Grid>
                                     <Grid item sx={{textAlign: "center"}}>
                                         <TextField
@@ -72,7 +78,10 @@ export const Profile: FC<ProfileType> = ({onClose}) => {
                                                 margin: "12px",
                                             }}
                                             label="First name"
-                                            size="small" />
+                                            size="small"
+                                            value={profileData?.firstName}
+                                            onChange={event => setProfileData({...profileData, firstName: event.target.value})}
+                                        />
                                     </Grid>
                                     <Grid item sx={{textAlign: "center"}}>
                                         <TextField
@@ -81,7 +90,10 @@ export const Profile: FC<ProfileType> = ({onClose}) => {
                                                 margin: "12px",
                                             }}
                                             label="Last name"
-                                            size="small" />
+                                            size="small"
+                                            value={profileData?.lastName}
+                                            onChange={event => setProfileData({...profileData, lastName: event.target.value})}
+                                        />
                                     </Grid>
                                     <Grid item sx={{textAlign: "center"}}>
                                         <LoadingButton>Save</LoadingButton>

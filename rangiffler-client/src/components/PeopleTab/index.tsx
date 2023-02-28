@@ -46,10 +46,15 @@ export const PeopleTab: FC<PeopleTabType> = ({friends, allUsers, handleAddFriend
                             </TableCell>
                             <TableCell>{user.username}</TableCell>
                             <TableCell>{user.firstName} {user.lastName}</TableCell>
-                            <TableCell>
-                                <Button size={"small"} onClick={() => handleAddFriend(user)}>
-                                    Add to friends
-                                </Button>
+                            <TableCell>{
+                                friends.map(friend => friend.id).includes(user.id) ? (
+                                    <span>Your friend</span>
+                                ) : (
+                                    <Button size={"small"} onClick={() => handleAddFriend(user)}>
+                                        Add to friends
+                                    </Button>
+                                )
+                            }
                             </TableCell>
                         </TableRow>
                     ))}

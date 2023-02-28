@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -25,4 +26,8 @@ public class UserJson {
 
     @JsonProperty("avatar")
     private String avatar;
+
+    @JsonProperty("friends")
+    private List<UserJson> friends;
 }
+

@@ -28,12 +28,10 @@ module.exports = {
         },
     },
     devServer: {
+        historyApiFallback: true,
         port: 3001,
-        hot: IS_DEV,
+        hot: true,
         static: __dirname + "/dist/",
-        historyApiFallback: {
-            index: "index.html"
-        },
     },
     devtool: "source-map",
     optimization: {
