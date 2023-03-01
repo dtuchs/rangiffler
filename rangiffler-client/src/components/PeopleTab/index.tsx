@@ -12,14 +12,12 @@ import {
 import React, { FC } from "react";
 import { User } from "../../types/types";
 
-
-export type PeopleTabType = {
+interface PeopleTabInterface {
     friends: User[];
     allUsers: User[];
-
     handleAddFriend: (user: User) => void;
-};
-export const PeopleTab: FC<PeopleTabType> = ({friends, allUsers, handleAddFriend}) => {
+}
+export const PeopleTab: FC<PeopleTabInterface> = ({friends, allUsers, handleAddFriend}) => {
 
     return (
         <TableContainer component={Paper} sx={{ maxHeight: "80vh"}}>

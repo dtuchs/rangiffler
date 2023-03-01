@@ -1,4 +1,3 @@
-
 export type User = {
     id: number,
     username: string,
@@ -9,14 +8,20 @@ export type User = {
     friends?: User[],
 }
 
-
 export type ApiCountry = {
     id: number,
     code: string,
     name: string,
 };
 
-export type UICountry = {
+export type MapCountry = {
     country: string,
     value: number,
 };
+
+export type Photo = {
+    userId?: string,
+    src: string,
+    countryCode: string,
+    description?: string,
+}

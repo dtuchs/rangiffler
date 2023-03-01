@@ -1,4 +1,5 @@
 import deer from "@img/deer-logo.svg";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PeopleIcon from "@mui/icons-material/People";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import PublicIcon from "@mui/icons-material/Public";
@@ -11,14 +12,18 @@ import {
     Toolbar, Tooltip,
     Typography
 } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../context/UserContext/index";
 
-export type HeaderType = {
+interface HeaderInterface {
     handleAvatarClick: () => void;
-};
+    handleAddPhotoClick: () => void;
+}
 
-export const Header: FC<HeaderType> = ({handleAvatarClick}) => {
+export const Header: FC<HeaderInterface> = ({handleAvatarClick, handleAddPhotoClick}) => {
+    const { user } = useContext(UserContext);
+
     return (
         <AppBar position="static" color="transparent">
             <Toolbar>
@@ -28,14 +33,20 @@ export const Header: FC<HeaderType> = ({handleAvatarClick}) => {
                 <Typography variant="h3" component="h1" sx={{ flexGrow: 1, margin: "12px" }}>
                     Rangiffler
                 </Typography>
-                <Stack direction='row' spacing={2}>
+                <Stack direction='row' spacing={3}>
+                    <Button onClick={handleAddPhotoClick}
+                        variant="contained"
+                        startIcon={<AddCircleOutlineIcon/>}>Add photo</Button>
                     <Stack direction="row" spacing={2}>
-                        <Button onClick={handleAvatarClick}>
-                            <Avatar sx={{ width: 48, height: 48 }}
-                                    src='https://randomuser.me/api/portraits/women/54.jpg'
-                                    alt='Anna Travelling'
-                            />
-                        </Button>
+                        <Avatar sx={{
+                            width: 48,
+                            height: 48,
+                            cursor: "pointer",
+                        }}
+                                src={user?.avatar}
+                                alt={user?.username}
+                                onClick={handleAvatarClick}
+                        />
                         <Stack direction='row'
                                spacing={0.5}
                                sx={{ display: "flex",

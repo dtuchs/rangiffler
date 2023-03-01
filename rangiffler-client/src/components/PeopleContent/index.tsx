@@ -6,12 +6,13 @@ import { User } from "../../types/types";
 import { FriendsTab } from "../FriendsTab";
 import { Header } from "../Header/index";
 import { PeopleTab } from "../PeopleTab/index";
+import { Profile } from "../Profile/index";
 
 export const PeopleContent: FC = () => {
     const [tab, setTab] = useState("friends");
     const [profileOpen, setProfileOpen] = useState<boolean>(false);
-
     const [friendsData, setFriendsData] = useState<User[]>([]);
+    const [allUsers, setAllUsers] = useState<User[]>([]);
 
     useEffect(() => {
         apiClient.get("/users/1")
@@ -19,8 +20,6 @@ export const PeopleContent: FC = () => {
                 setFriendsData(res.data);
             });
     }, []);
-
-    const [allUsers, setAllUsers] = useState<User[]>([]);
 
     useEffect(() => {
         apiClient.get("/users")
@@ -59,16 +58,24 @@ export const PeopleContent: FC = () => {
         setProfileOpen(true);
     };
 
+    const handleAddPhotoClick = () => {
+
+    }
+
+    const handleClosePopup = () => {
+        setProfileOpen(false);
+    }
 
     return (
         <>
-            <Header handleAvatarClick={handleAvatarClick}/>
+            <Header handleAvatarClick={handleAvatarClick} handleAddPhotoClick={handleAddPhotoClick}/>
             <main className="content">
+                {profileOpen && <Profile onClose={handleClosePopup}/>}
                 <TabContext value={tab}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                         <TabList
                             onChange={handleChangeTab}
-                            aria-label="Tabs example"
+                            aria-label="Tabs"
                         >
                             <Tab
                                 label="Your Friends"

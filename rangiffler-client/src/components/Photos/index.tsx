@@ -1,11 +1,11 @@
 import { Box, Button, ImageList, ImageListItem } from "@mui/material";
 import React, { FC } from "react";
-import { PhotoCardType } from "../PhoroCard/index";
+import { Photo } from "../../types/types";
 
-export type PhotosType = {
-    handlePhotoClick: (item: PhotoCardType) => void;
+interface PhotosInterface{
+    handlePhotoClick: (item: Photo) => void;
 }
-export const Photos: FC<PhotosType> = ({handlePhotoClick}) => {
+export const Photos: FC<PhotosInterface> = ({handlePhotoClick}) => {
 
     return (
         <Box sx={{ margin: "0 auto", width: 1200, height: 650, overflowY: 'scroll' }}>
@@ -18,9 +18,9 @@ export const Photos: FC<PhotosType> = ({handlePhotoClick}) => {
                     <ImageListItem key={`${item.img}-${index}`}>
                         <Button onClick={() => handlePhotoClick({
                             src: item.img,
-                            country: "Russia",
+                            countryCode: "Russia",
                             description: item.title,
-                            } as PhotoCardType)}>
+                            } as Photo)}>
                             <img
                                 src={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2`}
                                 width={270}

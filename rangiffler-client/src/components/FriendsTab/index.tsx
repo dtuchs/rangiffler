@@ -9,20 +9,20 @@ import {
     TableRow
 } from "@mui/material";
 import React, { FC, useState } from "react";
-import { User } from "../../types/types";
+import { Photo, User } from "../../types/types";
 import { Map } from "../Map/index";
-import { PhotoCard, PhotoCardType } from "../PhoroCard/index";
+import { PhotoCard} from "../PhoroCard/index";
 import { Photos } from "../Photos/index";
 import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 
-export type FriendsTabType = {
+interface FriendsTabInterface {
   friends: User[];
   handleRemoveFriend: (user: User) => void;
-};
-export const FriendsTab:FC<FriendsTabType> = ({friends, handleRemoveFriend}) => {
+}
+export const FriendsTab:FC<FriendsTabInterface> = ({friends, handleRemoveFriend}) => {
 
     const [popupOpen, setPopupOpen] = useState<boolean>(false);
-    const [selectedItem, setSelectedItem] = useState<PhotoCardType | null>(null);
+    const [selectedItem, setSelectedItem] = useState<Partial<Photo> | null>(null);
 
     const data = [
         { country: "cn", value: 10 },
@@ -37,7 +37,7 @@ export const FriendsTab:FC<FriendsTabType> = ({friends, handleRemoveFriend}) => 
         { country: "fi", value: 39 },
     ];
 
-    const handlePhotoClick = (item: PhotoCardType) => {
+    const handlePhotoClick = (item: Photo) => {
         setSelectedItem(item);
         setPopupOpen(true);
     };
@@ -49,7 +49,7 @@ export const FriendsTab:FC<FriendsTabType> = ({friends, handleRemoveFriend}) => 
 
     return (
         <>
-            {popupOpen && <PhotoCard {...selectedItem} onClose={handleClosePopup}/>}
+            {popupOpen && <PhotoCard photo={selectedItem} onClose={handleClosePopup}/>}
             <Grid container direction='row' columns={2} spacing={2}>
                 <Grid item style={{margin: "0 auto"}}>
                     <Map data={data}/>

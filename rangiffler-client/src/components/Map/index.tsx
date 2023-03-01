@@ -3,12 +3,12 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import { IconButton, Tooltip } from "@mui/material";
 import React, { FC, useState } from "react";
 import WorldMap from "react-svg-worldmap";
-import { UICountry } from "../../types/types";
+import { MapCountry } from "../../types/types";
 
-export type MapType = {
-    data: UICountry[];
+interface MapInterface {
+    data: MapCountry[];
 }
-export const Map: FC<MapType>= ({data}) => {
+export const Map: FC<MapInterface>= ({data}) => {
 
     const [zoomed, setZoomed] =  useState<boolean>(false);
 

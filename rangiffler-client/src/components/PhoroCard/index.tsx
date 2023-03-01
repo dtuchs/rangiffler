@@ -5,27 +5,30 @@ import {
     CardActions,
     CardContent,
     CardMedia, Grid,
-    IconButton,
+    IconButton, MenuItem,
     TextField,
     Typography
 } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
+import { CountryContext } from "../../context/CountryContext/index";
+import { Photo } from "../../types/types";
+import { ImageUpload } from "../ImageUpload/index";
+import imageMock from "@img/uploadImageMock.jpg";
 
-export type PhotoCardType = {
-    src?: string;
-    description?: string;
-    country?: string;
-
+interface PhotoCardInterface {
+    photo: Partial<Photo> | null;
     onClose: () => void;
-};
-export const PhotoCard: FC<PhotoCardType> = ({src, description, country, onClose}) => {
-
-    const [edit, setEdit] = useState<boolean>(false);
+}
+export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose}) => {
+    const {countries} = useContext(CountryContext);
+    const [photoData, setPhotoData] = useState<Partial<Photo> | null>(photo);
+    const [edit, setEdit] = useState<boolean>(photo === null);
     const onEditClick = () => {
         setEdit((prevState) => !prevState);
     };
+    const selectOptions = countries?.map(country => (<MenuItem value={country.code}>{country.name}</MenuItem>));
 
     return (
         <Box sx={{
@@ -42,65 +45,123 @@ export const PhotoCard: FC<PhotoCardType> = ({src, description, country, onClose
                     flexDirection: "row",
                     justifyContent: "flex-end",
                 }}>
-                    <IconButton size='small'>
-                        <EditIcon onClick={onEditClick}/>
-                    </IconButton>
+                    {
+                        photo &&
+                        (<IconButton size='small'>
+                            <EditIcon onClick={onEditClick}/>
+                        </IconButton>)
+                    }
                     <IconButton size='small'>
                         <CloseIcon onClick={onClose}/>
                     </IconButton>
                 </CardActions>
-                <CardMedia
-                    sx={{
-                        maxHeight: "500px",
-                    }}
-                    component="img"
-                    image={src}
-                    alt={description}
-                />
-                <CardContent>
+                <CardContent sx={{
+                    width: "500px",
+                    margin: "0 auto",
+                }}>
                     {
                         edit ? (
                              <>
                                  <form>
-                                     <Grid container width="100%" direction="column" sx={{
+                                     <Grid container direction="column" sx={{
                                          justifyContent: "center",
-
                                      }}>
-                                         <Grid item sx={{textAlign: "center"}}>
-                                             <TextField
-                                                 sx={{
-                                                     width: "80%",
-                                                     margin: "12px",
-                                                 }}
-                                                 label='Country'
-                                                 size='small' />
-                                         </Grid>
-                                         <Grid item sx={{textAlign: "center"}}>
-                                             <TextField
-                                                 sx={{
-                                                     width: "80%",
-                                                     margin: "12px",
-                                                 }}
-                                                 label='Description'
-                                                 size='small' />
-                                         </Grid>
-                                         <Grid item sx={{textAlign: "center"}}>
-                                             <LoadingButton>Save</LoadingButton>
+                                         <Grid item sx = {{
+                                             display: "flex",
+                                             textAlign: "center",
+                                             position: "relative",
+                                             justifyContent: "center",
+
+                                         }}>
+                                         <CardMedia
+                                             sx={{
+                                                 width: "500px",
+                                                 height: "500px",
+                                                 objectFit: "fit-content"
+                                             }}
+                                             component="img"
+                                             image={ photoData?.src || imageMock}
+                                             alt="New image"
+                                         />
+                                         <Grid sx={{
+                                             position: "absolute",
+                                             right: "10%",
+                                             top: "85%",
+                                         }}>
+                                             { !photo?.src &&
+                                                 <ImageUpload
+                                                     handlePhotoChange={(photo) => setPhotoData({
+                                                         ...photoData,
+                                                         src: photo,
+                                                     })}                                                 />
+                                             }
                                          </Grid>
                                      </Grid>
-                                 </form>
-                             </>)
-                            : (<>
-                                    <Typography gutterBottom variant="h5" component="p">
-                                        {country}
-                                    </Typography>
-                                    <Typography variant="body2">
-                                        {description}
-                                    </Typography>
-                                </>)
-                    }
-                </CardContent>
-            </Card>
-        </Box>
-    )
+                                     <Grid item sx={{textAlign: "center"}}>
+                                         <TextField
+                                             sx={{
+                                                 width: "500px",
+                                                 margin: "12px",
+                                                 textAlign: "left"
+                                             }}
+                                             select
+                                             required
+                                             label="Country"
+                                             size="small"
+                                             value={photoData?.countryCode}
+                                             onChange={event =>  setPhotoData({
+                                                 ...photoData,
+                                                 countryCode: event.target.value
+                                             })}>
+                                             {selectOptions}
+                                         </TextField>
+                                     </Grid>
+                                     <Grid item sx={{textAlign: "center"}}>
+                                         <TextField
+                                             multiline
+                                             minRows={2}
+                                             maxRows={5}
+                                             sx={{
+                                                 width: "500px",
+                                                 margin: "12px",
+                                             }}
+                                             label='Description'
+                                             size='small'
+                                             value={photoData?.description}
+                                             onChange={event =>  setPhotoData({
+                                                 ...photoData,
+                                                 description: event.target.value
+                                             })}
+                                         />
+                                     </Grid>
+                                     <Grid item sx={{textAlign: "center"}}>
+                                         <LoadingButton variant="contained" type="submit">Save</LoadingButton>
+                                     </Grid>
+                                 </Grid>
+                             </form>
+                         </>)
+                        : (
+                            <>
+                                <CardMedia
+                                    sx={{
+                                        width: "500px",
+                                        height: "500px",
+                                        objectFit: "fit-content"
+                                    }}
+                                    component="img"
+                                    image={photo?.src}
+                                    alt={photo?.description}
+                                />
+                                <Typography gutterBottom variant="h5" component="p">
+                                    {photo?.countryCode}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {photo?.description}
+                                </Typography>
+                            </>)
+                }
+            </CardContent>
+        </Card>
+    </Box>
+)
 };
