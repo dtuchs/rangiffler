@@ -5,7 +5,7 @@ export const apiClient = axios.create({
     baseURL: GATEWAY_URL,
     withCredentials: true,
     headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json',
+        "Accept": "application/json",
+        "Content-type": "application/json",
     }
 });

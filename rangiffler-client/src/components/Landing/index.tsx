@@ -3,8 +3,15 @@ import { Box, ButtonGroup, Card, CardContent, CardMedia, Grid, Typography } from
 import React from "react";
 import { Link } from "react-router-dom";
 import "./styles.scss"
+import { generateCodeChallenge, generateCodeVerifier } from "../../api/apiUtils";
 
 export const Landing = () => {
+
+    const verifier = generateCodeVerifier();
+    sessionStorage.setItem('codeVerifier', verifier);
+    const codeChallenge = generateCodeChallenge();
+    sessionStorage.setItem('codeChallenge', codeChallenge);
+
     return (
         <>
             <Box sx={{

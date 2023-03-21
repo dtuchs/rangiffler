@@ -1,11 +1,10 @@
-import axios from "axios/index";
-import { AUTH_URL } from "./config";
+import axios from "axios";
+import { CLIENT, SECRET } from "./config";
 
 export const authClient = axios.create({
-    baseURL: AUTH_URL,
-    withCredentials: true,
+    baseURL: process.env.REACT_APP_AUTH_URL,
     headers: {
-        'Accept': 'application/json',
-        'Content-type': 'application/json',
+        "Content-type": "application/json",
+        "Authorization": `Basic ${Buffer.from(`${CLIENT}:${SECRET}`).toString("base64")}`,
     }
 });
