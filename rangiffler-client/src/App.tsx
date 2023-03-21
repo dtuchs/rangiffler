@@ -4,6 +4,7 @@ import { apiClient } from "./api/apiClient";
 import { Landing } from "./components/Landing/index";
 import { Layout } from "./components/Layout/index";
 import { Content } from "./components/Content/index";
+import { NotFoundPage } from "./components/NotFoundPage/index";
 import { Redirect } from "./components/Redirect/index";
 import { CountryContext } from "./context/CountryContext/index";
 import { PhotoContext } from "./context/PhotoContext/index";
@@ -86,6 +87,7 @@ export const App = () => {
                            <Route path="/" element={<Layout/>}>
                                <Route index element={<Content/>}/>
                            </Route>
+                           <Route path="*" element={<NotFoundPage/>}/>
                        </Routes>
                    </PhotoContext.Provider>
                 </CountryContext.Provider>
