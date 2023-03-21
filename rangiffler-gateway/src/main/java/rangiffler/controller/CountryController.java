@@ -22,4 +22,5 @@ public class CountryController {
     public List<CountryJson> getAllCountries() {
         return countryService.getAllCountries();
     }
+
 }

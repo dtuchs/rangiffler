@@ -1,101 +1,71 @@
 import {
-    Avatar,
-    Grid, IconButton,
-    Paper, Stack,
-    Table, TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow
+    Grid,
 } from "@mui/material";
-import React, { FC, useState } from "react";
-import { Photo, User } from "../../types/types";
+import React, { FC, useContext, useEffect, useMemo, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import { CountryContext as MapCountryContext } from "react-svg-worldmap/dist/types";
+import { apiClient } from "../../api/apiClient";
+import { CountryContext } from "../../context/CountryContext/index";
+import { ApiCountry, MapCountry, Photo } from "../../types/types";
+import { LayoutContext } from "../Layout/index";
 import { Map } from "../Map/index";
-import { PhotoCard} from "../PhoroCard/index";
 import { Photos } from "../Photos/index";
-import PersonRemoveAlt1Icon from '@mui/icons-material/PersonRemoveAlt1';
 
-interface FriendsTabInterface {
-  friends: User[];
-  handleRemoveFriend: (user: User) => void;
-}
-export const FriendsTab:FC<FriendsTabInterface> = ({friends, handleRemoveFriend}) => {
 
-    const [popupOpen, setPopupOpen] = useState<boolean>(false);
-    const [selectedItem, setSelectedItem] = useState<Partial<Photo> | null>(null);
+export const FriendsTab:FC = () => {
 
-    const data = [
-        { country: "cn", value: 10 },
-        { country: "in", value: 13 },
-        { country: "ru", value: 13 },
-        { country: "fr", value: 67 },
-        { country: "it", value: 45 },
-        { country: "ca", value: 12 },
-        { country: "us", value: 33 },
-        { country: "de", value: 48 },
-        { country: "es", value: 76 },
-        { country: "fi", value: 39 },
-    ];
+    const {countries} = useContext(CountryContext);
+    const [friendsPhotos, setFriendsPhotos] = useState<Photo[]>([]);
+    const [photoFilter, setPhotoFilter] = useState<string | null>(null);
+    const {handlePhotoClick} = useOutletContext<LayoutContext>();
+    const filteredPhotos = useMemo<Photo[]>(
+        () => photoFilter ? friendsPhotos.filter(photo => photo.countryCode.toLowerCase() === photoFilter.toLowerCase()) : friendsPhotos
+        , [photoFilter, friendsPhotos]);
 
-    const handlePhotoClick = (item: Photo) => {
-        setSelectedItem(item);
-        setPopupOpen(true);
+    const [data, setData] = useState<MapCountry[]>([]);
+
+
+    useEffect(() => {
+        apiClient
+            .get("/friends/photos")
+            .then(res => {
+                if (res.data) {
+                    setFriendsPhotos(res.data.map((photo: any) => ({
+                        id: photo.id,
+                        src: photo.photo,
+                        description: photo.description,
+                        countryCode: photo.country.code,
+                        username: photo.username,
+                    } as Photo)));
+                }
+            });
+    }, []);
+
+    useEffect(() => {
+        const countryData: MapCountry[] = [];
+        countries.map((dataItem : ApiCountry) => {
+            countryData.push({
+                country: dataItem.code,
+                value: friendsPhotos.filter(photo => photo.countryCode === dataItem.code).length || 0
+            });
+        });
+        setData(countryData);
+    }, [friendsPhotos]);
+
+    const handleCountryClick = (context: MapCountryContext & {
+        event: React.MouseEvent<SVGElement, Event>;
+    }) => {
+        setPhotoFilter(context.countryCode);
     };
-
-    const handleClosePopup = () => {
-        setPopupOpen(false);
-        setSelectedItem(null);
-    }
 
     return (
         <>
-            {popupOpen && <PhotoCard photo={selectedItem} onClose={handleClosePopup}/>}
             <Grid container direction='row' columns={2} spacing={2}>
                 <Grid item style={{margin: "0 auto"}}>
-                    <Map data={data}/>
-                </Grid>
-                <Grid item>
-                    <TableContainer component={Paper} sx={{ maxHeight: "50vh"}}>
-                        {friends?.length > 0 ? (
-                        <Table stickyHeader aria-label="friends table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell></TableCell>
-                                    <TableCell>Username</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {friends.map(user => (
-                                    <TableRow
-                                        key={user.username}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell>
-                                            <Avatar sx={{ width: 48, height: 48 }}
-                                                    src={user.avatar}
-                                                    alt={user.username}
-                                            />
-                                        </TableCell>
-                                        <TableCell>{user.username}</TableCell>
-                                        <TableCell>
-                                            <IconButton size="small" onClick={() => handleRemoveFriend(user)}>
-                                                <PersonRemoveAlt1Icon/>
-                                            </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table> ) :
-                            (
-                                <Stack sx={{ margin: "16px auto", width: "200px", textAlign: "center"}}>
-                                    No friends yet
-                                </Stack>
-                            )}
-                    </TableContainer>
+                    <Map data={data} handleCountryClick={handleCountryClick}/>
                 </Grid>
             </Grid>
-            <Photos handlePhotoClick={handlePhotoClick}/>
+            <Photos handlePhotoClick={handlePhotoClick} photos={filteredPhotos}/>
         </>
     );
 };

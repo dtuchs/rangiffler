@@ -1,8 +1,8 @@
-import axios from "axios";
-import { GATEWAY_URL } from "./config";
+import axios from "axios/index";
+import { AUTH_URL } from "./config";
 
-export const apiClient = axios.create({
-    baseURL: GATEWAY_URL,
+export const authClient = axios.create({
+    baseURL: AUTH_URL,
     withCredentials: true,
     headers: {
         'Accept': 'application/json',

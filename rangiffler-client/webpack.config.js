@@ -65,6 +65,7 @@ module.exports = {
             {
                 test: /\.(scss|css)$/,
                 use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
+                exclude: /node_modules/,
             },
             {
                 test: /\.(?:ico|gif|png|jpg|jpeg)$/i,

@@ -1,7 +1,7 @@
 import deer from "@img/deer-logo.svg";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import PeopleIcon from "@mui/icons-material/People";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
+import GroupIcon from '@mui/icons-material/Group';
 import PublicIcon from "@mui/icons-material/Public";
 import {
     AppBar,
@@ -14,15 +14,27 @@ import {
 } from "@mui/material";
 import React, { FC, useContext } from "react";
 import { Link } from "react-router-dom";
+import { PhotoContext } from "../../context/PhotoContext/index";
 import { UserContext } from "../../context/UserContext/index";
+import { User } from "../../types/types";
 
 interface HeaderInterface {
     handleAvatarClick: () => void;
     handleAddPhotoClick: () => void;
+    handleFriendsIconClick: () => void;
+    friends: User[];
 }
 
-export const Header: FC<HeaderInterface> = ({handleAvatarClick, handleAddPhotoClick}) => {
+export const Header: FC<HeaderInterface> = ({handleAvatarClick, handleAddPhotoClick, handleFriendsIconClick, friends}) => {
     const { user } = useContext(UserContext);
+    const { photos} = useContext(PhotoContext);
+
+    const getVisitedCountriesCount = () => {
+        const countries = photos.map(p => p.countryCode);
+        // @ts-ignore
+        const unique =  [...new Set(countries)];
+        return unique.length;
+    }
 
     return (
         <AppBar position="static" color="transparent">
@@ -56,22 +68,22 @@ export const Header: FC<HeaderInterface> = ({handleAvatarClick, handleAddPhotoCl
                             <ListItemIcon>
                                 <Tooltip title="Your visited countries">
                                     <Stack direction="row" gap={1}>
-                                        <PublicIcon/> 4
+                                        <PublicIcon/> {getVisitedCountriesCount()}
                                     </Stack>
                                 </Tooltip>
                             </ListItemIcon>
                             <ListItemIcon>
                                 <Tooltip title="Your photos">
                                     <Stack direction="row" gap={1}>
-                                        <PhotoCameraIcon/> 10
+                                        <PhotoCameraIcon/> {photos?.length}
                                     </Stack>
                                 </Tooltip>
                             </ListItemIcon>
                             <ListItemIcon>
-                                <Tooltip title="Go to people around you">
-                                    <Link to="/people">
-                                        <PeopleIcon/>
-                                    </Link>
+                                <Tooltip title="Your friends">
+                                    <Stack direction="row" gap={1} onClick={handleFriendsIconClick} sx={{cursor: "pointer"}}>
+                                        <GroupIcon/> {friends?.length}
+                                    </Stack>
                                 </Tooltip>
                             </ListItemIcon>
                         </Stack>

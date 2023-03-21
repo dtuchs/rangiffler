@@ -1,9 +1,7 @@
 package rangiffler.controller;
 
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,26 +30,33 @@ public class UserController {
     }
 
     @PatchMapping("/currentUser")
-    public UserJson updateCurrentUser( @RequestBody UserJson user) {
+    public UserJson updateCurrentUser(@RequestBody UserJson user) {
         return userService.updateCurrentUser(user);
     }
 
-    @GetMapping("users/{userId}")
-    public List<UserJson> getFriendsByUserId(@PathVariable int userId) {
-        return userService.getFriends(userId);
+    @GetMapping("/friends")
+    public List<UserJson> getFriendsByUserId() {
+        return userService.getFriends();
     }
 
-    @PostMapping("users/{userId}")
-    public List<UserJson> addFriendToUser(@PathVariable int userId,
-                                @RequestBody UserJson friend) {
-        return userService.addUserToFriends(userId, friend);
+    @PostMapping("users/invite/")
+    public UserJson sendInvitation(@RequestBody UserJson user) {
+        return userService.sendInvitation(user);
     }
 
-    @DeleteMapping("users/{userId}")
-    public List<UserJson> removeFriendFromUser(@PathVariable int userId,
-                                          @RequestBody UserJson friend) {
-        return userService.removeUserFromFriends(userId, friend);
+    @PostMapping("friends/remove")
+    public UserJson removeFriendFromUser(@RequestBody UserJson friend) {
+        return userService.removeUserFromFriends(friend);
     }
 
+    @PostMapping("friends/submit")
+    public UserJson submitFriend(@RequestBody UserJson friend) {
+        return userService.acceptInvitation(friend);
+    }
+
+    @PostMapping("friends/decline")
+    public UserJson declineFriend(@RequestBody UserJson friend) {
+        return userService.declineInvitation(friend);
+    }
 
 }

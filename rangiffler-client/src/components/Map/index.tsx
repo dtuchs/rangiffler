@@ -3,12 +3,16 @@ import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import { IconButton, Tooltip } from "@mui/material";
 import React, { FC, useState } from "react";
 import WorldMap from "react-svg-worldmap";
+import { CountryContext } from "react-svg-worldmap/dist/types";
 import { MapCountry } from "../../types/types";
 
 interface MapInterface {
     data: MapCountry[];
+    handleCountryClick: (context: CountryContext & {
+        event: React.MouseEvent<SVGElement, Event>;
+    }) => void;
 }
-export const Map: FC<MapInterface>= ({data}) => {
+export const Map: FC<MapInterface>= ({data, handleCountryClick}) => {
 
     const [zoomed, setZoomed] =  useState<boolean>(false);
 
@@ -40,6 +44,7 @@ export const Map: FC<MapInterface>= ({data}) => {
                 value-suffix="photos"
                 size={zoomed ? "xxl" : "xl"}
                 data={data}
+                onClickFunction = {handleCountryClick}
             />
         </div>
     );

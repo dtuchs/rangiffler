@@ -2,10 +2,9 @@ export type User = {
     id: number,
     username: string,
     firstName: string,
-
     lastName: string,
     avatar: string,
-    friends?: User[],
+    friendStatus: string,
 }
 
 export type ApiCountry = {
@@ -20,8 +19,11 @@ export type MapCountry = {
 };
 
 export type Photo = {
-    userId?: string,
+    id: string,
+    username: string,
     src: string,
     countryCode: string,
     description?: string,
 }
+
+export type FriendStatus = "FRIEND" | "NOT_FRIEND" | "INVITATION_SENT" | "INVITATION_RECEIVED"
