@@ -13,7 +13,7 @@ import {Profile} from "../Profile/index";
 
 export type LayoutContext = {
   handlePhotoClick: (item: Photo) => void;
-  initSubmitPopupAndOpen: (text: string, onSubmit: () => void) => void;
+  initSubmitPopupAndOpen: (text: string, buttonText: string, onSubmit: () => void) => void;
 };
 
 export const Layout = () => {
@@ -45,8 +45,9 @@ export const Layout = () => {
   const [profileOpen, setProfileOpen] = useState<boolean>(false);
   const [friendsPopupOpen, setFriendsPopupOpen] = useState<boolean>(false);
   const [submitPopupOpen, setSubmitPopupOpen] = useState<boolean>(false);
-  const [submitPopupData, setSubmitPopupData] = useState<{ text: string, onSubmit: () => void }>({
+  const [submitPopupData, setSubmitPopupData] = useState<{ text: string, buttonText: string, onSubmit: () => void }>({
     text: "",
+    buttonText: "Submit",
     onSubmit: () => {
     },
   });
@@ -82,8 +83,8 @@ export const Layout = () => {
       });
   }, []);
 
-  const initSubmitPopupAndOpen = (text: string, onSubmit: () => void) => {
-    setSubmitPopupData({text, onSubmit});
+  const initSubmitPopupAndOpen = (text: string, buttonText: string, onSubmit: () => void) => {
+    setSubmitPopupData({text, buttonText, onSubmit});
     setSubmitPopupOpen(true);
     setPhotoCardOpen(false);
     setProfileOpen(false);
@@ -92,7 +93,7 @@ export const Layout = () => {
 
 
   const handleDeleteFriend = (user: User) => {
-    initSubmitPopupAndOpen("Delete friend?", () => {
+    initSubmitPopupAndOpen("Delete friend?", "Delete", () => {
       apiClient().post("friends/remove", {
         ...user
       }).then(() => {
@@ -156,8 +157,11 @@ export const Layout = () => {
                   <PhotoCard key={selectedItem?.src} photo={selectedItem} onClose={handleClosePopup}
                              initSubmitPopupAndOpen={initSubmitPopupAndOpen}/>}
               {profileOpen && <Profile onClose={handleClosePopup}/>}
-              {submitPopupOpen && <Popup onSubmit={submitPopupData.onSubmit} onClose={handleClosePopup}
-                                         text={submitPopupData.text}/>}
+              {submitPopupOpen && <Popup onSubmit={submitPopupData.onSubmit}
+                                         onClose={handleClosePopup}
+                                         text={submitPopupData.text}
+                                         buttonText={submitPopupData.buttonText}
+              />}
               {friendsPopupOpen && <FriendsPopup friends={friendsData} onClose={handleClosePopup}
                                                  handleRemoveFriend={handleDeleteFriend}/>}
               <Outlet context={{handlePhotoClick, initSubmitPopupAndOpen}}/>

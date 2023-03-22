@@ -27,7 +27,7 @@ import imageMock from "@img/uploadImageMock.jpg";
 interface PhotoCardInterface {
   photo: Partial<Photo> | null;
   onClose: () => void;
-  initSubmitPopupAndOpen: (text: string, onSubmit: () => void) => void;
+  initSubmitPopupAndOpen: (text: string, buttonText: string, onSubmit: () => void) => void;
 }
 
 export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPopupAndOpen}) => {
@@ -59,7 +59,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
   }
 
   const onDeleteClick = (photo: Partial<Photo>) => {
-    initSubmitPopupAndOpen("You are going to delete photo. Are you sure?", () => deletePhotoHandler(photo.id!));
+    initSubmitPopupAndOpen("You are going to delete photo. Are you sure?", "Delete",() => deletePhotoHandler(photo.id!));
   };
 
   const selectOptions = countries?.map(country => (

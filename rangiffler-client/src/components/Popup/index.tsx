@@ -8,9 +8,10 @@ interface PopupInterface {
   text: string,
   onSubmit: () => void;
   onClose: () => void;
+  buttonText?: string;
 }
 
-export const Popup: FC<PopupInterface> = ({text, onSubmit, onClose}) => {
+export const Popup: FC<PopupInterface> = ({text, onSubmit, onClose,  buttonText}) => {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -22,7 +23,7 @@ export const Popup: FC<PopupInterface> = ({text, onSubmit, onClose}) => {
         width: "100%",
         display: "block",
         backgroundColor: "rgba(0, 0, 0, 0.4)",
-        height: "calc(100vh - 45px)",
+        height: "160vh",
         position: "absolute",
         zIndex: "4",
       }}>
@@ -50,12 +51,12 @@ export const Popup: FC<PopupInterface> = ({text, onSubmit, onClose}) => {
             }}>
               <form onSubmit={(evt) => handleSubmit(evt)}>
                 <Grid>
-                  <Typography variant="body2" sx={{margin: "10px"}}>
+                  <Typography variant="body2" sx={{marginBottom: "30px", textAlign: "center"}}>
                     {text}
                   </Typography>
                 </Grid>
                 <Grid item sx={{textAlign: "center"}}>
-                  <LoadingButton variant="contained" type="submit">Submit</LoadingButton>
+                  <LoadingButton variant="contained" type="submit">{buttonText ?? "Submit"}</LoadingButton>
                 </Grid>
               </form>
             </CardContent>

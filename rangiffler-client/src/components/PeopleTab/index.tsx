@@ -61,7 +61,7 @@ export const PeopleTab: FC = () => {
   };
 
   const handleDeclineInvitation = (user: User) => {
-    initSubmitPopupAndOpen("Decline friend?", () => {
+    initSubmitPopupAndOpen("Decline friend?", "Decline", () => {
       apiClient().post("friends/decline", {
         ...user
       }).then(res => {
@@ -71,7 +71,7 @@ export const PeopleTab: FC = () => {
   };
 
   const handleDeleteFriend = (user: User) => {
-    initSubmitPopupAndOpen("Delete friend?", () => {
+    initSubmitPopupAndOpen("Delete friend?", "Delete", () => {
       apiClient().post("friends/remove", {
         ...user
       }).then(res => {
