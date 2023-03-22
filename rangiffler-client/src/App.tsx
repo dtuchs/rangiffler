@@ -5,93 +5,55 @@ import {Landing} from "./components/Landing/index";
 import {Layout} from "./components/Layout/index";
 import {Content} from "./components/Content/index";
 import {NotFoundPage} from "./components/NotFoundPage/index";
+import { PrivateRoute } from "./components/PrivateRoute/index";
 import {Redirect} from "./components/Redirect/index";
-import {CountryContext} from "./context/CountryContext/index";
-import {PhotoContext} from "./context/PhotoContext/index";
 import {UserContext} from "./context/UserContext/index";
-import {ApiCountry, Photo, User} from "./types/types";
+import {User} from "./types/types";
 
 export const App = () => {
 
+  //current user data
   const [user, setUser] = useState<Partial<User>>({});
-  const [countries, setCountries] = useState<Array<ApiCountry>>([]);
-  const [userPhotos, setUserPhotos] = useState<Array<Photo>>([]);
+  const [userLoading, setUserLoading] = useState(true);
   const handleChangeUser = (user: User) => {
     setUser(user);
   };
-  const handleAddPhoto = (photo: Photo) => {
-    setUserPhotos([...userPhotos, photo]);
-  };
-
-  const handleEditPhoto = (photo: Photo) => {
-    const newArr = [...userPhotos];
-    const ph = newArr.find(ph => ph.id === photo.id);
-    if (ph) {
-      newArr[newArr.indexOf(ph)] = photo;
-      setUserPhotos(newArr);
-    }
-  }
-
-  const handleDeletePhoto = (photoId: string) => {
-    setUserPhotos(userPhotos.filter(ph => ph.id !== photoId));
-  };
 
   useEffect(() => {
+    if (location.pathname === "/authorized") {
+      setUserLoading(false);
+      return;
+    }
     apiClient.get("/currentUser")
-    .then((res) => {
-      if (res.data) {
-        setUser(res.data);
-      }
+        .then((res) => {
+          if (res.data) {
+            setUser(res.data);
+            setUserLoading(false);
+          } else {
+            setUserLoading(false);
+          }
+        }).catch((err) => {
+          console.error(err);
+          setUserLoading(false);
     });
-
-    apiClient.get("/countries")
-    .then((res) => {
-      if (res.data) {
-        setCountries(res.data);
-      }
-    });
-
-    apiClient.get("/photos")
-    .then((res) => {
-      if (res.data) {
-        setUserPhotos(res.data.map((photo: any) => ({
-          id: photo.id,
-          src: photo.photo,
-          description: photo.description,
-          countryCode: photo.country.code,
-          username: photo.username,
-        } as Photo)));
-      }
-    })
-  }, []);
+  }, [])
 
   return (
-      <UserContext.Provider value={{
-        user,
-        handleChangeUser,
-      }}>
-        <CountryContext.Provider value={{
-          countries
-        }}
-        >
-          <PhotoContext.Provider value={{
-            photos: userPhotos,
-            handleAddPhoto,
-            handleEditPhoto,
-            handleDeletePhoto,
-          }}>
-            <Routes>
-              <Route path="/redirect" element={<Redirect/>}/>
-              <Route path="/authorized" element={<Redirect/>}/>
-              <Route path="/landing" element={<Landing/>}/>
-              <Route path="/" element={<Layout/>}>
-                <Route index element={<Content/>}/>
-              </Route>
-              <Route path="*" element={<NotFoundPage/>}/>
-            </Routes>
-          </PhotoContext.Provider>
-        </CountryContext.Provider>
-      </UserContext.Provider>
+    <UserContext.Provider value={{
+      user,
+      handleChangeUser,
+    }}>
+      <Routes>
+        <Route path="/redirect" element={<Redirect/>}/>
+        <Route path="/authorized" element={<Redirect/>}/>
+        <Route path="/landing" element={<Landing/>}/>
+        <Route path="/" element={<PrivateRoute/>}>
+          <Route path="/" element={<Layout/>}>
+            <Route index element={<Content/>}/>
+          </Route>
+        </Route>
+        <Route path="*" element={<NotFoundPage/>}/>
+      </Routes>
+    </UserContext.Provider>
   );
-
 };

@@ -4,6 +4,7 @@ import React from "react";
 import {Link} from "react-router-dom";
 import "./styles.scss"
 import {generateCodeChallenge, generateCodeVerifier} from "../../api/apiUtils";
+import { AUTH_URL } from "../../api/config";
 
 export const Landing = () => {
 
@@ -66,7 +67,7 @@ export const Landing = () => {
                   <Grid item sx={{textAlign: "center"}}>
                     <ButtonGroup sx={{margin: "20px"}}>
                       <Link className={"main__link"} to={'/redirect'}>Login</Link>
-                      <a className={"main__link"} href={`127.0.0.1:9000/register`}>Register</a>
+                      <a className={"main__link"} href={`${AUTH_URL}/register`}>Register</a>
                     </ButtonGroup>
                   </Grid>
                 </Grid>

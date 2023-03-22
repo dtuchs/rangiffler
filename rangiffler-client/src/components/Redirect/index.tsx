@@ -1,7 +1,7 @@
 import {useEffect} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {authClient} from "../../api/authClient";
-import {CLIENT} from "../../api/config";
+import { AUTH_URL, CLIENT, FRONT_URL } from "../../api/config";
 
 export const Redirect = () => {
   const [searchParams] = useSearchParams();
@@ -13,7 +13,7 @@ export const Redirect = () => {
       const client = CLIENT;
 
       const verifier = sessionStorage.getItem("codeVerifier");
-      const initialUrl = `/oauth2/token?client_id=${client}&redirect_uri=${process.env.REACT_APP_FRONT_URL}/authorized&grant_type=authorization_code`;
+      const initialUrl = `/oauth2/token?client_id=${client}&redirect_uri=${FRONT_URL}/authorized&grant_type=authorization_code`;
       const url = `${initialUrl}&code=${code}&code_verifier=${verifier}`;
 
       authClient.post(url).then(res => {
@@ -32,7 +32,7 @@ export const Redirect = () => {
   useEffect(() => {
     if (!searchParams?.get("code")) {
       const codeChallenge = sessionStorage.getItem("codeChallenge");
-      const link = `${process.env.REACT_APP_AUTH_URL}/oauth2/authorize?response_type=code&client_id=client&scope=openid&redirect_uri=${process.env.REACT_APP_FRONT_URL}/authorized&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+      const link = `${AUTH_URL}/oauth2/authorize?response_type=code&client_id=client&scope=openid&redirect_uri=${FRONT_URL}/authorized&code_challenge=${codeChallenge}&code_challenge_method=S256`;
       window.location.href = link;
     }
   }, []);

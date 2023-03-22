@@ -1,15 +1,15 @@
 <!DOCTYPE HTML>
 <html xmlns:th="https://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Login to Niffler</title>
+  <title>Login to Rangiffler</title>
   <link rel="icon" th:href="@{images/favicon.ico}"/>
-  <link th:href="@{styles/styles.css}" rel="stylesheet" type="text/css"/>
+  <link href="../static/styles/styles.css" th:href="@{styles/styles.css}" rel="stylesheet" type="text/css"/>
 </head>
 <body>
 <main class="content">
   <form class="form" action="#" th:action="@{/login}" method="post">
     <h1 class="form__header">Login to Rangiffler</h1>
-    <img src="../static/images/deer-logo.png" width="90" th:src="@{images/deer-logo.png}"
+    <img src="./../static/images/deer-logo.svg" width="90" th:src="@{images/deer-logo.svg}"
          alt="Rangiffler logo"/>
     <div th:if="${param.error}">
       <p class="form__error">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>

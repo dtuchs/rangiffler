@@ -1,22 +1,10 @@
-/*@font-face {*/
-/*    font-family: "PTRootUIWeb";*/
-/*    src: url("../fonts/PlayfairDisplaySC-Regular.woff2") format("woff2"),*/
-/*    url("../fonts/PlayfairDisplaySC-Regular.woff") format("woff"),*/
-/*    url("../fonts/PlayfairDisplaySC-Regular.ttf") format("ttf");*/
-/*    font-weight: 400;*/
-/*    font-style: normal;*/
-/*}*/
-
 body {
   margin: 0;
   padding: 0;
-  /*font-family: "PTRootUIWeb", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',*/
-  /*'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',*/
-  /*sans-serif;*/
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: black;
 }
 
 .content {
@@ -25,14 +13,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-size: cover;
-  background-position: center;
+  background-color: rgba(0, 0, 0, 0.4);
+
 }
 
 .form {
   text-align: center;
   padding: 10px;
-  border: 1px solid black;
   border-radius: 8px;
   margin: 0 auto;
   width: 100%;
@@ -41,6 +28,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
+  background-color: white;
 }
 
 .form__header {
@@ -65,16 +53,13 @@ body {
   width: 100%;
   display: block;
   margin-bottom: 20px;
-  /*font-family: "PTRootUIWeb", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',*/
-  /*'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',*/
-  /*sans-serif;*/
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   box-sizing: border-box;
   font-size: 14px;
   padding: 10px;
   border: 2px solid black;
   border-radius: 8px;
   font-weight: normal;
-  background-color: #eeedea;
   color: black;
   text-transform: none;
 }
@@ -99,21 +84,18 @@ body {
 
 
 .form__submit {
-  /*font-family: "PTRootUIWeb", -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',*/
-  /*'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',*/
-  /*sans-serif;*/
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  text-decoration: none;
   display: block;
-  box-sizing: border-box;
-  max-width: 350px;
-  width: 100%;
-  padding: 15px 30px;
-  margin-bottom: 15px;
-  margin-top: 15px;
-  border-radius: 8px;
-  border: 2px solid black;
-  background-color: #eeedea;
-  color: black;
-  font-weight: 700;
+  padding: 6px 16px;
+  margin: 0 20px;
+  border-radius: 6px;
+  border: none;
+  color: #ffffff;
+  background-color: #1976d2;
+  line-height: 1.75;
 }
 
 .form__submit:hover {
