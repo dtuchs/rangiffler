@@ -45,7 +45,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-weight: 700;
+  font-weight: 400;
 }
 
 .form__input {
@@ -56,7 +56,7 @@ body {
   box-sizing: border-box;
   font-size: 14px;
   padding: 10px;
-  border: 1px solid black;
+  border: 1px solid rgba(0, 0, 0, 0.87);
   border-radius: 8px;
   font-weight: normal;
   color: black;
@@ -65,7 +65,6 @@ body {
 
 .form__password-button {
   position: absolute;
-  /*background-image: url("../images/eye.svg");*/
   background-size: contain;
   background-color: transparent;
   right: 10px;
@@ -76,11 +75,6 @@ body {
   z-index: 5;
   cursor: pointer;
 }
-
-.form__password-button_active {
-  /*background-image: url("../images/eye-active.svg");*/
-}
-
 
 .form__submit {
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -103,7 +97,7 @@ body {
 }
 
 .form__error {
-  color: #a10b0b;
+  color: #d32f2f;
   font-size: 14px;
   margin-bottom: 10px;
   font-weight: 700;

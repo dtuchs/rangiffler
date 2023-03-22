@@ -1,5 +1,4 @@
-import PublicIcon from "@mui/icons-material/Public";
-import {Box, Grid, IconButton, Typography,} from "@mui/material";
+import {Grid} from "@mui/material";
 import React, {FC, useContext, useEffect, useMemo, useState} from "react";
 import {useOutletContext} from "react-router-dom";
 import {CountryContext as MapCountryContext} from "react-svg-worldmap/dist/types";
@@ -61,23 +60,8 @@ export const FriendsTab: FC = () => {
       <>
         <Grid container direction='row' columns={2} spacing={2}>
           <Grid item style={{margin: "0 auto"}}>
-            <Map data={data} handleCountryClick={handleCountryClick}/>
+            <Map data={data} handleCountryClick={handleCountryClick} photoFilter={photoFilter} handleWholeWorldClick={() => setPhotoFilter(null)}/>
           </Grid>
-          {photoFilter && (
-              <Box sx={{
-                position: "absolute",
-                top: "160px",
-                right: "50%",
-                display: "flex",
-                flexDirection: "column",
-              }}
-              >
-                <IconButton onClick={() => setPhotoFilter(null)}>
-                  <PublicIcon sx={{verticalAlign: "sub"}}/>
-                  <Typography>Back to Whole World</Typography>
-                </IconButton>
-              </Box>
-          )}
         </Grid>
         <Photos handlePhotoClick={handlePhotoClick} photos={filteredPhotos}/>
       </>

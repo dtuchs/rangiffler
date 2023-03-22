@@ -1,4 +1,4 @@
-import {Box, IconButton, Stack, Typography} from "@mui/material";
+import {Stack} from "@mui/material";
 import React, {FC, useContext, useEffect, useMemo, useState} from "react";
 import {useOutletContext} from "react-router-dom";
 import {CountryContext} from "../../context/CountryContext/index";
@@ -8,7 +8,6 @@ import {ApiCountry, MapCountry, Photo} from "../../types/types";
 import {LayoutContext} from "../Layout/index";
 import {Map} from "../Map/index";
 import {Photos} from "../Photos/index";
-import PublicIcon from "@mui/icons-material/Public";
 
 import "./styles.scss"
 
@@ -44,23 +43,8 @@ export const MainTab: FC = () => {
   return (
       <>
         <Stack direction='row' spacing={2}>
-          <Map data={data} handleCountryClick={handleCountryClick}/>
+          <Map data={data} handleCountryClick={handleCountryClick} photoFilter={photoFilter} handleWholeWorldClick={() => setPhotoFilter(null)}/>
         </Stack>
-        {photoFilter && (
-            <Box sx={{
-              position: "absolute",
-              top: "160px",
-              right: "50%",
-              display: "flex",
-              flexDirection: "column",
-            }}
-            >
-              <IconButton onClick={() => setPhotoFilter(null)}>
-                <PublicIcon sx={{verticalAlign: "sub"}}/>
-                <Typography>Back to Whole World</Typography>
-              </IconButton>
-            </Box>
-        )}
         <Photos photos={filteredPhotos} handlePhotoClick={handlePhotoClick}/>
       </>
   );
