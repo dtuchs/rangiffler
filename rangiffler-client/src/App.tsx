@@ -1,4 +1,5 @@
-import {useEffect, useState} from "react";
+import { CircularProgress } from "@mui/material";
+import React, {useEffect, useState} from "react";
 import {Route, Routes} from "react-router-dom";
 import {apiClient} from "./api/apiClient";
 import {Landing} from "./components/Landing/index";
@@ -42,18 +43,23 @@ export const App = () => {
     <UserContext.Provider value={{
       user,
       handleChangeUser,
-    }}>
-      <Routes>
-        <Route path="/redirect" element={<Redirect/>}/>
-        <Route path="/authorized" element={<Redirect/>}/>
-        <Route path="/landing" element={<Landing/>}/>
-        <Route path="/" element={<PrivateRoute/>}>
-          <Route path="/" element={<Layout/>}>
-            <Route index element={<Content/>}/>
-          </Route>
-        </Route>
-        <Route path="*" element={<NotFoundPage/>}/>
-      </Routes>
+    }}>{
+      userLoading ? (
+            <CircularProgress color="primary" sx={{position: "absolute", top: "50%", right: "50%"}}/>
+      ) : (
+          <Routes>
+            <Route path="/redirect" element={<Redirect/>}/>
+            <Route path="/authorized" element={<Redirect/>}/>
+            <Route path="/landing" element={<Landing/>}/>
+            <Route path="/" element={<PrivateRoute/>}>
+              <Route path="/" element={<Layout/>}>
+                <Route index element={<Content/>}/>
+              </Route>
+            </Route>
+            <Route path="*" element={<NotFoundPage/>}/>
+          </Routes>
+      )
+    }
     </UserContext.Provider>
   );
 };

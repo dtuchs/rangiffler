@@ -1,4 +1,5 @@
-import { useContext, useEffect } from "react";
+import { CircularProgress } from "@mui/material";
+import React, { useContext, useEffect } from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import { apiClient } from "../../api/apiClient";
 import {authClient} from "../../api/authClient";
@@ -47,5 +48,5 @@ export const Redirect = () => {
       window.location.href = link;
     }
   }, []);
-  return <div className="loader"></div>;
+  return <CircularProgress color="primary" sx={{position: "absolute", top: "50%", right: "50%"}}/>;
 }
