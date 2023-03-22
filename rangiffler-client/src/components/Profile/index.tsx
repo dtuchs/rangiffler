@@ -61,7 +61,7 @@ export const Profile: FC<ProfileInterface> = ({onClose}) => {
   const handleProfileChange = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
-    apiClient.patch("/currentUser", profileData)
+    apiClient().patch("/currentUser", profileData)
     .then(res => handleChangeUser(res.data));
     onClose();
     setFieldErrors(initialFieldErrorsState);

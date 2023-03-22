@@ -24,7 +24,7 @@ export const App = () => {
       setUserLoading(false);
       return;
     }
-    apiClient.get("/currentUser")
+    apiClient().get("/currentUser")
         .then((res) => {
           if (res.data) {
             setUser(res.data);

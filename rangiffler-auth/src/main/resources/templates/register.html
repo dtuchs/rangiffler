@@ -12,7 +12,6 @@
         <h1 class="form__header">Register to Rangiffler</h1>
         <img src="./../static/images/deer-logo.svg" width="90" th:src="@{images/deer-logo.svg}"
              alt="Rangiffler logo"/>
-        <p class="form__paragraph">Registration form</p>
         <label class="form__label">Username:
             <input class="form__input" type="text" id="username" th:field="*{username}" name="username" placeholder="Type your username" required/>
             <span class="form__error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>

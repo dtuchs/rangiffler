@@ -12,8 +12,7 @@ const defaultState = {
     firstname: "",
     lastName: "",
   },
-  handleChangeUser: (user: User) => {
-  },
+  handleChangeUser: () => {},
 };
 
 export const UserContext = createContext<UserContextInterface>(defaultState);

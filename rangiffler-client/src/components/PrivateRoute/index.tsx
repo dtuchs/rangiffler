@@ -7,7 +7,7 @@ export const PrivateRoute = () => {
     const { user } = useContext(UserContext);
     return (
         <>
-            {user ? <Outlet/> : <Navigate to={"/landing"} replace/>}
+            {user?.username ? <Outlet/> : <Navigate to={"/landing"} replace/>}
         </>
     )
 }

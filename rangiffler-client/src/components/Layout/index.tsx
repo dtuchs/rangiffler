@@ -56,19 +56,19 @@ export const Layout = () => {
   const [friendsData, setFriendsData] = useState<User[]>([]);
 
   useEffect(() => {
-    apiClient.get("/countries")
+    apiClient().get("/countries")
         .then((res) => {
           if (res.data) {
             setCountries(res.data);
           }
         });
 
-    apiClient.get("/friends")
+    apiClient().get("/friends")
       .then((res) => {
         setFriendsData(res.data);
       });
 
-    apiClient.get("/photos")
+    apiClient().get("/photos")
       .then((res) => {
         if (res.data) {
           setUserPhotos(res.data.map((photo: any) => ({
@@ -93,7 +93,7 @@ export const Layout = () => {
 
   const handleDeleteFriend = (user: User) => {
     initSubmitPopupAndOpen("Delete friend?", () => {
-      apiClient.post("friends/remove", {
+      apiClient().post("friends/remove", {
         ...user
       }).then(() => {
         setFriendsData(friendsData.filter(f => f.id !== user.id));

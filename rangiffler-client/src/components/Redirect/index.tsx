@@ -1,9 +1,12 @@
-import {useEffect} from "react";
+import { useContext, useEffect } from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
+import { apiClient } from "../../api/apiClient";
 import {authClient} from "../../api/authClient";
 import { AUTH_URL, CLIENT, FRONT_URL } from "../../api/config";
+import { UserContext } from "../../context/UserContext/index";
 
 export const Redirect = () => {
+  const {handleChangeUser} = useContext(UserContext);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -16,19 +19,27 @@ export const Redirect = () => {
       const initialUrl = `/oauth2/token?client_id=${client}&redirect_uri=${FRONT_URL}/authorized&grant_type=authorization_code`;
       const url = `${initialUrl}&code=${code}&code_verifier=${verifier}`;
 
-      authClient.post(url).then(res => {
+      authClient.post(url).then((res) => {
         if (res?.data?.id_token) {
           sessionStorage.setItem("id_token", res.data.id_token);
-          navigate("/");
-        } else {
-          navigate("/landing");
-        }
-      }).catch((err) => {
+          apiClient(res.data.id_token)
+              .get("/currentUser")
+              .then((res) => {
+                if(res?.data) {
+                  handleChangeUser(res.data);
+                  navigate("/");
+                } else {
+                  navigate("/landing");
+                }
+              })
+      }})
+          .catch((err) => {
         navigate("/landing");
         console.error(err);
       })
     }
   }, []);
+
   useEffect(() => {
     if (!searchParams?.get("code")) {
       const codeChallenge = sessionStorage.getItem("codeChallenge");

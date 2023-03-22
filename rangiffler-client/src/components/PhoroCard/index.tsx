@@ -48,7 +48,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
   };
 
   const deletePhotoHandler = (photoId: string) => {
-    apiClient.delete("/photos", {
+    apiClient().delete("/photos", {
       params: {
         photoId
       }
@@ -66,7 +66,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
       <MenuItem value={country.code} key={country.code}>{country.name}</MenuItem>));
   const handleAddPhotoClick = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    apiClient.post("/photos", {
+    apiClient().post("/photos", {
       photo: photoData?.src,
       description: photoData?.description,
       country: countries.find(c => c.code === photoData?.countryCode),
@@ -85,7 +85,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
 
   const handleEditPhotoClick = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
-    apiClient.patch(`/photos/${photo?.id}`, {
+    apiClient().patch(`/photos/${photo?.id}`, {
       id: photoData.id,
       photo: photoData.src,
       description: photoData?.description,

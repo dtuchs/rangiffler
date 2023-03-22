@@ -29,7 +29,7 @@ export const PeopleTab: FC = () => {
 
 
   useEffect(() => {
-    apiClient.get("/users")
+    apiClient().get("/users")
     .then((res) => {
       setAllUsers(res.data);
     });
@@ -45,7 +45,7 @@ export const PeopleTab: FC = () => {
   };
 
   const handleSendInvitation = (user: User) => {
-    apiClient.post("users/invite/", {
+    apiClient().post("users/invite/", {
       ...user
     }).then((res) => {
       handleApiResponse(res, user);
@@ -53,7 +53,7 @@ export const PeopleTab: FC = () => {
   };
 
   const handleAcceptInvitation = (user: User) => {
-    apiClient.post("friends/submit", {
+    apiClient().post("friends/submit", {
       ...user
     }).then((res) => {
       handleApiResponse(res, user);
@@ -62,7 +62,7 @@ export const PeopleTab: FC = () => {
 
   const handleDeclineInvitation = (user: User) => {
     initSubmitPopupAndOpen("Decline friend?", () => {
-      apiClient.post("friends/decline", {
+      apiClient().post("friends/decline", {
         ...user
       }).then(res => {
         handleApiResponse(res, user);
@@ -72,7 +72,7 @@ export const PeopleTab: FC = () => {
 
   const handleDeleteFriend = (user: User) => {
     initSubmitPopupAndOpen("Delete friend?", () => {
-      apiClient.post("friends/remove", {
+      apiClient().post("friends/remove", {
         ...user
       }).then(res => {
         handleApiResponse(res, user);

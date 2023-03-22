@@ -3,6 +3,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import GroupIcon from '@mui/icons-material/Group';
 import PublicIcon from "@mui/icons-material/Public";
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
   AppBar,
   Avatar,
@@ -15,6 +16,8 @@ import {
 } from "@mui/material";
 import React, {FC, useContext} from "react";
 import {Link} from "react-router-dom";
+import { apiClient } from "../../api/apiClient";
+import { AUTH_URL } from "../../api/config";
 import {PhotoContext} from "../../context/PhotoContext/index";
 import {UserContext} from "../../context/UserContext/index";
 import {User} from "../../types/types";
@@ -32,7 +35,7 @@ export const Header: FC<HeaderInterface> = ({
                                               handleFriendsIconClick,
                                               friends
                                             }) => {
-  const {user} = useContext(UserContext);
+  const {user, handleChangeUser} = useContext(UserContext);
   const {photos} = useContext(PhotoContext);
 
   const getVisitedCountriesCount = () => {
@@ -40,7 +43,21 @@ export const Header: FC<HeaderInterface> = ({
     // @ts-ignore
     const unique = [...new Set(countries)];
     return unique.length;
-  }
+  };
+  const handleLogout = () => {
+    apiClient().get(`${AUTH_URL}/logout`)
+        .then(() => {
+          sessionStorage.clear();
+          handleChangeUser({
+            username: "",
+            firstName: "",
+            lastName: "",
+          } as User);
+          location.pathname = "/landing";
+        }).catch((err) => {
+          console.error(err);
+    })
+  };
 
   return (
       <AppBar position="static" color="transparent">
@@ -91,6 +108,14 @@ export const Header: FC<HeaderInterface> = ({
                     <Stack direction="row" gap={1} onClick={handleFriendsIconClick}
                            sx={{cursor: "pointer"}}>
                       <GroupIcon/> {friends?.length}
+                    </Stack>
+                  </Tooltip>
+                </ListItemIcon>
+                <ListItemIcon>
+                  <Tooltip title="Logout">
+                    <Stack direction="row" gap={1}
+                           sx={{cursor: "pointer"}}>
+                      <LogoutIcon onClick={handleLogout}/>
                     </Stack>
                   </Tooltip>
                 </ListItemIcon>

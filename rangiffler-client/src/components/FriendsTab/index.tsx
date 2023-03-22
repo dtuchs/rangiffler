@@ -25,7 +25,7 @@ export const FriendsTab: FC = () => {
 
 
   useEffect(() => {
-    apiClient
+    apiClient()
     .get("/friends/photos")
     .then(res => {
       if (res.data) {
