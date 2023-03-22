@@ -1,5 +1,7 @@
+import PublicIcon from "@mui/icons-material/Public";
 import {
-    Grid,
+    Box,
+    Grid, IconButton, Typography,
 } from "@mui/material";
 import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -64,6 +66,21 @@ export const FriendsTab:FC = () => {
                 <Grid item style={{margin: "0 auto"}}>
                     <Map data={data} handleCountryClick={handleCountryClick}/>
                 </Grid>
+                {photoFilter && (
+                    <Box sx={{
+                        position: "absolute",
+                        top: "160px",
+                        right: "50%",
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                    >
+                        <IconButton onClick={() => setPhotoFilter(null)}>
+                            <PublicIcon sx={{verticalAlign: "sub"}}/>
+                            <Typography>Back to Whole World</Typography>
+                        </IconButton>
+                    </Box>
+                )}
             </Grid>
             <Photos handlePhotoClick={handlePhotoClick} photos={filteredPhotos}/>
         </>

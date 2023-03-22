@@ -70,7 +70,7 @@ export const Profile: FC<ProfileInterface> = ({onClose}) => {
             width: "100%",
             display: "block",
             backgroundColor: "rgba(0, 0, 0, 0.4)",
-            height: "100%",
+            height: "160vh",
             position: "absolute",
             zIndex: "4",
         }}>

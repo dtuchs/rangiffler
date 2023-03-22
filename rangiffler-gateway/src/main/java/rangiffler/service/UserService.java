@@ -98,4 +98,8 @@ public class UserService {
         currentUser.setLastLame(user.getLastLame());
         return currentUser;
     }
+
+    public List<UserJson> getInvitations() {
+        return allUsers.stream().filter(user -> user.getFriendStatus().equals(FriendStatus.INVITATION_RECEIVED)).collect(Collectors.toList());
+    }
 }

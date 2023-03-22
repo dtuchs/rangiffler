@@ -8,7 +8,7 @@ import {
     CardContent,
     IconButton,
     Paper, Stack, Table, TableBody, TableCell,
-    TableContainer, TableHead, TableRow, Tooltip,
+    TableContainer, TableRow, Tooltip,
 } from "@mui/material";
 import React, { FC } from "react";
 import { User } from "../../types/types";
@@ -53,13 +53,6 @@ export const FriendsPopup: FC<FriendsPopupInterface> = ({friends, onClose, handl
                         <TableContainer component={Paper} sx={{ maxHeight: "50vh", overflow: "scroll"}}>
                             {friends?.length > 0 ? (
                                     <Table stickyHeader aria-label="friends table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell></TableCell>
-                                                <TableCell>Username</TableCell>
-                                                <TableCell></TableCell>
-                                            </TableRow>
-                                        </TableHead>
                                         <TableBody>
                                             {friends.map(user => (
                                                 <TableRow

@@ -22,11 +22,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         corsCustomizer.corsCustomizer(http);
 
-        http.authorizeHttpRequests(authorize ->
-                authorize.anyRequest()
-                        .permitAll()
-        ).csrf().disable();
-
+        http.authorizeHttpRequests()
+                .requestMatchers("/actuator/health").permitAll()
+                .anyRequest()
+                .authenticated().and()
+                .oauth2ResourceServer()
+                .jwt();
         return http.build();
     }
 }

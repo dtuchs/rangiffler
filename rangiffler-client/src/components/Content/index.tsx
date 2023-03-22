@@ -15,9 +15,7 @@ export const Content: FC = () => {
         <>
             <TabContext value={tab}>
                 <Box sx={{
-                    margin: "10px",
-                    borderBottom: 1,
-                    borderColor: "divider"
+                    padding: "10px",
                 }}>
                     <TabList
                         onChange={handleChangeTab}

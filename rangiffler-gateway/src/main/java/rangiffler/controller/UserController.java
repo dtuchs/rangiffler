@@ -39,6 +39,11 @@ public class UserController {
         return userService.getFriends();
     }
 
+    @GetMapping("invitations")
+    public List<UserJson> getInvitations() {
+        return userService.getInvitations();
+    }
+
     @PostMapping("users/invite/")
     public UserJson sendInvitation(@RequestBody UserJson user) {
         return userService.sendInvitation(user);

@@ -1,6 +1,7 @@
-package rangiffler.cors;
+package qaguru.cors;
 
 import jakarta.annotation.Nonnull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsConfiguration;
@@ -11,8 +12,11 @@ import java.util.List;
 @Component
 public class CorsCustomizer {
 
-    private final String rangifflerFrontUri = "http://localhost:3001";
+    private final String rangifflerFrontUri;
 
+    public CorsCustomizer(@Value("${rangiffler-front.base-uri}") String rangifflerFrontUri) {
+        this.rangifflerFrontUri = rangifflerFrontUri;
+    }
 
     public void corsCustomizer(@Nonnull HttpSecurity http) throws Exception {
         http.cors(c -> {
@@ -28,4 +32,5 @@ public class CorsCustomizer {
             c.configurationSource(source);
         });
     }
+
 }

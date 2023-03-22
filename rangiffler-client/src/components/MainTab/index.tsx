@@ -1,4 +1,4 @@
-import { IconButton, Stack } from "@mui/material";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
 import React, { FC, useContext, useEffect, useMemo, useState } from "react";
 import { useOutletContext } from "react-router-dom";
 import { CountryContext } from "../../context/CountryContext/index";
@@ -8,7 +8,8 @@ import { ApiCountry, Photo, MapCountry} from "../../types/types";
 import { LayoutContext } from "../Layout/index";
 import { Map } from "../Map/index";
 import { Photos } from "../Photos/index";
-import ClearIcon from '@mui/icons-material/Clear';
+import PublicIcon from "@mui/icons-material/Public";
+
 import "./styles.scss"
 
 
@@ -46,14 +47,19 @@ export const MainTab: FC = () => {
                 <Map data={data} handleCountryClick={handleCountryClick}/>
             </Stack>
                 {photoFilter && (
-                    <IconButton
-                        sx={{
-                            position: "absolute",
-                            top: "130px",
-                            right: "2%" }}
-                        onClick={() => setPhotoFilter(null)}>
-                        <ClearIcon/> Clear country
-                    </IconButton>
+                    <Box sx={{
+                        position: "absolute",
+                        top: "160px",
+                        right: "50%",
+                        display: "flex",
+                        flexDirection: "column",
+                    }}
+                    >
+                        <IconButton onClick={() => setPhotoFilter(null)}>
+                            <PublicIcon sx={{verticalAlign: "sub"}}/>
+                            <Typography>Back to Whole World</Typography>
+                        </IconButton>
+                    </Box>
                 )}
             <Photos photos={filteredPhotos} handlePhotoClick={handlePhotoClick}/>
         </>
