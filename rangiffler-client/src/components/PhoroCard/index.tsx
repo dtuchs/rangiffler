@@ -23,7 +23,7 @@ import {PhotoContext} from "../../context/PhotoContext/index";
 import {UserContext} from "../../context/UserContext/index";
 import {Photo} from "../../types/types";
 import {ImageUpload} from "../ImageUpload/index";
-import imageMock from "@img/uploadImageMock.jpg";
+import imageMock from "@img/uploadImageMock.png";
 
 interface PhotoCardInterface {
   photo: Partial<Photo> | null;
