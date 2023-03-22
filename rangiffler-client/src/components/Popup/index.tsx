@@ -11,7 +11,7 @@ interface PopupInterface {
   buttonText?: string;
 }
 
-export const Popup: FC<PopupInterface> = ({text, onSubmit, onClose,  buttonText}) => {
+export const Popup: FC<PopupInterface> = ({text, onSubmit, onClose, buttonText}) => {
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -56,7 +56,8 @@ export const Popup: FC<PopupInterface> = ({text, onSubmit, onClose,  buttonText}
                   </Typography>
                 </Grid>
                 <Grid item sx={{textAlign: "center"}}>
-                  <LoadingButton variant="contained" type="submit">{buttonText ?? "Submit"}</LoadingButton>
+                  <LoadingButton variant="contained"
+                                 type="submit">{buttonText ?? "Submit"}</LoadingButton>
                 </Grid>
               </form>
             </CardContent>

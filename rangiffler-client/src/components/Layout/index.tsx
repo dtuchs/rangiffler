@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {Outlet} from "react-router-dom";
 import {apiClient} from "../../api/apiClient";
-import { CountryContext } from "../../context/CountryContext/index";
-import { PhotoContext } from "../../context/PhotoContext/index";
-import { ApiCountry, Photo, User } from "../../types/types";
+import {CountryContext} from "../../context/CountryContext/index";
+import {PhotoContext} from "../../context/PhotoContext/index";
+import {ApiCountry, Photo, User} from "../../types/types";
 import {FriendsPopup} from "../FriendsPopup/index";
 import {Header} from "../Header/index";
 import {PhotoCard} from "../PhoroCard/index";
@@ -58,29 +58,29 @@ export const Layout = () => {
 
   useEffect(() => {
     apiClient().get("/countries")
-        .then((res) => {
-          if (res.data) {
-            setCountries(res.data);
-          }
-        });
+    .then((res) => {
+      if (res.data) {
+        setCountries(res.data);
+      }
+    });
 
     apiClient().get("/friends")
-      .then((res) => {
-        setFriendsData(res.data);
-      });
+    .then((res) => {
+      setFriendsData(res.data);
+    });
 
     apiClient().get("/photos")
-      .then((res) => {
-        if (res.data) {
-          setUserPhotos(res.data.map((photo: any) => ({
-            id: photo.id,
-            src: photo.photo,
-            description: photo.description,
-            countryCode: photo.country.code,
-            username: photo.username,
-          } as Photo)));
-        }
-      });
+    .then((res) => {
+      if (res.data) {
+        setUserPhotos(res.data.map((photo: any) => ({
+          id: photo.id,
+          src: photo.photo,
+          description: photo.description,
+          countryCode: photo.country.code,
+          username: photo.username,
+        } as Photo)));
+      }
+    });
   }, []);
 
   const initSubmitPopupAndOpen = (text: string, buttonText: string, onSubmit: () => void) => {
