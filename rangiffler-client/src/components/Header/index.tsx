@@ -65,7 +65,7 @@ export const Header: FC<HeaderInterface> = ({
           <Link to={"/"}>
             <img src={deer} height={55} width={55} alt="Rangiffler logo"/>
           </Link>
-          <Typography variant="h3" component="h1" sx={{flexGrow: 1, margin: "12px"}}>
+          <Typography variant="h4" component="h1" sx={{flexGrow: 1, margin: "12px"}}>
             Rangiffler
           </Typography>
           <Stack direction='row' spacing={3}>

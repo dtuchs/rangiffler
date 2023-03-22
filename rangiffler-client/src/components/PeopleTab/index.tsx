@@ -10,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Tooltip,
-  Typography
 } from "@mui/material";
 import {AxiosResponse} from "axios";
 import React, {FC, useEffect, useState} from "react";
@@ -91,7 +90,7 @@ export const PeopleTab: FC = () => {
               </IconButton>
             </Tooltip>);
       case "INVITATION_SENT":
-        return <Typography>Invitation sent</Typography>;
+        return <>Invitation sent</>;
       case "INVITATION_RECEIVED":
         return (
             <ButtonGroup>

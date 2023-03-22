@@ -16,6 +16,7 @@ import React, {FC, FormEvent, useContext, useState} from "react";
 import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import PlaceIcon from '@mui/icons-material/Place';
 import {apiClient} from "../../api/apiClient";
 import {CountryContext} from "../../context/CountryContext/index";
 import {PhotoContext} from "../../context/PhotoContext/index";
@@ -130,8 +131,8 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
               {
                   photo && photo?.username === user?.username &&
                   (<IconButton size='small' onClick={onEditClick}>
-                    <EditIcon/>
-                  </IconButton>)
+                      <EditIcon/>
+                    </IconButton>)
               }
               {
                   photo && photo?.username === user?.username &&
@@ -243,8 +244,8 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
                               image={photo?.src}
                               alt={photo?.description}
                           />
-                          <Typography gutterBottom variant="h5" component="p">
-                            {countries.find(c => c.code === photo?.countryCode)?.name}
+                          <Typography gutterBottom variant="h6" component="p">
+                            <PlaceIcon sx={{verticalAlign: "text-top"}}/>{countries.find(c => c.code === photo?.countryCode)?.name}
                           </Typography>
                           <Typography variant="body2">
                             {photo?.description}

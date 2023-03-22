@@ -17,7 +17,6 @@ export const Photos: FC<PhotosInterface> = ({photos, handlePhotoClick}) => {
       <Box sx={{margin: "0 auto", width: 1200, height: 650, overflowY: 'scroll'}}>
         <ImageList
             cols={4}
-            variant='masonry'
             gap={14}
         >
           {photos.map((item) => (
@@ -37,11 +36,11 @@ export const Photos: FC<PhotosInterface> = ({photos, handlePhotoClick}) => {
                     />
                   </Button>
                   <span>
-                                <Typography sx={{padding: "12px", textAlign: "center"}}>
-                                    <PlaceIcon
-                                        sx={{verticalAlign: "bottom"}}/>{countries.find(country => country.code === item.countryCode)?.name}
-                                </Typography>
-                            </span>
+                    <Typography sx={{padding: "12px", textAlign: "center"}}>
+                        <PlaceIcon
+                            sx={{verticalAlign: "bottom"}}/>{countries.find(country => country.code === item.countryCode)?.name}
+                    </Typography>
+                  </span>
                 </Box>
               </ImageListItem>
           ))}
