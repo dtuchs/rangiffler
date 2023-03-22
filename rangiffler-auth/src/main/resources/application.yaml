@@ -1,6 +1,6 @@
 server:
   port: 9000
-# ONLY FOR TESTING
+  # ONLY FOR TESTING
   servlet:
     session:
       cookie:
@@ -13,6 +13,7 @@ spring:
   mvc:
     log-request-details: true
   datasource:
+    url: 'jdbc:postgresql://127.0.0.1:5432/rangiffler-auth'
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -45,26 +46,7 @@ logging:
     org.springframework.security.oauth2: DEBUG
 #    org.springframework.boot.autoconfigure: DEBUG
 
----
-spring:
-  config:
-    activate:
-      on-profile: 'local'
-  datasource:
-    url: 'jdbc:postgresql://localhost:5432/rangiffler-auth'
-niffler-front:
-  base-uri: 'http://127.0.0.1:3000'
-niffler-auth:
+rangiffler-front:
+  base-uri: 'http://127.0.0.1:3001'
+rangiffler-auth:
   base-uri: 'http://127.0.0.1:9000'
----
-spring:
-  config:
-    activate:
-      on-profile: 'docker'
-  datasource:
-    url: 'jdbc:postgresql://niffler-all-db:5432/rangiffler-auth'
-niffler-front:
-  base-uri: 'http://127.0.0.1'
-niffler-auth:
-  base-uri: 'http://niffler-auth:9000'
----

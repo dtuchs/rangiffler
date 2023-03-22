@@ -1,88 +1,85 @@
 import PublicIcon from "@mui/icons-material/Public";
-import {
-    Box,
-    Grid, IconButton, Typography,
-} from "@mui/material";
-import React, { FC, useContext, useEffect, useMemo, useState } from "react";
-import { useOutletContext } from "react-router-dom";
-import { CountryContext as MapCountryContext } from "react-svg-worldmap/dist/types";
-import { apiClient } from "../../api/apiClient";
-import { CountryContext } from "../../context/CountryContext/index";
-import { ApiCountry, MapCountry, Photo } from "../../types/types";
-import { LayoutContext } from "../Layout/index";
-import { Map } from "../Map/index";
-import { Photos } from "../Photos/index";
+import {Box, Grid, IconButton, Typography,} from "@mui/material";
+import React, {FC, useContext, useEffect, useMemo, useState} from "react";
+import {useOutletContext} from "react-router-dom";
+import {CountryContext as MapCountryContext} from "react-svg-worldmap/dist/types";
+import {apiClient} from "../../api/apiClient";
+import {CountryContext} from "../../context/CountryContext/index";
+import {ApiCountry, MapCountry, Photo} from "../../types/types";
+import {LayoutContext} from "../Layout/index";
+import {Map} from "../Map/index";
+import {Photos} from "../Photos/index";
 
 
-export const FriendsTab:FC = () => {
+export const FriendsTab: FC = () => {
 
-    const {countries} = useContext(CountryContext);
-    const [friendsPhotos, setFriendsPhotos] = useState<Photo[]>([]);
-    const [photoFilter, setPhotoFilter] = useState<string | null>(null);
-    const {handlePhotoClick} = useOutletContext<LayoutContext>();
-    const filteredPhotos = useMemo<Photo[]>(
-        () => photoFilter ? friendsPhotos.filter(photo => photo.countryCode.toLowerCase() === photoFilter.toLowerCase()) : friendsPhotos
-        , [photoFilter, friendsPhotos]);
+  const {countries} = useContext(CountryContext);
+  const [friendsPhotos, setFriendsPhotos] = useState<Photo[]>([]);
+  const [photoFilter, setPhotoFilter] = useState<string | null>(null);
+  const {handlePhotoClick} = useOutletContext<LayoutContext>();
+  const filteredPhotos = useMemo<Photo[]>(
+      () => photoFilter ? friendsPhotos.filter(photo => photo.countryCode.toLowerCase() === photoFilter.toLowerCase()) : friendsPhotos
+      , [photoFilter, friendsPhotos]);
 
-    const [data, setData] = useState<MapCountry[]>([]);
+  const [data, setData] = useState<MapCountry[]>([]);
 
 
-    useEffect(() => {
-        apiClient
-            .get("/friends/photos")
-            .then(res => {
-                if (res.data) {
-                    setFriendsPhotos(res.data.map((photo: any) => ({
-                        id: photo.id,
-                        src: photo.photo,
-                        description: photo.description,
-                        countryCode: photo.country.code,
-                        username: photo.username,
-                    } as Photo)));
-                }
-            });
-    }, []);
+  useEffect(() => {
+    apiClient
+    .get("/friends/photos")
+    .then(res => {
+      if (res.data) {
+        setFriendsPhotos(res.data.map((photo: any) => ({
+          id: photo.id,
+          src: photo.photo,
+          description: photo.description,
+          countryCode: photo.country.code,
+          username: photo.username,
+        } as Photo)));
+      }
+    });
+  }, []);
 
-    useEffect(() => {
-        const countryData: MapCountry[] = [];
-        countries.map((dataItem : ApiCountry) => {
-            countryData.push({
-                country: dataItem.code,
-                value: friendsPhotos.filter(photo => photo.countryCode === dataItem.code).length || 0
-            });
-        });
-        setData(countryData);
-    }, [friendsPhotos]);
+  useEffect(() => {
+    const countryData: MapCountry[] = [];
+    countries.map((dataItem: ApiCountry) => {
+      countryData.push({
+        country: dataItem.code,
+        value: friendsPhotos.filter(photo => photo.countryCode === dataItem.code).length || 0
+      });
+    });
+    setData(countryData);
+  }, [friendsPhotos]);
 
-    const handleCountryClick = (context: MapCountryContext & {
-        event: React.MouseEvent<SVGElement, Event>;
-    }) => {
-        setPhotoFilter(context.countryCode);
-    };
+  const handleCountryClick = (context: MapCountryContext & {
+    event: React.MouseEvent<SVGElement, Event>;
+  }) => {
+    setPhotoFilter(context.countryCode);
+  };
 
-    return (
-        <>
-            <Grid container direction='row' columns={2} spacing={2}>
-                <Grid item style={{margin: "0 auto"}}>
-                    <Map data={data} handleCountryClick={handleCountryClick}/>
-                </Grid>
-                {photoFilter && (
-                    <Box sx={{
-                        position: "absolute",
-                        top: "160px",
-                        right: "50%",
-                        display: "flex",
-                        flexDirection: "column",
-                    }}
-                    >
-                        <IconButton onClick={() => setPhotoFilter(null)}>
-                            <PublicIcon sx={{verticalAlign: "sub"}}/>
-                            <Typography>Back to Whole World</Typography>
-                        </IconButton>
-                    </Box>
-                )}
-            </Grid>
-            <Photos handlePhotoClick={handlePhotoClick} photos={filteredPhotos}/>
-        </>
-    );
+  return (
+      <>
+        <Grid container direction='row' columns={2} spacing={2}>
+          <Grid item style={{margin: "0 auto"}}>
+            <Map data={data} handleCountryClick={handleCountryClick}/>
+          </Grid>
+          {photoFilter && (
+              <Box sx={{
+                position: "absolute",
+                top: "160px",
+                right: "50%",
+                display: "flex",
+                flexDirection: "column",
+              }}
+              >
+                <IconButton onClick={() => setPhotoFilter(null)}>
+                  <PublicIcon sx={{verticalAlign: "sub"}}/>
+                  <Typography>Back to Whole World</Typography>
+                </IconButton>
+              </Box>
+          )}
+        </Grid>
+        <Photos handlePhotoClick={handlePhotoClick} photos={filteredPhotos}/>
+      </>
+  );
 };

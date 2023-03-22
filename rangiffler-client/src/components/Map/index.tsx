@@ -1,51 +1,52 @@
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
-import { IconButton, Tooltip } from "@mui/material";
-import React, { FC, useState } from "react";
+import {IconButton, Tooltip} from "@mui/material";
+import React, {FC, useState} from "react";
 import WorldMap from "react-svg-worldmap";
-import { CountryContext } from "react-svg-worldmap/dist/types";
-import { MapCountry } from "../../types/types";
+import {CountryContext} from "react-svg-worldmap/dist/types";
+import {MapCountry} from "../../types/types";
 
 interface MapInterface {
-    data: MapCountry[];
-    handleCountryClick: (context: CountryContext & {
-        event: React.MouseEvent<SVGElement, Event>;
-    }) => void;
+  data: MapCountry[];
+  handleCountryClick: (context: CountryContext & {
+    event: React.MouseEvent<SVGElement, Event>;
+  }) => void;
 }
-export const Map: FC<MapInterface>= ({data, handleCountryClick}) => {
 
-    const [zoomed, setZoomed] =  useState<boolean>(false);
+export const Map: FC<MapInterface> = ({data, handleCountryClick}) => {
 
-    return (
-        <div style={{margin: "0 auto", position: "relative"}}>
-            <Tooltip title={zoomed ? "Zoom out" : "Zoom in"}>
-                <IconButton onClick={() => setZoomed((prevState) => !prevState)}
-                            sx={{
-                                position: "absolute",
-                                top: 20,
-                                right: 40,
-                            }}
-                >
-                    {zoomed ? (
-                        <ZoomOutIcon sx={{
-                            width: "50px",
-                            height: "50px",
-                        }}/>
-                    ) : (
-                        <ZoomInIcon sx={{
-                            width: "50px",
-                            height: "50px",
-                        }}/>
-                    )}
-                </IconButton>
-            </Tooltip>
-            <WorldMap
-                color="#3c5548"
-                value-suffix="photos"
-                size={zoomed ? "xxl" : "xl"}
-                data={data}
-                onClickFunction = {handleCountryClick}
-            />
-        </div>
-    );
+  const [zoomed, setZoomed] = useState<boolean>(false);
+
+  return (
+      <div style={{margin: "0 auto", position: "relative"}}>
+        <Tooltip title={zoomed ? "Zoom out" : "Zoom in"}>
+          <IconButton onClick={() => setZoomed((prevState) => !prevState)}
+                      sx={{
+                        position: "absolute",
+                        top: 20,
+                        right: 40,
+                      }}
+          >
+            {zoomed ? (
+                <ZoomOutIcon sx={{
+                  width: "50px",
+                  height: "50px",
+                }}/>
+            ) : (
+                <ZoomInIcon sx={{
+                  width: "50px",
+                  height: "50px",
+                }}/>
+            )}
+          </IconButton>
+        </Tooltip>
+        <WorldMap
+            color="#3c5548"
+            value-suffix="photos"
+            size={zoomed ? "xxl" : "xl"}
+            data={data}
+            onClickFunction={handleCountryClick}
+        />
+      </div>
+  );
 }

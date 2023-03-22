@@ -1,12 +1,12 @@
-import { createContext } from "react";
-import { ApiCountry } from "../../types/types";
+import {createContext} from "react";
+import {ApiCountry} from "../../types/types";
 
 interface CountryContextInterface {
-    countries: Array<ApiCountry>;
+  countries: Array<ApiCountry>;
 }
 
 const defaultState = {
-    countries: [],
+  countries: [],
 };
 
 export const CountryContext = createContext<CountryContextInterface>(defaultState);
