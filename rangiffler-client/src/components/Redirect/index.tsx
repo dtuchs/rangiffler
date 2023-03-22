@@ -47,6 +47,5 @@ export const Redirect = () => {
       window.location.href = link;
     }
   }, []);
-
   return <div className="loader"></div>;
 }
