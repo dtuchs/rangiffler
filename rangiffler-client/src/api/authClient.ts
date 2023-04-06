@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AUTH_URL, CLIENT, SECRET } from "./config";
+import {AUTH_URL, CLIENT, SECRET} from "./config";
 import {Buffer} from "buffer";
 
 export const authClient = axios.create({

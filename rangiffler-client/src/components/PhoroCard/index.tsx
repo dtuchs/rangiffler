@@ -60,7 +60,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
   }
 
   const onDeleteClick = (photo: Partial<Photo>) => {
-    initSubmitPopupAndOpen("You are going to delete photo. Are you sure?", "Delete",() => deletePhotoHandler(photo.id!));
+    initSubmitPopupAndOpen("You are going to delete photo. Are you sure?", "Delete", () => deletePhotoHandler(photo.id!));
   };
 
   const selectOptions = countries?.map(country => (
@@ -131,8 +131,8 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
               {
                   photo && photo?.username === user?.username &&
                   (<IconButton size='small' onClick={onEditClick}>
-                      <EditIcon/>
-                    </IconButton>)
+                    <EditIcon/>
+                  </IconButton>)
               }
               {
                   photo && photo?.username === user?.username &&
@@ -245,7 +245,8 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onClose, initSubmitPop
                               alt={photo?.description}
                           />
                           <Typography gutterBottom variant="h6" component="p">
-                            <PlaceIcon sx={{verticalAlign: "text-top"}}/>{countries.find(c => c.code === photo?.countryCode)?.name}
+                            <PlaceIcon
+                                sx={{verticalAlign: "text-top"}}/>{countries.find(c => c.code === photo?.countryCode)?.name}
                           </Typography>
                           <Typography variant="body2">
                             {photo?.description}

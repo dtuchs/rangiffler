@@ -43,7 +43,8 @@ export const MainTab: FC = () => {
   return (
       <>
         <Stack direction='row' spacing={2}>
-          <Map data={data} handleCountryClick={handleCountryClick} photoFilter={photoFilter} handleWholeWorldClick={() => setPhotoFilter(null)}/>
+          <Map data={data} handleCountryClick={handleCountryClick} photoFilter={photoFilter}
+               handleWholeWorldClick={() => setPhotoFilter(null)}/>
         </Stack>
         <Photos photos={filteredPhotos} handlePhotoClick={handlePhotoClick}/>
       </>

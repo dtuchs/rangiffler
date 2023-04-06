@@ -65,29 +65,29 @@ export const Layout = () => {
 
   useEffect(() => {
     apiClient().get("/countries")
-        .then((res) => {
-          if (res.data) {
-            setCountries(res.data);
-          }
-        });
+    .then((res) => {
+      if (res.data) {
+        setCountries(res.data);
+      }
+    });
 
     apiClient().get("/friends")
-      .then((res) => {
-        setFriendsData(res.data);
-      });
+    .then((res) => {
+      setFriendsData(res.data);
+    });
 
     apiClient().get("/photos")
-      .then((res) => {
-        if (res.data) {
-          setUserPhotos(res.data.map((photo: any) => ({
-            id: photo.id,
-            src: photo.photo,
-            description: photo.description,
-            countryCode: photo.country.code,
-            username: photo.username,
-          } as Photo)));
-        }
-      });
+    .then((res) => {
+      if (res.data) {
+        setUserPhotos(res.data.map((photo: any) => ({
+          id: photo.id,
+          src: photo.photo,
+          description: photo.description,
+          countryCode: photo.country.code,
+          username: photo.username,
+        } as Photo)));
+      }
+    });
   }, []);
 
   const initSubmitPopupAndOpen = (text: string, buttonText: string, onSubmit: () => void) => {

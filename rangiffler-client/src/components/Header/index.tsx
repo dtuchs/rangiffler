@@ -16,8 +16,8 @@ import {
 } from "@mui/material";
 import React, {FC, useContext} from "react";
 import {Link} from "react-router-dom";
-import { apiClient } from "../../api/apiClient";
-import { AUTH_URL } from "../../api/config";
+import {apiClient} from "../../api/apiClient";
+import {AUTH_URL} from "../../api/config";
 import {PhotoContext} from "../../context/PhotoContext/index";
 import {UserContext} from "../../context/UserContext/index";
 import {User} from "../../types/types";
@@ -46,16 +46,16 @@ export const Header: FC<HeaderInterface> = ({
   };
   const handleLogout = () => {
     apiClient().get(`${AUTH_URL}/logout`)
-        .then(() => {
-          sessionStorage.clear();
-          handleChangeUser({
-            username: "",
-            firstName: "",
-            lastName: "",
-          } as User);
-          location.pathname = "/landing";
-        }).catch((err) => {
-          console.error(err);
+    .then(() => {
+      sessionStorage.clear();
+      handleChangeUser({
+        username: "",
+        firstName: "",
+        lastName: "",
+      } as User);
+      location.pathname = "/landing";
+    }).catch((err) => {
+      console.error(err);
     })
   };
 

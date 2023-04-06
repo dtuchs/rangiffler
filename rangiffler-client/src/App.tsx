@@ -6,7 +6,7 @@ import {Landing} from "./components/Landing/index";
 import {Layout} from "./components/Layout/index";
 import {Content} from "./components/Content/index";
 import {NotFoundPage} from "./components/NotFoundPage/index";
-import { PrivateRoute } from "./components/PrivateRoute/index";
+import {PrivateRoute} from "./components/PrivateRoute/index";
 import {Redirect} from "./components/Redirect/index";
 import { AlertMessageProvider } from "./context/AlertMessageContext/index";
 import {UserContext} from "./context/UserContext/index";
@@ -31,16 +31,16 @@ export const App = () => {
       return;
     }
     apiClient().get("/currentUser")
-        .then((res) => {
-          if (res.data) {
-            setUser(res.data);
-            setUserLoading(false);
-          } else {
-            setUserLoading(false);
-          }
-        }).catch((err) => {
-          console.error(err);
-          setUserLoading(false);
+    .then((res) => {
+      if (res.data) {
+        setUser(res.data);
+        setUserLoading(false);
+      } else {
+        setUserLoading(false);
+      }
+    }).catch((err) => {
+      console.error(err);
+      setUserLoading(false);
     });
   }, []);
 
