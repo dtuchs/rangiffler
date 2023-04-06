@@ -46,7 +46,7 @@ module.exports = {
   },
   plugins: [
     new Dotenv({
-      path: `./.env.${IS_PROD ? "prod" : "dev"}`,
+      path: `./.env.${process.env.NODE_ENV === "development" ? "dev" : process.env.NODE_ENV === "production" ? "docker" : "test"}`,
     }),
     new HTMLWebpackPlugin({
       template: "./index.html",
