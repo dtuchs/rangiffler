@@ -4,8 +4,6 @@ import java.util.List;
 import org.rangiffler.model.CountryJson;
 import org.rangiffler.service.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,7 +18,7 @@ public class CountryController {
   }
 
   @GetMapping("/countries")
-  public List<CountryJson> getAllCountries(@AuthenticationPrincipal Jwt principal) {
+  public List<CountryJson> getAllCountries() {
     return countryService.getAllCountries();
   }
 

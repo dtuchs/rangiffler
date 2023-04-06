@@ -12,9 +12,10 @@ import {
   Tooltip,
 } from "@mui/material";
 import {AxiosResponse} from "axios";
-import React, {FC, useEffect, useState} from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import {useOutletContext} from "react-router-dom";
 import {apiClient} from "../../api/apiClient";
+import { AlertMessageContext } from "../../context/AlertMessageContext/index";
 import {User} from "../../types/types";
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
@@ -24,8 +25,8 @@ import {LayoutContext} from "../Layout/index";
 
 export const PeopleTab: FC = () => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
-  const {initSubmitPopupAndOpen} = useOutletContext<LayoutContext>();
-
+  const {initSubmitPopupAndOpen, handleClosePopup} = useOutletContext<LayoutContext>();
+  const {addMessage, addError} = useContext(AlertMessageContext);
 
   useEffect(() => {
     apiClient().get("/users")
@@ -48,6 +49,10 @@ export const PeopleTab: FC = () => {
       ...user
     }).then((res) => {
       handleApiResponse(res, user);
+      addMessage(`Invitation to user ${user.username} is sent`);
+    }).catch((err) => {
+      console.error(err);
+      addError(`Invitation is not sent. Reason: ${err.message}`);
     });
   };
 
@@ -56,6 +61,10 @@ export const PeopleTab: FC = () => {
       ...user
     }).then((res) => {
       handleApiResponse(res, user);
+      addMessage(`User ${user.username} added to your friends`);
+    }).catch((err) => {
+      console.error(err);
+      addError(`Invitation is not accepted. Reason: ${err.message}`);
     });
   };
 
@@ -65,6 +74,11 @@ export const PeopleTab: FC = () => {
         ...user
       }).then(res => {
         handleApiResponse(res, user);
+        handleClosePopup();
+        addMessage(`You declined invitation from user ${user.username}`);
+      }).catch((err) => {
+        console.error(err);
+        addError(`Invitation is not declined. Reason: ${err.message}`);
       });
     });
   };
@@ -75,9 +89,15 @@ export const PeopleTab: FC = () => {
         ...user
       }).then(res => {
         handleApiResponse(res, user);
+        handleClosePopup();
+        addMessage(`You're not friends with user ${user.username} anymore`);
+      }).catch((err) => {
+        console.error(err);
+        addError(`Friend is not deleted. Reason: ${err.message}`);
       });
     });
   };
+
   const getUserControls = (user: User) => {
     const friendStatus = user.friendStatus;
     switch (friendStatus) {
