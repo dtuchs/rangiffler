@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.1'
     id 'io.spring.dependency-management' version '1.1.4'
+
 }
 
 group = 'org.rangiffler'
@@ -12,12 +13,12 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+    implementation "org.springframework:spring-webflux"
     implementation "org.springframework.boot:spring-boot-starter-validation"
-    implementation 'org.springframework.security:spring-security-oauth2-authorization-server:1.2.1'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'org.flywaydb:flyway-core:10.6.0'
     implementation 'org.flywaydb:flyway-mysql:10.6.0'
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
