@@ -3,6 +3,7 @@ body {
   padding: 0;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 14px;
+  background: linear-gradient(90deg, #174536, #768c7d);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -13,7 +14,50 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: #f6f6f6;
+  background-image: linear-gradient(45deg, #174536, #f6f6f6);
+}
+
+.content__wrapper {
+  width: 80%;
+  max-width: 1280px;
+  height: calc(100% - 40px);
+  margin-bottom: 20px;
+  margin-top: 20px;
+  background-color: #f6f6f6;
+  border: 10px solid #f6f6f6;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  box-sizing: border-box;
+  overflow: scroll;
+}
+
+.header {
+  color: #6b706e;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  text-align: center;
+  margin: 20px;
+}
+
+.header__accent {
+  color: #174536;
+}
+
+.header__logo {
+  margin: 0 auto;
+  display: block;
+}
+
+.main__hero {
+  background-color: #f6f6f6;
+  opacity: 0.8;
+  background-image:url("./../images/forest.jpg");
+  background-position: center;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .form {
@@ -27,15 +71,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
-}
-
-.form__header {
-  margin-top: 60px;
-  font-style: normal;
-  font-weight: 700;
-  font-size: 24px;
-  text-align: center;
+  box-sizing: border-box;
 }
 
 .form__label {
@@ -51,8 +87,9 @@ body {
 .form__input {
   width: 100%;
   display: block;
+  margin-top: 8px;
   margin-bottom: 20px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: inherit;
   box-sizing: border-box;
   font-size: 14px;
   padding: 10px;
@@ -67,8 +104,9 @@ body {
   position: absolute;
   background-size: contain;
   background-color: transparent;
+  background-image: url("../images/eye.svg");
   right: 10px;
-  top: 25px;
+  top: 30px;
   border: none;
   width: 25px;
   height: 25px;
@@ -76,8 +114,13 @@ body {
   cursor: pointer;
 }
 
-.form__submit {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+.form__password-button_active {
+  background-image: url("../images/eye-active.svg");
+}
+
+.form__submit,
+.form_sign-in {
+  font-family: inherit;
   font-weight: 500;
   text-transform: uppercase;
   text-decoration: none;
@@ -87,13 +130,23 @@ body {
   border-radius: 6px;
   border: none;
   color: #ffffff;
-  background-color: #1976d2;
+  background-color: #174536;
   line-height: 1.75;
+  cursor: pointer;
 }
 
-.form__submit:hover {
-  cursor: pointer;
+.form__submit:hover,
+.form_sign-in:hover {
   opacity: 0.8;
+}
+
+.form__link {
+  color: #53875a;
+}
+
+.form__link:active,
+.form__link:visited {
+  color: #53875a;
 }
 
 .form__error {
@@ -101,4 +154,53 @@ body {
   font-size: 14px;
   margin-bottom: 10px;
   font-weight: 700;
+  word-break: break-word;
+}
+
+.form__paragraph_success {
+  margin-top: 120px;
+}
+
+@media screen and (max-width: 900px) {
+  .content__wrapper {
+    width: 90%;
+  }
+
+  .main__hero {
+    background-image:url("./../images/forest_small.jpg");
+    background-position-y: 60%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .content {
+    display: flex;
+  }
+
+
+  .content__wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+  }
+
+  .main__hero {
+    height: 200px;
+    flex-shrink: 0;
+  }
+
+  .header {
+    color: #6b706e;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 32px;
+    text-align: center;
+    margin: 16px;
+  }
+
+  .form__paragraph_success {
+    margin-top: 20px;
+  }
 }

@@ -1,56 +1,64 @@
 <!DOCTYPE HTML>
-<html xmlns:th="https://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ru" xmlns:th="https://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-  <title>Login to Rangiffler</title>
-  <link rel="icon" th:href="@{images/favicon.ico}"/>
-  <link href="../static/styles/styles.css" th:href="@{styles/styles.css}" rel="stylesheet"
-        type="text/css"/>
+    <title>Login to Rangiffler</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" th:href="@{images/favicon.ico}"/>
+    <link href="../static/styles/styles.css" th:href="@{styles/styles.css}" rel="stylesheet"
+          type="text/css"/>
 </head>
 <body>
 <main class="content">
-  <form class="form" action="#" th:action="@{/login}" method="post">
-    <h1 class="form__header">Login to Rangiffler</h1>
-    <img src="./../static/images/deer-logo.svg" width="90" th:src="@{images/deer-logo.svg}"
-         alt="Rangiffler logo"/>
-    <div th:if="${param.error}">
-      <p class="form__error">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+    <div class="content__wrapper">
+        <div class="main__hero"></div>
+        <section class="main__form">
+            <h1 class="header">
+                <span class="header__accent">R</span>angiffler
+            </h1>
+            <img class="header__logo" src="./../static/images/deer-logo.svg" width="90" th:src="@{images/deer-logo.svg}"
+                 alt="Rangiffler logo"/>
+            <form class="form" action="#" th:action="@{/login}" method="post">
+                <div th:if="${param.error}">
+                    <p class="form__error">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                </div>
+                <div th:if="${param.logout}">
+                    <p class="text-warning">You have been logged out.</p>
+                </div>
+                <label class="form__label">Username:
+                    <input class="form__input" type="text" name="username" placeholder="Type your username"
+                           required/>
+                </label>
+                <label class="form__label">Password:
+                    <input class="form__input" type="password" name="password" placeholder="Type your password"
+                           required/>
+                    <button type="button" class="form__password-button"></button>
+                </label>
+                <button class="form__submit" type="submit">
+                    Sign In
+                </button>
+                <p class="form__paragraph">Have no account? <a class="form__link" th:href="@{/register}" href="/register">Sign up!</a></p>
+            </form>
+        </section>
     </div>
-    <div th:if="${param.logout}">
-      <p class="text-warning">You have been logged out.</p>
-    </div>
-    <label class="form__label">Username:
-      <input class="form__input" type="text" name="username" placeholder="Type your username"
-             required/>
-    </label>
-    <label class="form__label">Password:
-      <input class="form__input" type="password" name="password" placeholder="Type your password"
-             required/>
-      <button type="button" class="form__password-button"></button>
-    </label>
-    <button class="form__submit" type="submit">
-      Sign In
-    </button>
-    <p class="form__paragraph">Have no account? <a th:href="@{/register}">Sign up!</a></p>
-  </form>
 </main>
 <script>
-  const passwordButton = document.querySelector(".form__password-button");
-  const passwordInput = document.querySelector("[name=password]");
+    const passwordButton = document.querySelector(".form__password-button");
+    const passwordInput = document.querySelector("[name=password]");
 
-  const togglePasswordInputType = (inputType) => {
-    return inputType === "password" ? "text" : "password";
-  }
+    const togglePasswordInputType = (inputType) => {
+        return inputType === "password" ? "text" : "password";
+    }
 
-  const togglePasswordButtonClass = () => {
-    passwordButton.classList.toggle("form__password-button_active");
-  }
+    const togglePasswordButtonClass = () => {
+        passwordButton.classList.toggle("form__password-button_active");
+    }
 
-  const handlePasswordButtonClick = () => {
-    passwordInput.setAttribute("type", togglePasswordInputType(passwordInput.getAttribute("type")));
-    togglePasswordButtonClass();
-  }
+    const handlePasswordButtonClick = () => {
+        passwordInput.setAttribute("type", togglePasswordInputType(passwordInput.getAttribute("type")));
+        togglePasswordButtonClass();
+    }
 
-  passwordButton.addEventListener("click", handlePasswordButtonClick);
+    passwordButton.addEventListener("click", handlePasswordButtonClick);
 </script>
 </body>
 </html>
