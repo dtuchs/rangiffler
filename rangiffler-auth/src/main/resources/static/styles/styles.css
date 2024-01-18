@@ -29,15 +29,15 @@ body {
 }
 
 .content__wrapper {
-  width: 80%;
+  width: 70%;
   max-width: 1280px;
-  height: calc(100% - 40px);
-  margin-bottom: 20px;
-  margin-top: 20px;
+  height: calc(100% - 80px);
+  margin-bottom: 40px;
+  margin-top: 40px;
   background-color: var(--color-ligth);
   border: 10px solid var(--color-ligth);
   display: grid;
-  grid-template-columns: 1.5fr 2fr;
+  grid-template-columns: 1fr 1fr;
   box-sizing: border-box;
   overflow: scroll;
 }

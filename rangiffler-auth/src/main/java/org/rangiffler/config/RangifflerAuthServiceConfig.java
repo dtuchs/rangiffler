@@ -6,6 +6,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.rangiffler.cors.CorsCustomizer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.flyway.FlywayMigrationStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -111,5 +112,13 @@ public class RangifflerAuthServiceConfig {
   @Bean
   public JwtDecoder jwtDecoder(JWKSource<SecurityContext> jwkSource) {
     return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
+  }
+
+  @Bean
+  public FlywayMigrationStrategy repairFlyway() {
+    return flyway -> {
+      flyway.repair();
+      flyway.migrate();
+    };
   }
 }

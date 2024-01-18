@@ -2,9 +2,10 @@ import {CircularProgress} from "@mui/material";
 import React, {useContext, useEffect} from "react";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {apiClient} from "../../api/apiClient";
-import {authClient} from "../../api/authClient";
-import {AUTH_URL, CLIENT, FRONT_URL} from "../../api/config";
+import {authClientWithUrlEncoded} from "../../api/authClient";
+import {AUTH_URL, CLIENT, FRONT_URL, SECRET} from "../../api/config";
 import {UserContext} from "../../context/UserContext/index";
+import {Buffer} from "buffer";
 
 export const Redirect = () => {
   const {handleChangeUser} = useContext(UserContext);
@@ -13,14 +14,14 @@ export const Redirect = () => {
 
   useEffect(() => {
     if (searchParams?.get("code")) {
-      const code = searchParams?.get("code");
-      const client = CLIENT;
+      const data = new URLSearchParams({
+        "code": searchParams.get("code")!,
+        "redirect_uri": `${FRONT_URL}/authorized`,
+        "code_verifier": sessionStorage.getItem("codeVerifier")!,
+        "grant_type": "authorization_code",
+      });
 
-      const verifier = sessionStorage.getItem("codeVerifier");
-      const initialUrl = `/oauth2/token?client_id=${client}&redirect_uri=${FRONT_URL}/authorized&grant_type=authorization_code`;
-      const url = `${initialUrl}&code=${code}&code_verifier=${verifier}`;
-
-      authClient.post(url).then((res) => {
+      authClientWithUrlEncoded.post("/oauth2/token", data).then((res) => {
         if (res?.data?.id_token) {
           sessionStorage.setItem("id_token", res.data.id_token);
           apiClient(res.data.id_token)

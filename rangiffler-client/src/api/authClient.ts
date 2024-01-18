@@ -9,3 +9,11 @@ export const authClient = axios.create({
     "Authorization": `Basic ${Buffer.from(`${CLIENT}:${SECRET}`).toString("base64")}`,
   }
 });
+
+export const authClientWithUrlEncoded = axios.create({
+  baseURL: AUTH_URL,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "Authorization": `Basic ${Buffer.from(`${CLIENT}:${SECRET}`).toString("base64")}`,
+  }
+});
