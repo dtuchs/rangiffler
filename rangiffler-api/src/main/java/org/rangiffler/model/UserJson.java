@@ -2,31 +2,40 @@ package org.rangiffler.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Data;
+import org.rangiffler.data.UserEntity;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-@Data
-@Builder
-public class UserJson {
-
+public record UserJson(
   @JsonProperty("id")
-  private UUID id;
-
+  UUID id,
   @JsonProperty("username")
-  private String username;
-
+  String username,
   @JsonProperty("firstName")
-  private String firstName;
-
+  String firstName,
   @JsonProperty("lastName")
-  private String lastLame;
-
+  String lastLame,
   @JsonProperty("avatar")
-  private String avatar;
-
+  String avatar,
   @JsonProperty("friendStatus")
-  private FriendStatus friendStatus;
+  FriendStatus friendStatus
+) {
+  public static UserJson fromEntity(UserEntity userEntity) {
+    return fromEntity(userEntity, null);
+  }
+
+  public static UserJson fromEntity(UserEntity userEntity, FriendStatus friendStatus) {
+    return new UserJson(
+        userEntity.getId(),
+        userEntity.getUsername(),
+        userEntity.getFirstname(),
+        userEntity.getSurname(),
+        userEntity.getAvatar() != null && userEntity.getAvatar().length > 0
+            ? new String(userEntity.getAvatar(), StandardCharsets.UTF_8)
+            : null,
+        friendStatus
+    );
+  }
 }
 

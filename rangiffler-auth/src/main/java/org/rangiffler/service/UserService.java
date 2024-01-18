@@ -8,6 +8,7 @@ import org.rangiffler.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class UserService {
@@ -21,6 +22,7 @@ public class UserService {
     this.passwordEncoder = passwordEncoder;
   }
 
+  @Transactional
   public @Nonnull
   String registerUser(@Nonnull String username, @Nonnull String password) {
     UserEntity userEntity = new UserEntity();

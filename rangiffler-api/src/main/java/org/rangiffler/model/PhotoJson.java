@@ -1,27 +1,38 @@
 package org.rangiffler.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Data;
+import org.rangiffler.data.PhotoEntity;
 
 import java.util.UUID;
 
-@Data
-@Builder
-public class PhotoJson {
+import static java.nio.charset.StandardCharsets.UTF_8;
 
+public record PhotoJson(
   @JsonProperty("id")
-  private UUID id;
-
+  UUID id,
   @JsonProperty("country")
-  private CountryJson countryJson;
-
+  CountryJson countryJson,
   @JsonProperty("photo")
-  private String photo;
-
+  String photo,
   @JsonProperty("description")
-  private String description;
-
+  String description,
   @JsonProperty("username")
-  private String username;
+  String username
+) {
+
+  public static PhotoJson fromEntity(PhotoEntity photoEntity) {
+    return new PhotoJson(
+        photoEntity.getId(),
+        CountryJson.fromEntity(photoEntity.getCountry()),
+        convertPhoto(photoEntity.getPhoto()),
+        photoEntity.getDescription(),
+        photoEntity.getUser().getUsername()
+    );
+  }
+
+  private static String convertPhoto(byte[] photo) {
+    if (photo != null && photo.length > 0) {
+      return new String(photo, UTF_8);
+    } else return null;
+  }
 }

@@ -1,21 +1,22 @@
 package org.rangiffler.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Builder;
-import lombok.Data;
+import org.rangiffler.data.CountryEntity;
 
 import java.util.UUID;
 
-@Data
-@Builder
-public class CountryJson {
-
-  @JsonProperty("id")
-  private UUID id;
-
-  @JsonProperty("code")
-  private String code;
-
-  @JsonProperty("name")
-  private String name;
+public record CountryJson(
+    @JsonProperty("id") UUID id,
+    @JsonProperty("code")
+    String code,
+    @JsonProperty("name")
+    String name
+) {
+  public static CountryJson fromEntity(CountryEntity countryEntity) {
+    return new CountryJson(
+        countryEntity.getId(),
+        countryEntity.getCode(),
+        countryEntity.getName()
+    );
+  }
 }

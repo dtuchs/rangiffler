@@ -11,9 +11,9 @@ import java.util.List;
 @RestController
 public class CountryController {
 
-  @Autowired
   private final CountryService countryService;
 
+  @Autowired
   public CountryController(CountryService countryService) {
     this.countryService = countryService;
   }
@@ -22,5 +22,4 @@ public class CountryController {
   public List<CountryJson> getAllCountries() {
     return countryService.getAllCountries();
   }
-
 }

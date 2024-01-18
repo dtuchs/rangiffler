@@ -36,7 +36,7 @@ public class PhotoEntity {
   @Column(columnDefinition = "LONGBLOB")
   private byte[] photo;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private UserEntity user;
 

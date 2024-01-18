@@ -1,71 +1,35 @@
 package org.rangiffler.service;
 
+import org.rangiffler.data.repository.CountryRepository;
 import org.rangiffler.model.CountryJson;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CountryService {
 
-  private final List<CountryJson> countries = List.of(
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("ru")
-          .name("Russia")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("it")
-          .name("Italy")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("de")
-          .name("Germany")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("fr")
-          .name("France")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("FJ")
-          .name("Fiji")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("TZ")
-          .name("Tanzania")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("EH")
-          .name("Western Sahara")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("CA")
-          .name("Canada")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("US")
-          .name("United States")
-          .build(),
-      CountryJson.builder()
-          .id(UUID.randomUUID())
-          .code("KZ")
-          .name("Kazakhstan")
-          .build());
+  private final CountryRepository countryRepository;
 
-  public List<CountryJson> getAllCountries() {
-    return countries;
+  @Autowired
+  public CountryService(CountryRepository countryRepository) {
+    this.countryRepository = countryRepository;
   }
 
+  @Transactional(readOnly = true)
+  public List<CountryJson> getAllCountries() {
+    return countryRepository.findAll()
+        .stream()
+        .map(CountryJson::fromEntity)
+        .toList();
+  }
+
+  @Transactional(readOnly = true)
   public CountryJson getCountryByCode(String code) {
-    return countries.stream().filter(c -> c.getCode().equals(code)).findFirst().orElseThrow();
+    return countryRepository.findByCode(code)
+        .map(CountryJson::fromEntity)
+        .orElseThrow();
   }
 }

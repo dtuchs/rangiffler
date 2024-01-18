@@ -52,7 +52,7 @@ public class UserEntity implements Serializable {
   @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<FriendsEntity> invites = new ArrayList<>();
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PhotoEntity> photos = new ArrayList<>();
 
   public void addFriends(boolean pending, UserEntity... friends) {
