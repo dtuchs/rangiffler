@@ -1,9 +1,19 @@
+*, ::before, ::after {
+  box-sizing: border-box;
+}
+
 body {
+  --color-primary: #174536;
+  --color-secondary: #768c7d;
+  --color-error: #d32f2f;
+  --color-link: #53875a;
+  --color-heading: #6b706e;
+  --color-ligth: #f6f6f6;
   margin: 0;
   padding: 0;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-size: 14px;
-  background: linear-gradient(90deg, #174536, #768c7d);
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -14,8 +24,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f6f6f6;
-  background-image: linear-gradient(45deg, #174536, #f6f6f6);
+  background-color: var(--color-ligth);
+  background-image: linear-gradient(45deg, var(--color-primary), var(--color-ligth));
 }
 
 .content__wrapper {
@@ -24,8 +34,8 @@ body {
   height: calc(100% - 40px);
   margin-bottom: 20px;
   margin-top: 20px;
-  background-color: #f6f6f6;
-  border: 10px solid #f6f6f6;
+  background-color: var(--color-ligth);
+  border: 10px solid var(--color-ligth);
   display: grid;
   grid-template-columns: 1.5fr 2fr;
   box-sizing: border-box;
@@ -33,7 +43,7 @@ body {
 }
 
 .header {
-  color: #6b706e;
+  color: var(--color-heading);
   font-style: normal;
   font-weight: 700;
   font-size: 48px;
@@ -42,7 +52,7 @@ body {
 }
 
 .header__accent {
-  color: #174536;
+  color: var(--color-primary);
 }
 
 .header__logo {
@@ -51,7 +61,7 @@ body {
 }
 
 .main__hero {
-  background-color: #f6f6f6;
+  background-color: var(--color-ligth);
   opacity: 0.8;
   background-image:url("./../images/forest.jpg");
   background-position: center;
@@ -129,8 +139,8 @@ body {
   margin: 0 20px;
   border-radius: 6px;
   border: none;
-  color: #ffffff;
-  background-color: #174536;
+  color: var(--color-ligth);
+  background-color: var(--color-primary);
   line-height: 1.75;
   cursor: pointer;
 }
@@ -141,16 +151,16 @@ body {
 }
 
 .form__link {
-  color: #53875a;
+  color: var(--color-link);
 }
 
 .form__link:active,
 .form__link:visited {
-  color: #53875a;
+  color: var(--color-link);
 }
 
 .form__error {
-  color: #d32f2f;
+  color: var(--color-error);
   font-size: 14px;
   margin-bottom: 10px;
   font-weight: 700;
@@ -192,11 +202,7 @@ body {
   }
 
   .header {
-    color: #6b706e;
-    font-style: normal;
-    font-weight: 700;
     font-size: 32px;
-    text-align: center;
     margin: 16px;
   }
 
