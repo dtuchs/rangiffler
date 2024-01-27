@@ -1,0 +1,43 @@
+.landing__wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f6f6;
+    background-image: linear-gradient(45deg, #174536, #f6f6f6);
+}
+
+.landing__container {
+    max-width: 1280px;
+    height: calc(100% - 80px);
+    margin-bottom: 40px;
+    margin-top: 40px;
+    background-color: #f6f6f6;
+    border: 10px solid #f6f6f6;
+    overflow: scroll;
+}
+
+.landing__hero {
+    background-color: #f6f6f6;
+    opacity: 0.8;
+    background-image: url("./../../assets/forest.jpg");
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.landing__content {
+    text-align: center;
+    padding: 10px;
+
+}
+
+.landing__header {
+    color: #6b706e;
+}
+
+.landing__header-accent {
+    color: #174536;
+}
