@@ -1,68 +1,53 @@
-import {Box, Button, Divider, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import React, { FC } from "react";
+import {Box, List, useTheme } from "@mui/material";
+import { FC } from "react";
+import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
+import PersonSearchRoundedIcon from '@mui/icons-material/PersonSearchRounded';
+import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
+import { SidebarItem } from "./SidebarItem";
+import { DrawerHeader } from "../Drawer/DrawerHeader";
+import { Drawer } from "../Drawer";
 
-export const Sidebar: FC = () => {
-    const [sidebarState, setSidebarState] = React.useState(false);
-    const toggleDrawer = (open: boolean) =>
-        (event: React.KeyboardEvent | React.MouseEvent) => {
-            if (
-                event.type === 'keydown' &&
-                ((event as React.KeyboardEvent).key === 'Tab' ||
-                    (event as React.KeyboardEvent).key === 'Shift')
-            ) {
-                return;
-            }
+interface SidebarProps {
+    sidebarState: boolean,
+}
+export const Sidebar: FC<SidebarProps> = ({sidebarState}) => {
+    const theme = useTheme();
 
-            setSidebarState(open);
-    };
-
-    // @ts-ignore
-    // @ts-ignore
     return (
-        <div>
-            {(['left']).map((anchor) => (
-                <React.Fragment key={anchor}>
-                    <Button onClick={toggleDrawer(true)}>{anchor}</Button>
-                    <Drawer
-                        anchor="left"
-                        open={sidebarState}
-                        onClose={toggleDrawer(false)}
-                    >
-                        <Box
-                            sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-                            role="presentation"
-                            onClick={toggleDrawer(false)}
-                            onKeyDown={toggleDrawer(false)}
-                        >
-                            <List>
-                                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                                    <ListItem key={text} disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                            </ListItemIcon>
-                                            <ListItemText primary={text} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))}
-                            </List>
-                            <Divider />
-                            <List>
-                                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                                    <ListItem key={text} disablePadding>
-                                        <ListItemButton>
-                                            <ListItemIcon>
-                                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                            </ListItemIcon>
-                                            <ListItemText primary={text} />
-                                        </ListItemButton>
-                                    </ListItem>
-                                ))}
-                            </List>
-                        </Box>
-                    </Drawer>
-                </React.Fragment>
-            ))}
-        </div>
+        <Drawer
+            anchor="left"
+            open={sidebarState}
+            variant="permanent"
+            sx={{
+                '& .MuiDrawer-paper': {
+                    backgroundColor: theme.palette.primary.main,
+                    color: theme.palette.primary.contrastText,
+                }
+            }}
+        >
+            <DrawerHeader/>
+            <Box sx={{ width: 250, overflow: "auto" }}>
+                <List>
+                    <SidebarItem
+                        sidebarState={sidebarState}
+                        name="Profile"
+                        icon={<AccountCircleRoundedIcon/>}
+                        link="/profile"
+                    />
+                    <SidebarItem
+                        sidebarState={sidebarState}
+                        name="My map"
+                        icon={<PublicRoundedIcon/>}
+                        link="/my-travels"
+                    />
+                    <SidebarItem
+                        sidebarState={sidebarState}
+                        name="People"
+                        icon={<PersonSearchRoundedIcon/>}
+                        link="/people"
+                        />
+                </List>
+            </Box>
+        </Drawer>
     );
 };
