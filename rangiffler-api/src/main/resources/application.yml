@@ -24,7 +24,7 @@ spring:
     enabled: true
     baseline-on-migrate: true
     baseline-version: 0
-    schemas: public
+    schemas: rangiffler-api
     locations: classpath:db/migration/rangiffler-api
   jpa:
     hibernate:

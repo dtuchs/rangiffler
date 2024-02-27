@@ -27,7 +27,7 @@ spring:
     enabled: true
     baseline-on-migrate: true
     baseline-version: 0
-    schemas: public
+    schemas: rangiffler-auth
     locations: classpath:db/migration/rangiffler-auth
   jpa:
     hibernate:
