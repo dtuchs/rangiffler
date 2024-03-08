@@ -1,25 +1,39 @@
 import "./App.css";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import { MyTravelsPage } from "./pages/MyTravelsPage";
-import { LandingPage } from "./pages/LandingPage";
-import { ProfilePage } from "./pages/ProfilePage";
-import { PeoplePage } from "./pages/PeoplePage";
-import { PrivateRoute } from "./components/PrivateRoute";
+import { useEffect, useState } from "react";
+import { ApolloProvider } from "@apollo/client";
+import { apiClient } from "./api/apollo-client";
+import { SessionContext } from "./context/SessionContext";
+import { User } from "./types/User";
+import { AppContent } from "./components/AppContent";
 
 
 function App() {
+
+    const [user, setUser] = useState<User | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleChangeUser = (user: User) => {
+        setUser(user);
+    };
+
+    useEffect(() => {
+        const currentUrl = new URL(window.location.href);
+        if (currentUrl.pathname === "/authorized") {
+            return;
+        }
+    }, []);
+    
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<LandingPage/>}/>
-                <Route element={<PrivateRoute/>}>
-                    <Route path="/my-travels" element={<MyTravelsPage/>}/>
-                    <Route path="/profile" element={<ProfilePage/>}/>
-                    <Route path="/people" element={<PeoplePage/>}/>
-                </Route>
-            </Routes>
-        </BrowserRouter>
+        <ApolloProvider client={apiClient}>
+            <SessionContext.Provider value={{
+                handleChangeUser,
+                user,
+                isLoading,
+            }}>
+              <AppContent/>
+            </SessionContext.Provider>
+        </ApolloProvider>
     )
 }
 
-export default App
+export default App;

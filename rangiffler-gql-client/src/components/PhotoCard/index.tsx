@@ -5,7 +5,11 @@ import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { FC } from 'react';
 import "./styles.css";
 
-export const PhotoCard: FC = () => {
+interface PhotoCardInterface {
+    onDeleteClick: () => void;
+    onEditClick: () => void;
+}
+export const PhotoCard: FC<PhotoCardInterface> = ({onDeleteClick, onEditClick}) => {
     return (
         <Grid item xs={3}>
             <Paper elevation={3}>
@@ -53,8 +57,8 @@ export const PhotoCard: FC = () => {
                             justifyContent: "space-between",
                         }}
                     >
-                        <Button variant="contained" sx={{margin: 2}}>Edit</Button>
-                        <Button sx={{margin: 2}}>Delete</Button>
+                        <Button variant="contained" sx={{margin: 2}} onClick={onEditClick}>Edit</Button>
+                        <Button sx={{margin: 2}} onClick={onDeleteClick}>Delete</Button>
                     </Box>
                 </Box>
             </Paper>
