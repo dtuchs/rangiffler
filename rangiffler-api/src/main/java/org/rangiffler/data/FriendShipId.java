@@ -9,21 +9,21 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class FriendsId implements Serializable {
+public class FriendShipId implements Serializable {
 
-  private UUID user;
-  private UUID friend;
+  private UUID requester;
+  private UUID addressee;
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-    FriendsId friendsId = (FriendsId) o;
-    return Objects.equals(user, friendsId.user) && Objects.equals(friend, friendsId.friend);
+    FriendShipId friendShipId = (FriendShipId) o;
+    return Objects.equals(requester, friendShipId.requester) && Objects.equals(addressee, friendShipId.addressee);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(user, friend);
+    return Objects.hash(requester, addressee);
   }
 }

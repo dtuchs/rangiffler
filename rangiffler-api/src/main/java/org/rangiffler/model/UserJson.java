@@ -8,18 +8,18 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public record UserJson(
-  @JsonProperty("id")
-  UUID id,
-  @JsonProperty("username")
-  String username,
-  @JsonProperty("firstName")
-  String firstName,
-  @JsonProperty("lastName")
-  String lastLame,
-  @JsonProperty("avatar")
-  String avatar,
-  @JsonProperty("friendStatus")
-  FriendStatus friendStatus
+    @JsonProperty("id")
+    UUID id,
+    @JsonProperty("username")
+    String username,
+    @JsonProperty("firstName")
+    String firstName,
+    @JsonProperty("lastName")
+    String lastLame,
+    @JsonProperty("avatar")
+    String avatar,
+    @JsonProperty("friendStatus")
+    FriendStatus friendStatus
 ) {
   public static UserJson fromEntity(UserEntity userEntity) {
     return fromEntity(userEntity, null);

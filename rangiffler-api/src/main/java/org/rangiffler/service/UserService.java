@@ -1,36 +1,39 @@
 package org.rangiffler.service;
 
 import jakarta.annotation.Nonnull;
-import org.rangiffler.data.FriendsEntity;
+import org.rangiffler.data.FriendshipEntity;
+import org.rangiffler.data.FriendshipStatus;
 import org.rangiffler.data.UserEntity;
+import org.rangiffler.data.repository.CountryRepository;
 import org.rangiffler.data.repository.UserRepository;
 import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.FriendStatus;
 import org.rangiffler.model.UserJson;
+import org.rangiffler.model.gql.UserGql;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class UserService {
 
   private final UserRepository userRepository;
+  private final CountryRepository countryRepository;
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, CountryRepository countryRepository) {
     this.userRepository = userRepository;
+    this.countryRepository = countryRepository;
   }
 
   @Transactional
   public @Nonnull
-  UserJson update(@Nonnull UserJson user) {
+  UserJson updateUser(@Nonnull UserJson user) {
     UserEntity userEntity = getRequiredUser(user.username());
     userEntity.setFirstname(user.firstName());
     userEntity.setSurname(user.lastLame());
@@ -41,7 +44,7 @@ public class UserService {
 
   @Transactional
   public @Nonnull
-  UserJson getCurrentUser(@Nonnull String username) {
+  UserJson currentUser(@Nonnull String username) {
     return UserJson.fromEntity(
         userRepository.findByUsername(username)
             .orElseGet(() -> {
@@ -52,104 +55,116 @@ public class UserService {
     );
   }
 
+  @Transactional
+  public @Nonnull
+  UserGql currentUserGql(@Nonnull String username) {
+    return UserGql.fromEntity(
+        userRepository.findByUsername(username)
+            .orElseGet(() -> {
+              UserEntity newUser = new UserEntity();
+              newUser.setCountry(countryRepository.findByCode("ru").orElseThrow());
+              newUser.setUsername(username);
+              return userRepository.save(newUser);
+            })
+    );
+  }
+
   @Transactional(readOnly = true)
   public @Nonnull
-  List<UserJson> allUsers(@Nonnull String username) {
-    Set<UserJson> result = new HashSet<>();
-    for (UserEntity user : userRepository.findByUsernameNot(username)) {
-      List<FriendsEntity> sendInvites = user.getFriends();
-      List<FriendsEntity> receivedInvites = user.getInvites();
+  Slice<UserGql> allUsers(@Nonnull String username,
+                          @Nonnull Pageable pageable) {
+    return userRepository.findByUsernameNot(
+        username,
+        pageable
+    ).map(ue -> {
+      List<FriendshipEntity> requests = ue.getFriendshipRequests();
+      List<FriendshipEntity> addresses = ue.getFriendshipAddressees();
 
-      if (!sendInvites.isEmpty() || !receivedInvites.isEmpty()) {
-        Optional<FriendsEntity> inviteToMe = sendInvites.stream()
-            .filter(i -> i.getFriend().getUsername().equals(username))
-            .findFirst();
-
-        Optional<FriendsEntity> inviteFromMe = receivedInvites.stream()
-            .filter(i -> i.getUser().getUsername().equals(username))
-            .findFirst();
-
-        if (inviteToMe.isPresent()) {
-          FriendsEntity invite = inviteToMe.get();
-          result.add(UserJson.fromEntity(user, invite.isPending()
-              ? FriendStatus.INVITATION_RECEIVED
-              : FriendStatus.FRIEND));
-        }
-        if (inviteFromMe.isPresent()) {
-          FriendsEntity invite = inviteFromMe.get();
-          result.add(UserJson.fromEntity(user, invite.isPending()
-              ? FriendStatus.INVITATION_SENT
-              : FriendStatus.FRIEND));
-        }
-      } else {
-        result.add(UserJson.fromEntity(user));
+      if (!requests.isEmpty()) {
+        return requests.stream()
+            .filter(i -> i.getAddressee().getUsername().equals(username))
+            .findFirst()
+            .map(
+                itm -> UserGql.fromEntity(ue, itm.getStatus() == FriendshipStatus.PENDING
+                    ? FriendStatus.INVITATION_RECEIVED
+                    : FriendStatus.FRIEND)
+            ).orElse(UserGql.fromEntity(ue));
       }
-    }
-    return new ArrayList<>(result);
+      if (!addresses.isEmpty()) {
+        return addresses.stream()
+            .filter(i -> i.getRequester().getUsername().equals(username))
+            .findFirst()
+            .map(
+                itm -> UserGql.fromEntity(ue, itm.getStatus() == FriendshipStatus.PENDING
+                    ? FriendStatus.INVITATION_SENT
+                    : FriendStatus.FRIEND)
+            ).orElse(UserGql.fromEntity(ue));
+      }
+      return UserGql.fromEntity(ue);
+    });
   }
 
   @Transactional(readOnly = true)
   public @Nonnull
-  List<UserJson> friends(@Nonnull String username, boolean includePending) {
-    return getRequiredUser(username)
-        .getFriends()
-        .stream()
-        .filter(fe -> includePending || !fe.isPending())
-        .map(fe -> UserJson.fromEntity(fe.getFriend(), fe.isPending()
-            ? FriendStatus.INVITATION_SENT
-            : FriendStatus.FRIEND))
-        .toList();
+  Slice<UserGql> friends(@Nonnull String username,
+                         @Nonnull Pageable pageable) {
+    return userRepository.findFriends(
+            getRequiredUser(username),
+            pageable
+        )
+        .map(f -> UserGql.fromEntity(f, FriendStatus.FRIEND));
   }
 
   @Transactional(readOnly = true)
   public @Nonnull
-  List<UserJson> invitations(@Nonnull String username) {
-    return getRequiredUser(username)
-        .getInvites()
-        .stream()
-        .filter(FriendsEntity::isPending)
-        .map(fe -> UserJson.fromEntity(fe.getUser(), FriendStatus.INVITATION_RECEIVED))
-        .toList();
+  Slice<UserGql> incomeInvitations(@Nonnull String username,
+                                   @Nonnull Pageable pageable) {
+    return userRepository.findIncomeInvitations(
+            getRequiredUser(username),
+            pageable
+        )
+        .map(i -> UserGql.fromEntity(i, FriendStatus.INVITATION_RECEIVED));
+  }
+
+  @Transactional(readOnly = true)
+  public @Nonnull
+  Slice<UserGql> outcomeInvitations(@Nonnull String username,
+                                    @Nonnull Pageable pageable) {
+    return userRepository.findOutcomeInvitations(
+        getRequiredUser(username),
+        pageable
+    ).map(o -> UserGql.fromEntity(o, FriendStatus.INVITATION_SENT));
   }
 
   @Transactional
   public UserJson addFriend(@Nonnull String username, @Nonnull String friendUsername) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity friendEntity = getRequiredUser(friendUsername);
-
-    currentUser.addFriends(true, friendEntity);
+    currentUser.addFriends(FriendshipStatus.PENDING, friendEntity);
     userRepository.save(currentUser);
     return UserJson.fromEntity(friendEntity, FriendStatus.INVITATION_SENT);
   }
 
   @Transactional
   public @Nonnull
-  List<UserJson> acceptInvitation(@Nonnull String username, @Nonnull String invitationUsername) {
+  void acceptInvitation(@Nonnull String username, @Nonnull String invitationUsername) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity inviteUser = getRequiredUser(invitationUsername);
 
-    FriendsEntity invite = currentUser.getInvites()
+    FriendshipEntity invite = currentUser.getFriendshipAddressees()
         .stream()
-        .filter(fe -> fe.getUser().getUsername().equals(inviteUser.getUsername()))
+        .filter(fe -> fe.getRequester().getUsername().equals(inviteUser.getUsername()))
         .findFirst()
         .orElseThrow();
 
-    invite.setPending(false);
-    currentUser.addFriends(false, inviteUser);
+    invite.setStatus(FriendshipStatus.ACCEPTED);
+    currentUser.addFriends(FriendshipStatus.ACCEPTED, inviteUser);
     userRepository.save(currentUser);
-
-    return currentUser
-        .getFriends()
-        .stream()
-        .map(fe -> UserJson.fromEntity(fe.getFriend(), fe.isPending()
-            ? FriendStatus.INVITATION_SENT
-            : FriendStatus.FRIEND))
-        .toList();
   }
 
   @Transactional
   public @Nonnull
-  List<UserJson> declineInvitation(@Nonnull String username, @Nonnull String invitationUsername) {
+  void declineInvitation(@Nonnull String username, @Nonnull String invitationUsername) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity friendToDecline = getRequiredUser(invitationUsername);
 
@@ -158,17 +173,11 @@ public class UserService {
 
     userRepository.save(currentUser);
     userRepository.save(friendToDecline);
-
-    return currentUser.getInvites()
-        .stream()
-        .filter(FriendsEntity::isPending)
-        .map(fe -> UserJson.fromEntity(fe.getUser(), FriendStatus.INVITATION_RECEIVED))
-        .toList();
   }
 
   @Transactional
   public @Nonnull
-  List<UserJson> removeFriend(@Nonnull String username, @Nonnull String friendUsername) {
+  void removeFriend(@Nonnull String username, @Nonnull String friendUsername) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity friendToRemove = getRequiredUser(friendUsername);
 
@@ -179,14 +188,7 @@ public class UserService {
 
     userRepository.save(currentUser);
     userRepository.save(friendToRemove);
-
-    return currentUser
-        .getFriends()
-        .stream()
-        .map(fe -> UserJson.fromEntity(fe.getFriend(), fe.isPending()
-            ? FriendStatus.INVITATION_SENT
-            : FriendStatus.FRIEND))
-        .toList();
+    ;
   }
 
   @Nonnull

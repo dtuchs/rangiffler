@@ -7,8 +7,10 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +19,7 @@ import org.hibernate.proxy.HibernateProxy;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -46,37 +49,30 @@ public class UserEntity implements Serializable {
   @Column(columnDefinition = "LONGBLOB")
   private byte[] avatar;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<FriendsEntity> friends = new ArrayList<>();
+  @OneToMany(mappedBy = "requester", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<FriendshipEntity> friendshipRequests = new ArrayList<>();
 
-  @OneToMany(mappedBy = "friend", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<FriendsEntity> invites = new ArrayList<>();
+  @OneToMany(mappedBy = "addressee", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<FriendshipEntity> friendshipAddressees = new ArrayList<>();
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PhotoEntity> photos = new ArrayList<>();
 
-  public void addFriends(boolean pending, UserEntity... friends) {
-    List<FriendsEntity> friendsEntities = Stream.of(friends)
-        .map(f -> {
-          FriendsEntity fe = new FriendsEntity();
-          fe.setUser(this);
-          fe.setFriend(f);
-          fe.setPending(pending);
-          return fe;
-        }).toList();
-    this.friends.addAll(friendsEntities);
-  }
+  @OneToOne
+  @JoinColumn(name = "country_id", referencedColumnName = "id")
+  private CountryEntity country;
 
-  public void addInvitations(UserEntity... invitations) {
-    List<FriendsEntity> invitationsEntities = Stream.of(invitations)
-        .map(i -> {
-          FriendsEntity fe = new FriendsEntity();
-          fe.setUser(i);
-          fe.setFriend(this);
-          fe.setPending(true);
+  public void addFriends(FriendshipStatus status, UserEntity... friends) {
+    List<FriendshipEntity> friendsEntities = Stream.of(friends)
+        .map(f -> {
+          FriendshipEntity fe = new FriendshipEntity();
+          fe.setRequester(this);
+          fe.setAddressee(f);
+          fe.setStatus(status);
+          fe.setCreatedDate(new Date());
           return fe;
         }).toList();
-    this.invites.addAll(invitationsEntities);
+    this.friendshipRequests.addAll(friendsEntities);
   }
 
   public void addPhotos(PhotoEntity... photos) {
@@ -87,10 +83,10 @@ public class UserEntity implements Serializable {
 
   public void removeFriends(UserEntity... friends) {
     List<UUID> idsToBeRemoved = Arrays.stream(friends).map(UserEntity::getId).toList();
-    for (Iterator<FriendsEntity> i = getFriends().iterator(); i.hasNext(); ) {
-      FriendsEntity friendsEntity = i.next();
-      if (idsToBeRemoved.contains(friendsEntity.getFriend().getId())) {
-        friendsEntity.setFriend(null);
+    for (Iterator<FriendshipEntity> i = getFriendshipRequests().iterator(); i.hasNext(); ) {
+      FriendshipEntity friendsEntity = i.next();
+      if (idsToBeRemoved.contains(friendsEntity.getAddressee().getId())) {
+        friendsEntity.setAddressee(null);
         i.remove();
       }
     }
@@ -98,10 +94,10 @@ public class UserEntity implements Serializable {
 
   public void removeInvites(UserEntity... invitations) {
     List<UUID> idsToBeRemoved = Arrays.stream(invitations).map(UserEntity::getId).toList();
-    for (Iterator<FriendsEntity> i = getInvites().iterator(); i.hasNext(); ) {
-      FriendsEntity friendsEntity = i.next();
-      if (idsToBeRemoved.contains(friendsEntity.getUser().getId())) {
-        friendsEntity.setUser(null);
+    for (Iterator<FriendshipEntity> i = getFriendshipAddressees().iterator(); i.hasNext(); ) {
+      FriendshipEntity friendsEntity = i.next();
+      if (idsToBeRemoved.contains(friendsEntity.getRequester().getId())) {
+        friendsEntity.setRequester(null);
         i.remove();
       }
     }

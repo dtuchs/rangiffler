@@ -11,10 +11,13 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -43,6 +46,10 @@ public class PhotoEntity {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "country_id", referencedColumnName = "id")
   private CountryEntity country;
+
+  @Column
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date createdDate;
 
   @Override
   public final boolean equals(Object o) {

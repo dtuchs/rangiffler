@@ -1,0 +1,47 @@
+scalar Date
+
+type Query {
+    session: Session!
+    user: User!
+    users(page:Int, size:Int): UserConnection
+}
+
+type Session {
+    username: String
+    issuedAt: Date
+    expiresAt: Date
+}
+
+type User {
+    id: ID!
+    username: String!
+    firstname: String
+    surname: String
+    avatar: String
+    friendStatus: FriendStatus
+    friends(page:Int, size:Int): UserConnection
+    incomeInvitations(page:Int, size:Int): UserConnection
+    outcomeInvitations(page:Int, size:Int): UserConnection
+    photos(page:Int, size:Int): PhotoConnection
+    location: Country
+}
+
+type Photo {
+    id: ID!
+    src: String!
+    country: Country!
+    description: String!
+    likes: Int!
+    isLikedByMe: Boolean!
+    creationDate: Date!
+}
+
+type Country {
+    flag: String!
+    code: String!
+    name: String!
+}
+
+enum FriendStatus {
+    NOT_FRIEND, INVITATION_SENT, INVITATION_RECEIVED, FRIEND
+}

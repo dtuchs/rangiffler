@@ -1,19 +1,23 @@
 package org.rangiffler.service;
 
 
-import org.rangiffler.data.FriendsEntity;
+import jakarta.annotation.Nonnull;
 import org.rangiffler.data.PhotoEntity;
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.data.repository.CountryRepository;
 import org.rangiffler.data.repository.PhotoRepository;
 import org.rangiffler.data.repository.UserRepository;
+import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.PhotoJson;
+import org.rangiffler.model.gql.PhotoGql;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -31,33 +35,41 @@ public class PhotoService {
   }
 
   @Transactional
-  public PhotoJson addPhoto(String username, PhotoJson photoJson) {
+  public PhotoJson addPhoto(@Nonnull String username,
+                            @Nonnull PhotoJson photoJson) {
     PhotoEntity photo = new PhotoEntity();
     photo.setPhoto(photoJson.photo() != null ? photoJson.photo().getBytes(StandardCharsets.UTF_8) : null);
     photo.setDescription(photoJson.description());
+    photo.setCreatedDate(new Date());
 
-    UserEntity userEntity = userRepository.findByUsername(username)
-        .orElseThrow();
-    userEntity.addPhotos(
-        photo
-    );
-
+    UserEntity userEntity = getRequiredUser(username);
+    userEntity.addPhotos(photo);
     userRepository.save(userEntity);
     return PhotoJson.fromEntity(photo);
   }
 
   @Transactional(readOnly = true)
-  public List<PhotoJson> getAllUserPhotos(String username) {
-    return userRepository.findByUsername(username)
-        .map(UserEntity::getPhotos)
-        .orElseGet(java.util.Collections::emptyList)
-        .stream()
-        .map(PhotoJson::fromEntity)
-        .toList();
+  public Slice<PhotoJson> allUserPhotos(@Nonnull String username,
+                                        @Nonnull Pageable pageable) {
+    UserEntity userEntity = getRequiredUser(username);
+    return photoRepository.findByUser(
+        userEntity,
+        pageable
+    ).map(PhotoJson::fromEntity);
+  }
+
+  @Transactional(readOnly = true)
+  public Slice<PhotoGql> allUserPhotosGql(@Nonnull String username,
+                                          @Nonnull Pageable pageable) {
+    UserEntity userEntity = getRequiredUser(username);
+    return photoRepository.findByUser(
+        userEntity,
+        pageable
+    ).map(PhotoGql::fromEntity);
   }
 
   @Transactional
-  public PhotoJson editPhoto(PhotoJson photoJson) {
+  public PhotoJson editPhoto(@Nonnull PhotoJson photoJson) {
     PhotoEntity photoEntity = photoRepository.findById(photoJson.id()).orElseThrow();
     photoEntity.setDescription(photoJson.description());
     photoEntity.setCountry(countryRepository.findByCode(photoJson.countryJson().code()).orElseThrow());
@@ -67,20 +79,23 @@ public class PhotoService {
   }
 
   @Transactional(readOnly = true)
-  public List<PhotoJson> getAllFriendsPhotos(String username) {
-    return userRepository.findByUsername(username)
-        .map(UserEntity::getFriends)
-        .orElseThrow()
-        .stream()
-        .map(FriendsEntity::getFriend)
-        .map(UserEntity::getPhotos)
-        .flatMap(java.util.Collection::stream)
-        .map(PhotoJson::fromEntity)
-        .toList();
+  public Slice<PhotoJson> allFriendsPhotos(@Nonnull String username,
+                                           @Nonnull Pageable pageable) {
+    UserEntity userEntity = getRequiredUser(username);
+    return photoRepository.findByUserIn(
+        userRepository.findFriends(userEntity),
+        pageable
+    ).map(PhotoJson::fromEntity);
   }
 
   @Transactional
   public void deletePhoto(UUID photoId) {
     photoRepository.deleteById(photoId);
+  }
+
+  @Nonnull
+  UserEntity getRequiredUser(@Nonnull String username) {
+    return userRepository.findByUsername(username)
+        .orElseThrow(() -> new NotFoundException("Can`t find user by username: " + username));
   }
 }

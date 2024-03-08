@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,10 @@ public class CountryEntity {
   @Column
   private String code;
 
+  @Lob
+  @Column(columnDefinition = "LONGBLOB")
+  private byte[] flag;
+
   @Override
   public final boolean equals(Object o) {
     if (this == o) return true;
@@ -38,7 +43,7 @@ public class CountryEntity {
     Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
     if (thisEffectiveClass != oEffectiveClass) return false;
     CountryEntity that = (CountryEntity) o;
-    return id != null && Objects.equals(id, that.id);
+    return getId() != null && Objects.equals(getId(), that.getId());
   }
 
   @Override

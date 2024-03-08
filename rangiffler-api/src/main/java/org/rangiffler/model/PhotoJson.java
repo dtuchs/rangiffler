@@ -8,16 +8,16 @@ import java.util.UUID;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public record PhotoJson(
-  @JsonProperty("id")
-  UUID id,
-  @JsonProperty("country")
-  CountryJson countryJson,
-  @JsonProperty("photo")
-  String photo,
-  @JsonProperty("description")
-  String description,
-  @JsonProperty("username")
-  String username
+    @JsonProperty("id")
+    UUID id,
+    @JsonProperty("country")
+    CountryJson countryJson,
+    @JsonProperty("photo")
+    String photo,
+    @JsonProperty("description")
+    String description,
+    @JsonProperty("username")
+    String username
 ) {
 
   public static PhotoJson fromEntity(PhotoEntity photoEntity) {
