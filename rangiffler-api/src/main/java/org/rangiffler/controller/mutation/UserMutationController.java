@@ -24,7 +24,6 @@ public class UserMutationController {
    * <pre>
    * mutation user {
    *   user(input: {
-   *     id: "28d4981f-f9c0-4b21-a250-825b935910a1",
    *     firstname: "PCHELA"
    *  }) {
    *    id
@@ -34,8 +33,10 @@ public class UserMutationController {
    * </pre>
    */
   @MutationMapping
-  public UserGql user(@Argument UserInput input) {
-    return userService.updateUser(input);
+  public UserGql user(@AuthenticationPrincipal Jwt principal,
+                      @Argument UserInput input) {
+    String username = principal.getClaim("sub");
+    return userService.updateUser(username, input);
   }
 
   /**

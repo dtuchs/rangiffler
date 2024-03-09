@@ -1,6 +1,7 @@
 package org.rangiffler.service;
 
 import jakarta.annotation.Nonnull;
+import org.rangiffler.data.CountryEntity;
 import org.rangiffler.data.FriendshipEntity;
 import org.rangiffler.data.FriendshipStatus;
 import org.rangiffler.data.UserEntity;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -33,14 +35,22 @@ public class UserService {
   }
 
   @Transactional
-  public UserGql updateUser(@Nonnull UserInput user) {
-    UserEntity userEntity = userRepository.findById(user.id())
-        .orElseThrow(() -> new NotFoundException("Can`t find user by id: " + user.id()));
-
-    userEntity.setFirstname(user.firstname());
-    userEntity.setSurname(user.surname());
-    userEntity.setAvatar(new DecodedBinary(user.avatar()).bytes());
-
+  public UserGql updateUser(@Nonnull String username, @Nonnull UserInput user) {
+    UserEntity userEntity = getRequiredUser(username);
+    if (user.firstname() != null) {
+      userEntity.setFirstname(user.firstname());
+    }
+    if (user.surname() != null) {
+      userEntity.setSurname(user.surname());
+    }
+    if (user.avatar() != null) {
+      userEntity.setAvatar(new DecodedBinary(user.avatar()).bytes());
+    }
+    if (user.location() != null) {
+      CountryEntity country = countryRepository.findByCode(user.location().code())
+          .orElseThrow(() -> new NotFoundException("Can`t find country by code: " + user.location().code()));
+      userEntity.setCountry(country);
+    }
     return UserGql.fromEntity(userRepository.save(userEntity));
   }
 
@@ -100,8 +110,7 @@ public class UserService {
     return userRepository.findFriends(
             getRequiredUser(username),
             pageable
-        )
-        .map(f -> UserGql.fromEntity(f, FriendStatus.FRIEND));
+        ).map(f -> UserGql.fromEntity(f, FriendStatus.FRIEND));
   }
 
   @Transactional(readOnly = true)
@@ -111,8 +120,7 @@ public class UserService {
     return userRepository.findIncomeInvitations(
             getRequiredUser(username),
             pageable
-        )
-        .map(i -> UserGql.fromEntity(i, FriendStatus.INVITATION_RECEIVED));
+        ).map(i -> UserGql.fromEntity(i, FriendStatus.INVITATION_RECEIVED));
   }
 
   @Transactional(readOnly = true)
