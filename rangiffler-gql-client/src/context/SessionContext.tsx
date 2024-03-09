@@ -2,16 +2,13 @@ import {createContext} from "react";
 import { User } from "../types/User";
 
 interface SessionContextInterface {
-    handleChangeUser: (user: User) => void;
+    updateUser: () => void;
     user?: User;
-    isLoading: boolean;
 }
 
 const defaultState = {
-    handleChangeUser: () => {
-    },
+    updateUser: () => {},
     user: undefined,
-    isLoading: false,
 };
 
 export const SessionContext = createContext<SessionContextInterface>(defaultState);

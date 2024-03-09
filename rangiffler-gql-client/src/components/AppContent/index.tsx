@@ -6,12 +6,26 @@ import { MyTravelsPage } from "../../pages/MyTravelsPage";
 import { ProfilePage } from "../../pages/ProfilePage";
 import { LandingPage } from "../../pages/LandingPage";
 import { PeoplePage } from "../../pages/PeoplePage";
-import { SnackBarProvider } from "../../context/SnackBarContext";
+import { SessionContext } from "../../context/SessionContext";
+import {FC} from "react";
+import { useGetUser } from "../../hooks/useGetUser";
+import { useSnackBar } from "../../context/SnackBarContext";
+import { Loader } from "../Loader";
 
-export const AppContent = () => {
+export const AppContent: FC = () => {
+    const snackbar = useSnackBar();
+    const {data, error, loading, refetch} = useGetUser();
+    const sessionContext =  {user: data?.user, updateUser: refetch};
+
+    if(error) {
+        snackbar.showSnackBar("Failed to fetch userdata", "error");
+    }
+
     return (
-        <>
-            <SnackBarProvider>
+        <SessionContext.Provider value={sessionContext}>
+            {loading ? (
+                <Loader/>
+                ):(
                 <BrowserRouter>
                     <Routes>
                         <Route path="/redirect" element={<RedirectPage/>}/>
@@ -24,7 +38,7 @@ export const AppContent = () => {
                         <Route path="/" element={<LandingPage/>}/>
                     </Routes>
                 </BrowserRouter>
-            </SnackBarProvider>
-        </>
+            )}
+        </SessionContext.Provider>
     );
 }
