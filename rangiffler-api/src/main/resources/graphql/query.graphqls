@@ -72,7 +72,7 @@ input LikeInput {
 
 input UserInput {
     id: ID!
-    z: String
+    firstname: String
     surname: String
     avatar: String
     location: CountryInput
