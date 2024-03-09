@@ -1,8 +1,8 @@
 package org.rangiffler.model.type;
 
 import org.rangiffler.data.CountryEntity;
+import org.rangiffler.utils.EncodedBinary;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public record CountryGql(
@@ -16,7 +16,7 @@ public record CountryGql(
         country.getId(),
         country.getName(),
         country.getCode(),
-        country.getFlag() != null ? new String(country.getFlag(), StandardCharsets.UTF_8) : null
+        new EncodedBinary(country.getFlag()).string()
     );
   }
 }

@@ -2,9 +2,9 @@ package org.rangiffler.model.type;
 
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.model.FriendStatus;
+import org.rangiffler.utils.EncodedBinary;
 import org.springframework.data.domain.Slice;
 
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public record UserGql(
@@ -30,7 +30,7 @@ public record UserGql(
         userEntity.getUsername(),
         userEntity.getFirstname(),
         userEntity.getSurname(),
-        userEntity.getAvatar() != null ? new String(userEntity.getAvatar(), StandardCharsets.UTF_8) : null,
+        new EncodedBinary(userEntity.getAvatar()).string(),
         friendshipStatus,
         null,
         null,

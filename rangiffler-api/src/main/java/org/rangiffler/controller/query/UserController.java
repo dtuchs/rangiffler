@@ -81,48 +81,52 @@ public class UserController {
     );
   }
 
-  //  query user {
-//    user {
-//      id
-//          username
-//      photos(page: 0, size: 10) {
-//        edges {
-//          node {
-//            id
-//                description
-//          }
-//        }
-//        pageInfo {
-//          hasPreviousPage
-//              hasNextPage
-//        }
-//      }
-//      friends(page: 0, size: 10) {
-//        edges {
-//          node {
-//            id
-//                username
-//          }
-//        }
-//        pageInfo {
-//          hasPreviousPage
-//              hasNextPage
-//        }
-//      }
-//      outcomeInvitations(page: 0, size: 10) {
-//        edges {
-//          node {
-//            id
-//                username
-//          }
-//        }
-//        pageInfo {
-//          hasPreviousPage
-//              hasNextPage
-//        }
-//      }
-//    }
-//  }
+  /**
+   * <pre>
+   *    query user {
+   *    user {
+   *      id
+   *      username
+   *      photos(page: 0, size: 10) {
+   *        edges {
+   *          node {
+   *            id
+   *            description
+   *          }
+   *        }
+   *        pageInfo {
+   *          hasPreviousPage
+   *          hasNextPage
+   *        }
+   *      }
+   *      friends(page: 0, size: 10) {
+   *        edges {
+   *          node {
+   *            id
+   *            username
+   *          }
+   *        }
+   *        pageInfo {
+   *          hasPreviousPage
+   *          hasNextPage
+   *        }
+   *      }
+   *      outcomeInvitations(page: 0, size: 10) {
+   *        edges {
+   *          node {
+   *            id
+   *            username
+   *          }
+   *        }
+   *        pageInfo {
+   *          hasPreviousPage
+   *          hasNextPage
+   *        }
+   *      }
+   *    }
+   *  }
+   * </pre>
+   */
   @QueryMapping
   public UserGql user(@AuthenticationPrincipal Jwt principal) {
     return userService.currentUser(principal.getClaim("sub"));

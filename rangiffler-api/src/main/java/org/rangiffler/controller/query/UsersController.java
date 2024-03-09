@@ -21,20 +21,24 @@ public class UsersController {
     this.userService = userService;
   }
 
-  //  query users {
-//    users(page: 0, size: 10) {
-//      edges {
-//        node {
-//          id
-//              username
-//        }
-//      }
-//      pageInfo {
-//        hasPreviousPage
-//            hasNextPage
-//      }
-//    }
-//  }
+  /**
+   * <pre>
+   *    query users {
+   *     users(page: 0, size: 10) {
+   *      edges {
+   *        node {
+   *          id
+   *          username
+   *        }
+   *      }
+   *      pageInfo {
+   *        hasPreviousPage
+   *        hasNextPage
+   *      }
+   *    }
+   *  }
+   * </pre>
+   */
   @QueryMapping
   public Slice<UserGql> users(@AuthenticationPrincipal Jwt principal,
                               @Argument int page,
