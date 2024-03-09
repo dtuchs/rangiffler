@@ -44,6 +44,24 @@ create table if not exists `photo`
     constraint ph_country_id foreign key (country_id) references `country` (id)
 );
 
+create table if not exists `like`
+(
+    id                      binary(16) unique not null default (UUID_TO_BIN(UUID(), true)),
+    user_id                 binary(16)        not null,
+    created_date            datetime not null,
+    primary key (id),
+    constraint like_user_id foreign key (user_id) references `user` (id)
+);
+
+create table if not exists `photo_like`
+(
+    photo_id                 binary(16)        not null,
+    like_id                 binary(16)        not null,
+    primary key (photo_id, like_id),
+    constraint ph_like_photo_id foreign key (photo_id) references `photo` (id),
+    constraint lk_like_photo_id foreign key (like_id) references `like` (id)
+);
+
 insert into `country` (code, `name`, `flag`)
 values
     ('tg', 'Togo', FROM_BASE64('iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAMAAABpA6zvAAABPlBMVEVHcEwDUD25GkIASDMAUjwBWUMAPisARjIAVT4AVzwAUTsCVkAATjkBXkYATTi4GkEBXUa9I0mjI0O4GkC6HEUBZk4AzUn/0AAAaEz/zQABZUkAa08AVDwAXEHZGkX/yAD/zADWFT3/wgAAblMAYEYAWD/VEjkAYkj/0QAAUTj/zwDaHkv/xQABXkPXF0EAc1cARTC7GEL/ygD///8AdlvovwO1FToASjXeP2LJG0ZbiS7GFj4AOyhNfS46by5bkDPhSC2OpCMrdTubKT6/lALTrQGmpRiwsRlxkSeGlyDHngD1xM4AQCzaLDDQvg7gqgDsxgXGtA96mijCrg3mcYvktQHskKWiMEmRjBItVyTdOysXdUnwywQjZzW7OC8/hz7iVHXxrr0zfT0NWTb98/X53uT3sQqgmBXuiRfcixJvgMLrAAAAFnRSTlMAIMLXrVy5i8gH7kJm1DCV6iR+r1HVEsrmUgAAAlFJREFUOMtt1HlfokAYwHHySLTStnY/0ggUCrJkosGS5Kpp3qu2Xtmudh97vP83sM8MA9rW7z/5fB2YZxSGgT583Int+ny+3dhOcGONeVs4yIKK+Y7dTuoch9CnQAh82EXRzUCE5xlQp6diJpMRcVdfcqlUglORKsvbW1ssu7WtQFmBZ45PMzhbpJCUy4FGSAWuqojjuKzmwocVmHNKkRKJBECBQvH+Gd9a16/eMuyQUCFQFGfm1LZtSa9eX7RrZ3eL1Cv32J18w/B+1ns2TfPF1vXqZ1Ic+/EZblwbDQ3jEkPR7gEzexldklwYPyTtQQcHhrEP8ARmA3c2TVuSKIzHHegw7Aj8Crt4MHvmjMI4dXvucuBcqL9M9WkPw9ta++LaW85z1o+fGOr2FB7P1qV0uo73urjrgB86tzWsSbec5QsAdV2USGkCE3QmHLc4h5AsZ7OClifQZQCXDCF8hipxFC4dgR4jZ02cQiBxg8F8Ph8M6g5bXQ47RSObqf75ZdCRHFij1rh4zlHmOOGm02gwt38PyeyWE4G97luTVrdTxhW7rctk8nuDaVr/O8OZHe4ISh4lXUjcO4w4zCj0HGWry1HnwmG71iniOt3WyHrHJeEIm5PxozM7dyTovIi9x5q/y0/5ElNB9NeOVkaCZ5K9qeBunnhN0wAq6opbMkEh8ZBGoQx/TFlwrvG8ogivGXGFPkC4Ch8ifpZl/ZGCk6bBV3jqCvl+qbTOKHwksBn13h9rG5uhgD/v1e+D8oeiDMMGw++8lbAPBdahUChIXlv/AKxstxK/9pV0AAAAAElFTkSuQmCC')),

@@ -1,9 +1,17 @@
 scalar Date
 
 type Query {
+    countries: [Country!]!
     session: Session!
     user: User!
     users(page:Int, size:Int): UserConnection
+}
+
+type Mutation {
+    user(input: UserInput!): User!
+    photo(input: PhotoInput!): Photo!
+    deletePhoto(id: ID!): Boolean
+    friendship(input: FriendshipInput!): Boolean
 }
 
 type Session {
@@ -31,8 +39,18 @@ type Photo {
     src: String!
     country: Country!
     description: String!
-    likes: Int!
-    isLikedByMe: Boolean!
+    creationDate: Date!
+    likes: Likes
+}
+
+type Likes {
+    total: Int!
+    likes: [Like!]
+}
+
+type Like {
+    user: ID!
+    username: String!
     creationDate: Date!
 }
 
@@ -40,6 +58,39 @@ type Country {
     flag: String!
     code: String!
     name: String!
+}
+
+input FriendshipInput {
+    user: ID!
+    action: FriendshipAction!
+}
+
+input PhotoInput {
+    id: ID
+    src: String
+    country: CountryInput
+    description: String
+    like: LikeInput
+}
+
+input LikeInput {
+    user: ID!
+}
+
+input UserInput {
+    id: ID!
+    firstname: String
+    surname: String
+    avatar: String
+    location: CountryInput
+}
+
+input CountryInput {
+    code: String!
+}
+
+enum FriendshipAction {
+    ADD, ACCEPT, REJECT, DELETE
 }
 
 enum FriendStatus {

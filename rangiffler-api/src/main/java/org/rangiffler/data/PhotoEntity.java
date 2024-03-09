@@ -7,8 +7,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -17,9 +19,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Getter
 @Setter
@@ -50,6 +55,21 @@ public class PhotoEntity {
   @Column
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
+
+  @OneToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "photo_like",
+      joinColumns = {@JoinColumn(name = "photo_id")},
+      inverseJoinColumns = {@JoinColumn(name = "like_id")}
+  )
+  private List<LikeEntity> likes = new ArrayList<>();
+
+  public void addLikes(LikeEntity... likes) {
+    this.likes.addAll(Stream.of(likes).toList());
+  }
+
+  public void removeLikes(LikeEntity... likes) {
+    this.likes.removeAll(Stream.of(likes).toList());
+  }
 
   @Override
   public final boolean equals(Object o) {

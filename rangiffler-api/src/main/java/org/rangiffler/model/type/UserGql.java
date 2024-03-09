@@ -1,25 +1,25 @@
-package org.rangiffler.model.gql;
+package org.rangiffler.model.type;
 
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.model.FriendStatus;
-import org.rangiffler.model.PhotoJson;
-import org.springframework.data.domain.Window;
+import org.springframework.data.domain.Slice;
 
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.UUID;
 
-public record UserGql(UUID id,
-                      String username,
-                      String firstname,
-                      String surname,
-                      String avatar,
-                      FriendStatus friendStatus,
-                      List<UserGql> friends,
-                      List<UserGql> incomeInvitations,
-                      List<UserGql> outcomeInvitations,
-                      Window<PhotoJson> photos,
-                      CountryGql location) {
+public record UserGql(
+    UUID id,
+    String username,
+    String firstname,
+    String surname,
+    String avatar,
+    FriendStatus friendStatus,
+    Slice<UserGql> friends,
+    Slice<UserGql> incomeInvitations,
+    Slice<UserGql> outcomeInvitations,
+    Slice<PhotoGql> photos,
+    CountryGql location
+) {
   public static UserGql fromEntity(UserEntity userEntity) {
     return fromEntity(userEntity, null);
   }

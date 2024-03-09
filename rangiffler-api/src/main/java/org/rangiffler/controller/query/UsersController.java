@@ -1,6 +1,6 @@
-package org.rangiffler.gql;
+package org.rangiffler.controller.query;
 
-import org.rangiffler.model.gql.UserGql;
+import org.rangiffler.model.type.UserGql;
 import org.rangiffler.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -12,16 +12,16 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class QueryUsersController {
+public class UsersController {
 
   private final UserService userService;
 
   @Autowired
-  public QueryUsersController(UserService userService) {
+  public UsersController(UserService userService) {
     this.userService = userService;
   }
 
-//  query users {
+  //  query users {
 //    users(page: 0, size: 10) {
 //      edges {
 //        node {

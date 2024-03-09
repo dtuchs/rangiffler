@@ -1,7 +1,9 @@
-package org.rangiffler.gql;
+package org.rangiffler.controller.query;
 
-import org.rangiffler.model.gql.PhotoGql;
-import org.rangiffler.model.gql.UserGql;
+import org.rangiffler.model.type.LikeGql;
+import org.rangiffler.model.type.LikesGql;
+import org.rangiffler.model.type.PhotoGql;
+import org.rangiffler.model.type.UserGql;
 import org.rangiffler.service.PhotoService;
 import org.rangiffler.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +16,16 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
 
+import java.util.List;
+
 @Controller
-public class QueryUserController {
+public class UserController {
 
   private final UserService userService;
   private final PhotoService photoService;
 
   @Autowired
-  public QueryUserController(UserService userService, PhotoService photoService) {
+  public UserController(UserService userService, PhotoService photoService) {
     this.userService = userService;
     this.photoService = photoService;
   }
@@ -56,17 +60,28 @@ public class QueryUserController {
     );
   }
 
+  @SchemaMapping(typeName = "Photo", field = "likes")
+  public LikesGql photos(PhotoGql photo) {
+    List<LikeGql> likes = photoService.photoLikes(
+        photo.id()
+    );
+    return new LikesGql(
+        likes.size(),
+        likes
+    );
+  }
+
   @SchemaMapping(typeName = "User", field = "photos")
   public Slice<PhotoGql> photos(UserGql user,
                                 @Argument int page,
                                 @Argument int size) {
-    return photoService.allUserPhotosGql(
+    return photoService.allUserPhotos(
         user.username(),
         PageRequest.of(page, size)
     );
   }
 
-//  query user {
+  //  query user {
 //    user {
 //      id
 //          username
@@ -110,6 +125,6 @@ public class QueryUserController {
 //  }
   @QueryMapping
   public UserGql user(@AuthenticationPrincipal Jwt principal) {
-    return userService.currentUserGql(principal.getClaim("sub"));
+    return userService.currentUser(principal.getClaim("sub"));
   }
 }

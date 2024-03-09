@@ -8,8 +8,8 @@ import org.rangiffler.data.repository.CountryRepository;
 import org.rangiffler.data.repository.UserRepository;
 import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.FriendStatus;
-import org.rangiffler.model.UserJson;
-import org.rangiffler.model.gql.UserGql;
+import org.rangiffler.model.input.UserInput;
+import org.rangiffler.model.type.UserGql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -32,32 +33,20 @@ public class UserService {
   }
 
   @Transactional
-  public @Nonnull
-  UserJson updateUser(@Nonnull UserJson user) {
-    UserEntity userEntity = getRequiredUser(user.username());
-    userEntity.setFirstname(user.firstName());
-    userEntity.setSurname(user.lastLame());
+  public UserGql updateUser(@Nonnull UserInput user) {
+    UserEntity userEntity = userRepository.findById(user.id())
+        .orElseThrow(() -> new NotFoundException("Can`t find user by id: " + user.id()));
+
+    userEntity.setFirstname(user.firstname());
+    userEntity.setSurname(user.surname());
     userEntity.setAvatar(user.avatar() != null ? user.avatar().getBytes(StandardCharsets.UTF_8) : null);
-    UserEntity saved = userRepository.save(userEntity);
-    return UserJson.fromEntity(saved);
+
+    return UserGql.fromEntity(userRepository.save(userEntity));
   }
 
   @Transactional
   public @Nonnull
-  UserJson currentUser(@Nonnull String username) {
-    return UserJson.fromEntity(
-        userRepository.findByUsername(username)
-            .orElseGet(() -> {
-              UserEntity newUser = new UserEntity();
-              newUser.setUsername(username);
-              return userRepository.save(newUser);
-            })
-    );
-  }
-
-  @Transactional
-  public @Nonnull
-  UserGql currentUserGql(@Nonnull String username) {
+  UserGql currentUser(@Nonnull String username) {
     return UserGql.fromEntity(
         userRepository.findByUsername(username)
             .orElseGet(() -> {
@@ -137,19 +126,17 @@ public class UserService {
   }
 
   @Transactional
-  public UserJson addFriend(@Nonnull String username, @Nonnull String friendUsername) {
+  public void addFriend(@Nonnull String username, @Nonnull UUID friendId) {
     UserEntity currentUser = getRequiredUser(username);
-    UserEntity friendEntity = getRequiredUser(friendUsername);
+    UserEntity friendEntity = getRequiredUser(friendId);
     currentUser.addFriends(FriendshipStatus.PENDING, friendEntity);
     userRepository.save(currentUser);
-    return UserJson.fromEntity(friendEntity, FriendStatus.INVITATION_SENT);
   }
 
   @Transactional
-  public @Nonnull
-  void acceptInvitation(@Nonnull String username, @Nonnull String invitationUsername) {
+  public void acceptInvitation(@Nonnull String username, @Nonnull UUID invitationId) {
     UserEntity currentUser = getRequiredUser(username);
-    UserEntity inviteUser = getRequiredUser(invitationUsername);
+    UserEntity inviteUser = getRequiredUser(invitationId);
 
     FriendshipEntity invite = currentUser.getFriendshipAddressees()
         .stream()
@@ -163,10 +150,9 @@ public class UserService {
   }
 
   @Transactional
-  public @Nonnull
-  void declineInvitation(@Nonnull String username, @Nonnull String invitationUsername) {
+  public void declineInvitation(@Nonnull String username, @Nonnull UUID invitationId) {
     UserEntity currentUser = getRequiredUser(username);
-    UserEntity friendToDecline = getRequiredUser(invitationUsername);
+    UserEntity friendToDecline = getRequiredUser(invitationId);
 
     currentUser.removeInvites(friendToDecline);
     friendToDecline.removeFriends(currentUser);
@@ -176,10 +162,9 @@ public class UserService {
   }
 
   @Transactional
-  public @Nonnull
-  void removeFriend(@Nonnull String username, @Nonnull String friendUsername) {
+  public void removeFriend(@Nonnull String username, @Nonnull UUID friendId) {
     UserEntity currentUser = getRequiredUser(username);
-    UserEntity friendToRemove = getRequiredUser(friendUsername);
+    UserEntity friendToRemove = getRequiredUser(friendId);
 
     currentUser.removeFriends(friendToRemove);
     currentUser.removeInvites(friendToRemove);
@@ -188,12 +173,17 @@ public class UserService {
 
     userRepository.save(currentUser);
     userRepository.save(friendToRemove);
-    ;
   }
 
   @Nonnull
   UserEntity getRequiredUser(@Nonnull String username) {
     return userRepository.findByUsername(username)
         .orElseThrow(() -> new NotFoundException("Can`t find user by username: " + username));
+  }
+
+  @Nonnull
+  UserEntity getRequiredUser(@Nonnull UUID id) {
+    return userRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("Can`t find user by id: " + id));
   }
 }

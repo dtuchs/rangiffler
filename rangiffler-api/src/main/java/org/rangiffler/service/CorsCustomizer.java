@@ -1,4 +1,4 @@
-package org.rangiffler.cors;
+package org.rangiffler.service;
 
 import jakarta.annotation.Nonnull;
 import org.springframework.beans.factory.annotation.Value;

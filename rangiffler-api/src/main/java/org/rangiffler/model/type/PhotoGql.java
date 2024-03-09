@@ -1,4 +1,4 @@
-package org.rangiffler.model.gql;
+package org.rangiffler.model.type;
 
 import org.rangiffler.data.PhotoEntity;
 
@@ -11,9 +11,8 @@ public record PhotoGql(
     String src,
     CountryGql country,
     String description,
-    int likes,
-    Boolean isLikedByMe,
-    Date creationDate
+    Date creationDate,
+    LikesGql likes
 ) {
   public static PhotoGql fromEntity(PhotoEntity photoEntity) {
     return new PhotoGql(
@@ -21,9 +20,8 @@ public record PhotoGql(
         photoEntity.getPhoto() != null ? new String(photoEntity.getPhoto(), StandardCharsets.UTF_8) : null,
         CountryGql.fromEntity(photoEntity.getCountry()),
         photoEntity.getDescription(),
-        0,
-        false,
-        photoEntity.getCreatedDate()
+        photoEntity.getCreatedDate(),
+        null
     );
   }
 }

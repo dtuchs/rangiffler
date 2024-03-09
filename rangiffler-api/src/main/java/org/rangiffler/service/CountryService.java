@@ -1,7 +1,7 @@
 package org.rangiffler.service;
 
 import org.rangiffler.data.repository.CountryRepository;
-import org.rangiffler.model.CountryJson;
+import org.rangiffler.model.type.CountryGql;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,17 +19,17 @@ public class CountryService {
   }
 
   @Transactional(readOnly = true)
-  public List<CountryJson> getAllCountries() {
+  public List<CountryGql> getAllCountries() {
     return countryRepository.findAll()
         .stream()
-        .map(CountryJson::fromEntity)
+        .map(CountryGql::fromEntity)
         .toList();
   }
 
   @Transactional(readOnly = true)
-  public CountryJson getCountryByCode(String code) {
+  public CountryGql getCountryByCode(String code) {
     return countryRepository.findByCode(code)
-        .map(CountryJson::fromEntity)
+        .map(CountryGql::fromEntity)
         .orElseThrow();
   }
 }
