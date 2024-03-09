@@ -14,7 +14,10 @@ public class DecodedBinary {
 
   public @Nullable byte[] bytes() {
     return value != null
-        ? Base64.getDecoder().decode(value.getBytes(StandardCharsets.UTF_8))
-        : null;
+        ? Base64.getDecoder().decode(
+        value.substring(
+            value.lastIndexOf(",") + 1
+        ).getBytes(StandardCharsets.UTF_8)
+    ): null;
   }
 }
