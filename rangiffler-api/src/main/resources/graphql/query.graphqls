@@ -2,7 +2,6 @@ scalar Date
 
 type Query {
     countries: [Country!]!
-    session: Session!
     user: User!
     users(page:Int, size:Int): UserConnection
 }
@@ -12,12 +11,6 @@ type Mutation {
     photo(input: PhotoInput!): Photo!
     deletePhoto(id: ID!): Boolean
     friendship(input: FriendshipInput!): Boolean
-}
-
-type Session {
-    username: String
-    issuedAt: Date
-    expiresAt: Date
 }
 
 type User {
@@ -79,7 +72,7 @@ input LikeInput {
 
 input UserInput {
     id: ID!
-    firstname: String
+    z: String
     surname: String
     avatar: String
     location: CountryInput

@@ -13,6 +13,7 @@ import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.input.PhotoInput;
 import org.rangiffler.model.type.LikeGql;
 import org.rangiffler.model.type.PhotoGql;
+import org.rangiffler.utils.DecodedBinary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -20,7 +21,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -45,7 +45,7 @@ public class PhotoService {
     PhotoEntity photo = new PhotoEntity();
     CountryEntity country = countryRepository.findByCode(photoInput.country().code())
         .orElseThrow(() -> new NotFoundException("Country not found by code: " + photoInput.country().code()));
-    photo.setPhoto(photoInput.src().getBytes(StandardCharsets.UTF_8));
+    photo.setPhoto(new DecodedBinary(photoInput.src()).bytes());
     photo.setDescription(photoInput.description());
     photo.setCreatedDate(new Date());
     photo.setCountry(country);
@@ -56,25 +56,25 @@ public class PhotoService {
   @Transactional
   public PhotoGql editPhoto(@Nonnull String username, @Nonnull PhotoInput photoInput) {
     PhotoEntity photo = getRequiredPhoto(photoInput.id());
-    if (photoInput.like() != null) {
+    if (photoInput.like() != null && !photoIsLikedBy(photo, photoInput.like().user())) {
       LikeEntity likeEntity = new LikeEntity();
       likeEntity.setCreatedDate(new Date());
       likeEntity.setUser(getRequiredUser(photoInput.like().user()));
       photo.addLikes(likeEntity);
     }
     if (userHasFullAccessToPhoto(username, photo)) {
-      CountryEntity country = countryRepository.findByCode(photoInput.country().code())
-          .orElseThrow(() -> new NotFoundException("Country not found by code: " + photoInput.country().code()));
-      photo.setCountry(country);
-      photo.setDescription(photoInput.description());
+      if (photoInput.country() != null) {
+        CountryEntity country = countryRepository.findByCode(photoInput.country().code())
+            .orElseThrow(() -> new NotFoundException("Country not found by code: " + photoInput.country().code()));
+        photo.setCountry(country);
+      }
+      if (photoInput.description() != null) {
+        photo.setDescription(photoInput.description());
+      }
     }
     return PhotoGql.fromEntity(
         photoRepository.save(photo)
     );
-  }
-
-  private boolean userHasFullAccessToPhoto(@Nonnull String username, @Nonnull PhotoEntity photo) {
-    return photo.getUser().getUsername().equals(username);
   }
 
   @Transactional(readOnly = true)
@@ -87,6 +87,7 @@ public class PhotoService {
     ).map(PhotoGql::fromEntity);
   }
 
+  @Transactional(readOnly = true)
   public List<LikeGql> photoLikes(@Nonnull UUID photoId) {
     return photoRepository.findById(photoId)
         .orElseThrow(() -> new NotFoundException("Can`t find photo by id: " + photoId))
@@ -131,5 +132,17 @@ public class PhotoService {
   PhotoEntity getRequiredPhoto(@Nonnull UUID photoId) {
     return photoRepository.findById(photoId)
         .orElseThrow(() -> new NotFoundException("Can`t find photo by id: " + photoId));
+  }
+
+  private boolean photoIsLikedBy(@Nonnull PhotoEntity photo, @Nonnull UUID user) {
+    return photo.getLikes()
+        .stream()
+        .map(LikeEntity::getUser)
+        .map(UserEntity::getId)
+        .anyMatch(id -> id.equals(user));
+  }
+
+  private boolean userHasFullAccessToPhoto(@Nonnull String username, @Nonnull PhotoEntity photo) {
+    return photo.getUser().getUsername().equals(username);
   }
 }

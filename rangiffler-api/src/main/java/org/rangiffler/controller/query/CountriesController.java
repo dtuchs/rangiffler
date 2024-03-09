@@ -16,6 +16,16 @@ public class CountriesController {
     this.countryService = countryService;
   }
 
+  /**
+   * <pre>
+   * query countries {
+   *   countries {
+   *     code
+   *     name
+   *   }
+   * }
+   * </pre>
+   */
   @QueryMapping
   public List<CountryGql> countries() {
     return countryService.getAllCountries();

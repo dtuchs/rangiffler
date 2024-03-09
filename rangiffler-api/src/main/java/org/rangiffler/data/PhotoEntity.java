@@ -1,5 +1,6 @@
 package org.rangiffler.data;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -44,7 +45,7 @@ public class PhotoEntity {
   @Column(columnDefinition = "LONGBLOB")
   private byte[] photo;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", referencedColumnName = "id")
   private UserEntity user;
 
@@ -56,7 +57,7 @@ public class PhotoEntity {
   @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinTable(name = "photo_like",
       joinColumns = {@JoinColumn(name = "photo_id")},
       inverseJoinColumns = {@JoinColumn(name = "like_id")}

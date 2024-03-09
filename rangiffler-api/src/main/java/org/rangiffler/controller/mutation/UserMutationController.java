@@ -19,21 +19,45 @@ public class UserMutationController {
     this.userService = userService;
   }
 
+
+  /**
+   * <pre>
+   * mutation user {
+   *   user(input: {
+   *     id: "28d4981f-f9c0-4b21-a250-825b935910a1",
+   *     firstname: "PCHELA"
+   *  }) {
+   *    id
+   *    firstname
+   *   }
+   * }
+   * </pre>
+   */
   @MutationMapping
-  public UserGql user(@Argument UserInput userInput) {
-    return userService.updateUser(userInput);
+  public UserGql user(@Argument UserInput input) {
+    return userService.updateUser(input);
   }
 
+  /**
+   * <pre>
+   *  mutation friendship {
+   *    friendship(input: {
+   *      user: "2e4bc114-c65c-4487-9fb3-dd9da16907ce",
+   *      action: ADD
+   *    })
+   *  }
+   * </pre>
+   */
   @MutationMapping
   public void friendship(@AuthenticationPrincipal Jwt principal,
-                         @Argument FriendshipInput friendshipInput) {
+                         @Argument FriendshipInput input) {
     String username = principal.getClaim("sub");
-    switch (friendshipInput.action()) {
-      case ADD -> userService.addFriend(username, friendshipInput.user());
-      case ACCEPT -> userService.acceptInvitation(username, friendshipInput.user());
-      case REJECT -> userService.declineInvitation(username, friendshipInput.user());
-      case DELETE -> userService.removeFriend(username, friendshipInput.user());
-      default -> throw new UnsupportedOperationException("Action " + friendshipInput.action() + " not implemented");
+    switch (input.action()) {
+      case ADD -> userService.addFriend(username, input.user());
+      case ACCEPT -> userService.acceptInvitation(username, input.user());
+      case REJECT -> userService.declineInvitation(username, input.user());
+      case DELETE -> userService.removeFriend(username, input.user());
+      default -> throw new UnsupportedOperationException("Action " + input.action() + " not implemented");
     }
   }
 }

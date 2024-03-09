@@ -10,13 +10,13 @@ import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.FriendStatus;
 import org.rangiffler.model.input.UserInput;
 import org.rangiffler.model.type.UserGql;
+import org.rangiffler.utils.DecodedBinary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,7 +39,7 @@ public class UserService {
 
     userEntity.setFirstname(user.firstname());
     userEntity.setSurname(user.surname());
-    userEntity.setAvatar(user.avatar() != null ? user.avatar().getBytes(StandardCharsets.UTF_8) : null);
+    userEntity.setAvatar(new DecodedBinary(user.avatar()).bytes());
 
     return UserGql.fromEntity(userRepository.save(userEntity));
   }

@@ -58,7 +58,7 @@ public class UserEntity implements Serializable {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
   private List<PhotoEntity> photos = new ArrayList<>();
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "country_id", referencedColumnName = "id")
   private CountryEntity country;
 
