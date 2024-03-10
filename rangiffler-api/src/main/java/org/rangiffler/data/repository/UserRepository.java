@@ -64,25 +64,25 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
                                           @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester")
-  Slice<UserEntity> findIncomeInvitations(@Param("requester") UserEntity requester,
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee")
+  Slice<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee,
                                           @Nonnull Pageable pageable);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester" +
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee" +
       " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
-  Slice<UserEntity> findIncomeInvitations(@Param("requester") UserEntity requester,
+  Slice<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee,
                                           @Nonnull Pageable pageable,
                                           @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester")
-  List<UserEntity> findIncomeInvitations(@Param("requester") UserEntity requester);
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee")
+  List<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester" +
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee" +
       " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
-  List<UserEntity> findIncomeInvitations(@Param("requester") UserEntity requester,
+  List<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee,
                                          @Param("searchQuery") String searchQuery);
 
 }
