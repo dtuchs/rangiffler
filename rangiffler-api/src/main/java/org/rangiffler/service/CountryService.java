@@ -20,7 +20,7 @@ public class CountryService {
 
   @Transactional(readOnly = true)
   public List<CountryGql> getAllCountries() {
-    return countryRepository.findAll()
+    return countryRepository.findByOrderByNameAsc()
         .stream()
         .map(CountryGql::fromEntity)
         .toList();

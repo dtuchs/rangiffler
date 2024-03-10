@@ -58,14 +58,14 @@ public class UserService {
     } else {
       photoStream = userEntity.getPhotos().stream();
     }
-    photoStream.forEach(ph -> {
+    long streamSize = photoStream.peek(ph -> {
       CountryGql key = CountryGql.fromEntity(ph.getCountry());
       if (countryStat.containsKey(key)) {
         countryStat.put(key, countryStat.get(key) + 1);
       } else {
         countryStat.put(key, 1);
       }
-    });
+    }).count();
     return countryStat.entrySet().stream()
         .map(entry -> new StatGql(
             entry.getValue(),
