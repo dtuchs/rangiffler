@@ -4,6 +4,7 @@ type Query {
     countries: [Country!]!
     user: User!
     users(page:Int, size:Int, searchQuery:String): UserConnection
+    feed(withFriends: Boolean!): Feed!
 }
 
 type Mutation {
@@ -20,11 +21,22 @@ type User {
     surname: String
     avatar: String
     friendStatus: FriendStatus
-    friends(page:Int, size:Int): UserConnection
+    friends(page:Int, size:Int, searchQuery:String): UserConnection
     incomeInvitations(page:Int, size:Int, searchQuery:String): UserConnection
     outcomeInvitations(page:Int, size:Int, searchQuery:String): UserConnection
-    photos(page:Int, size:Int, searchQuery:String): PhotoConnection
     location: Country
+}
+
+type Feed {
+    username: String!
+    withFriends: Boolean!
+    photos(page:Int, size:Int): PhotoConnection
+    stat: [Stat!]
+}
+
+type Stat {
+    count: Int!
+    country: Country!
 }
 
 type Photo {

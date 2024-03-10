@@ -3,7 +3,6 @@ package org.rangiffler.utils;
 import jakarta.annotation.Nullable;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 
 public class StringAsBytes {
   private final String value;

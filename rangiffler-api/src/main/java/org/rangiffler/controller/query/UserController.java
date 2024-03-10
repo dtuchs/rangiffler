@@ -68,7 +68,7 @@ public class UserController {
   }
 
   @SchemaMapping(typeName = "Photo", field = "likes")
-  public LikesGql photos(PhotoGql photo) {
+  public LikesGql likes(PhotoGql photo) {
     List<LikeGql> likes = photoService.photoLikes(
         photo.id()
     );

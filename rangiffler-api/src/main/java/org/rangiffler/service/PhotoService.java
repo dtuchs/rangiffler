@@ -21,6 +21,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -103,6 +104,21 @@ public class PhotoService {
     UserEntity userEntity = getRequiredUser(username);
     return photoRepository.findByUserIn(
         userRepository.findFriends(userEntity),
+        pageable
+    ).map(PhotoGql::fromEntity);
+  }
+
+  @Transactional(readOnly = true)
+  public Slice<PhotoGql> feedPhotos(@Nonnull String username,
+                                    @Nonnull Pageable pageable) {
+    UserEntity userEntity = getRequiredUser(username);
+    List<UserEntity> meAndFriends = new ArrayList<>(
+        userRepository.findFriends(userEntity)
+    );
+    meAndFriends.add(getRequiredUser(username));
+
+    return photoRepository.findByUserIn(
+        meAndFriends,
         pageable
     ).map(PhotoGql::fromEntity);
   }

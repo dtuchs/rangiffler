@@ -12,7 +12,7 @@ public record LikeGql(
 ) {
   public static LikeGql fromEntity(LikeEntity likeEntity) {
     return new LikeGql(
-        likeEntity.getId(),
+        likeEntity.getUser().getId(),
         likeEntity.getUser().getUsername(),
         likeEntity.getCreatedDate()
     );

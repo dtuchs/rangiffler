@@ -19,6 +19,12 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
   Slice<UserEntity> findByUsernameNot(@Nonnull String username,
                                       @Nonnull Pageable pageable);
 
+  @Query("select u from UserEntity u where u.username <> :username" +
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+  Slice<UserEntity> findByUsernameNotAndSearchQuery(@Param("username") String username,
+                                                    @Nonnull Pageable pageable,
+                                                    @Param("searchQuery") String searchQuery);
+
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
       " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester")
   Slice<UserEntity> findFriends(@Param("requester") UserEntity requester,
