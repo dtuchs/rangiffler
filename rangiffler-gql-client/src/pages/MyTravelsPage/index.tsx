@@ -1,7 +1,6 @@
 import {Box, Button, Container, Typography} from "@mui/material";
 import {PhotoContainer} from "../../components/PhotoContainer";
 import {WorldMap} from "../../components/WorldMap";
-import {CountrySelect} from "../../components/CountrySelect";
 import {Toggle} from "../../components/Toggle";
 import {useState} from "react";
 import { PhotoModal } from "../../components/PhotoModal";
@@ -36,7 +35,6 @@ export const MyTravelsPage = () => {
                     }}>
                         <Toggle/>
                     </Box>
-                    <CountrySelect/>
                 </Box>
                 <WorldMap/>
                 <Box>

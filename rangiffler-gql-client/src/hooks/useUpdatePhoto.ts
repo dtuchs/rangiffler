@@ -3,7 +3,7 @@ import { gql, useMutation } from "@apollo/client";
 interface PhotoInput {
     variables: {
         input: {
-            src: string,
+            id: string,
             description: string,
             country: {
                 code: string,
@@ -13,7 +13,7 @@ interface PhotoInput {
 }
 
 const CREATE_PHOTO = gql(`
-    mutation CreatePhoto($input: PhotoInput!) {
+    mutation UpdatePhoto($input: PhotoInput!) {
         photo(input: $input) {
             id
             src
@@ -30,20 +30,20 @@ const CREATE_PHOTO = gql(`
     }
 `);
 
-type CreatePhotoRequestType = {
+type UpdatePhotoRequestType = {
     onError: () => void,
     onCompleted: () => void,
 }
 
-type CreatePhotoReturnType = {
-    createPhoto: (updateUserInput: PhotoInput) => void,
+type UpdatePhotoReturnType = {
+    updatePhoto: (updatePhotoInput: PhotoInput) => void,
     loading: boolean,
 }
 
-export const useCreatePhoto = (req: CreatePhotoRequestType) : CreatePhotoReturnType => {
-    const [createPhoto, {loading}] = useMutation(CREATE_PHOTO, {
+export const useCreatePhoto = (req: UpdatePhotoRequestType) : UpdatePhotoReturnType => {
+    const [updatePhoto, {loading}] = useMutation(CREATE_PHOTO, {
         onError: req.onError,
         onCompleted: req.onCompleted,
     });
-    return {createPhoto, loading};
+    return {updatePhoto, loading};
 };
