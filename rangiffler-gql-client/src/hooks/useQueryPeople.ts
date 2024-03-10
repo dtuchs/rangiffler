@@ -9,6 +9,7 @@ const GET_PEOPLE = gql(`
                     username
                     firstname
                     surname
+                    avatar
                     location {
                         code
                         name

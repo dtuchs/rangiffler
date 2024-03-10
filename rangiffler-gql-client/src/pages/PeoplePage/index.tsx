@@ -1,15 +1,45 @@
 import {Box, Container, Tab, Tabs } from "@mui/material"
 import {SyntheticEvent,  useState } from "react";
 import { TabPanel } from "../../components/TabPanel";
-import { PeopleTable } from "../../components/PeopleTable";
-
-
+import { AllTable } from "../../components/PeopleTable/AllTable";
+import { InvitationsTable } from "../../components/PeopleTable/InvitationsTable";
+import { OutcomeInvitationsTable } from "../../components/PeopleTable/OutcomeInvitationsTable";
+import { FriendsTable } from "../../components/PeopleTable/FriendsTable";
 
 export const PeoplePage = () => {
 
-    const [tabValue, setTabValue] = useState('friends');
+    const [tabValue, setTabValue] = useState("friends");
     const handleChangeTab = (_event: SyntheticEvent<Element, Event>, value: string) => {
         setTabValue(value);
+    }
+
+    const resolveTab = () => {
+        switch(tabValue) {
+            case "all":
+                return (
+                    <TabPanel value="all">
+                        <AllTable/>
+                    </TabPanel>
+                );
+            case "income":
+                return (
+                    <TabPanel value="income">
+                        <InvitationsTable/>
+                    </TabPanel>
+                );
+            case "outcome":
+                return (
+                    <TabPanel value="outcome">
+                        <OutcomeInvitationsTable/>
+                    </TabPanel>
+                );
+            case "friends":
+                return (
+                    <TabPanel value="friends">
+                        <FriendsTable/>
+                    </TabPanel>
+                );
+        }
     }
 
     return (
@@ -22,9 +52,9 @@ export const PeoplePage = () => {
                     <Tab label="Income invitations" value="income"/>
                 </Tabs>
             </Box>
-            <TabPanel value="all">
-                <PeopleTable/>
-            </TabPanel>
+            {
+                resolveTab()
+            }
         </Container>
     )
 }
