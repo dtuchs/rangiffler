@@ -1,5 +1,6 @@
 package org.rangiffler.controller.query;
 
+import jakarta.annotation.Nullable;
 import org.rangiffler.model.type.UserGql;
 import org.rangiffler.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,12 @@ public class UsersController {
   @QueryMapping
   public Slice<UserGql> users(@AuthenticationPrincipal Jwt principal,
                               @Argument int page,
-                              @Argument int size) {
+                              @Argument int size,
+                              @Argument @Nullable String searchQuery) {
     return userService.allUsers(
         principal.getClaim("sub"),
-        PageRequest.of(page, size)
+        PageRequest.of(page, size),
+        searchQuery
     );
   }
 }

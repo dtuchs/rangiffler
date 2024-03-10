@@ -1,6 +1,7 @@
 package org.rangiffler.service;
 
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import org.rangiffler.data.CountryEntity;
 import org.rangiffler.data.FriendshipEntity;
 import org.rangiffler.data.FriendshipStatus;
@@ -73,7 +74,8 @@ public class UserService {
   @Transactional(readOnly = true)
   public @Nonnull
   Slice<UserGql> allUsers(@Nonnull String username,
-                          @Nonnull Pageable pageable) {
+                          @Nonnull Pageable pageable,
+                          @Nullable String searchQuery) {
     return userRepository.findByUsernameNot(
         username,
         pageable
@@ -108,30 +110,50 @@ public class UserService {
   @Transactional(readOnly = true)
   public @Nonnull
   Slice<UserGql> friends(@Nonnull String username,
-                         @Nonnull Pageable pageable) {
-    return userRepository.findFriends(
-            getRequiredUser(username),
-            pageable
-        ).map(f -> UserGql.fromEntity(f, FriendStatus.FRIEND));
+                         @Nonnull Pageable pageable, String searchQuery) {
+    return searchQuery == null
+        ? userRepository.findFriends(
+        getRequiredUser(username),
+        pageable
+    ).map(f -> UserGql.fromEntity(f, FriendStatus.FRIEND))
+        : userRepository.findFriends(
+        getRequiredUser(username),
+        pageable,
+        searchQuery
+    ).map(f -> UserGql.fromEntity(f, FriendStatus.FRIEND));
   }
 
   @Transactional(readOnly = true)
   public @Nonnull
   Slice<UserGql> incomeInvitations(@Nonnull String username,
-                                   @Nonnull Pageable pageable) {
-    return userRepository.findIncomeInvitations(
-            getRequiredUser(username),
-            pageable
-        ).map(i -> UserGql.fromEntity(i, FriendStatus.INVITATION_RECEIVED));
+                                   @Nonnull Pageable pageable,
+                                   @Nullable String searchQuery) {
+    return searchQuery == null
+        ? userRepository.findIncomeInvitations(
+        getRequiredUser(username),
+        pageable
+    ).map(i -> UserGql.fromEntity(i, FriendStatus.INVITATION_RECEIVED))
+        : userRepository.findIncomeInvitations(
+        getRequiredUser(username),
+        pageable,
+        searchQuery
+    ).map(i -> UserGql.fromEntity(i, FriendStatus.INVITATION_RECEIVED));
   }
 
   @Transactional(readOnly = true)
   public @Nonnull
   Slice<UserGql> outcomeInvitations(@Nonnull String username,
-                                    @Nonnull Pageable pageable) {
-    return userRepository.findOutcomeInvitations(
+                                    @Nonnull Pageable pageable,
+                                    @Nullable String searchQuery) {
+    return searchQuery == null
+        ? userRepository.findOutcomeInvitations(
         getRequiredUser(username),
         pageable
+    ).map(o -> UserGql.fromEntity(o, INVITATION_SENT))
+        : userRepository.findOutcomeInvitations(
+        getRequiredUser(username),
+        pageable,
+        searchQuery
     ).map(o -> UserGql.fromEntity(o, INVITATION_SENT));
   }
 

@@ -1,5 +1,6 @@
 package org.rangiffler.controller.query;
 
+import jakarta.annotation.Nullable;
 import org.rangiffler.model.type.LikeGql;
 import org.rangiffler.model.type.LikesGql;
 import org.rangiffler.model.type.PhotoGql;
@@ -33,30 +34,36 @@ public class UserController {
   @SchemaMapping(typeName = "User", field = "friends")
   public Slice<UserGql> friends(UserGql user,
                                 @Argument int page,
-                                @Argument int size) {
+                                @Argument int size,
+                                @Argument @Nullable String searchQuery) {
     return userService.friends(
         user.username(),
-        PageRequest.of(page, size)
+        PageRequest.of(page, size),
+        searchQuery
     );
   }
 
   @SchemaMapping(typeName = "User", field = "incomeInvitations")
   public Slice<UserGql> incomeInvitations(UserGql user,
                                           @Argument int page,
-                                          @Argument int size) {
+                                          @Argument int size,
+                                          @Argument @Nullable String searchQuery) {
     return userService.incomeInvitations(
         user.username(),
-        PageRequest.of(page, size)
+        PageRequest.of(page, size),
+        searchQuery
     );
   }
 
   @SchemaMapping(typeName = "User", field = "outcomeInvitations")
   public Slice<UserGql> outcomeInvitations(UserGql user,
                                            @Argument int page,
-                                           @Argument int size) {
+                                           @Argument int size,
+                                           @Argument @Nullable String searchQuery) {
     return userService.outcomeInvitations(
         user.username(),
-        PageRequest.of(page, size)
+        PageRequest.of(page, size),
+        searchQuery
     );
   }
 
