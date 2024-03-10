@@ -91,9 +91,8 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
                             alignItems: "center",
                         }}
                     >
-                        <PlaceOutlinedIcon sx={{width: 18}}/>
-                        <Typography component="h3" variant="subtitle1" marginLeft={0.5}>
-                            {photo.country.name}
+                        <Typography component="h3" variant="subtitle1">
+                            <img width={20} src={photo.country.flag} alt={photo.country.name}/> {photo.country.name}
                         </Typography>
                     </Box>
                     <Box

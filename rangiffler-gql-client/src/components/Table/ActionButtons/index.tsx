@@ -81,8 +81,11 @@ export const ActionButtons: FC<ActionButtonsInterface> = ({userId, friendStatus}
                 variant="outlined"
                 size="small"
                 onClick={() => handleAddUser(userId)}
+                sx={{
+                    width: 100
+                }}
             >
-                Add friend
+                Add
             </Button>
         )
     }
@@ -98,13 +101,21 @@ export const ActionButtons: FC<ActionButtonsInterface> = ({userId, friendStatus}
                         color="error"
                         size="small"
                         onClick={() => handleDeleteFriend(userId)}
+                        sx={{
+                            width: 100
+                        }}
                     >
-                        Remove friend
+                        Remove
                     </Button>
                 )}
             {
                 friendStatus === "INVITATION_SENT" && (
-                    <Chip label="Waiting response..." />
+                    <Chip
+                        sx={{
+                            width: 100
+                        }}
+                        label="Waiting..."
+                    />
 
                 )
             }
@@ -117,7 +128,8 @@ export const ActionButtons: FC<ActionButtonsInterface> = ({userId, friendStatus}
                             variant="contained"
                             size="small"
                             sx={{
-                                marginRight: 1
+                                marginRight: 1,
+                                width: 100,
                             }}
                             onClick={() => handleAcceptInvitation(userId)}
                         >
@@ -130,6 +142,9 @@ export const ActionButtons: FC<ActionButtonsInterface> = ({userId, friendStatus}
                             color="error"
                             size="small"
                             onClick={() => handleDeclineInvitation(userId)}
+                            sx={{
+                                width: 100
+                            }}
                         >
                             Decline
                         </Button>

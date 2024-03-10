@@ -1,8 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 
 const GET_PEOPLE = gql(`
-    query GetPeople($page: Int, $size: Int) {
-        users(page: $page, size: $size) {
+    query GetPeople($page: Int, $size: Int, $searchQuery: String) {
+        users(page: $page, size: $size, searchQuery: $searchQuery) {
             edges {
                 node {
                     id
@@ -13,6 +13,7 @@ const GET_PEOPLE = gql(`
                     location {
                         code
                         name
+                        flag
                     }
                     friendStatus
                 }

@@ -187,7 +187,7 @@ export const ProfileForm = () => {
                             >
                                 {countries.map((option) => (
                                     <MenuItem key={option.code} value={option.code}>
-                                        {option.name}
+                                        <img width={20} src={option.flag} alt={option.name}/>&nbsp;{option.name}
                                     </MenuItem>
                                 ))}
                             </Select>

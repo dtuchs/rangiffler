@@ -14,6 +14,7 @@ const GET_FRIENDS = gql(`
                         location {
                             code
                             name
+                            flag
                         }
                         friendStatus
                     }

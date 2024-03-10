@@ -82,7 +82,9 @@ export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPa
                                                 <TableCell>{row.username}</TableCell>
                                                 <TableCell>{row.firstname ?? "---"}</TableCell>
                                                 <TableCell>{row.surname ?? "---"}</TableCell>
-                                                <TableCell>{row.location?.name}</TableCell>
+                                                <TableCell>
+                                                    <img width={20} src={row.location?.flag ?? ""} alt={row.location?.name}/> {row.location?.name}
+                                                </TableCell>
                                                 <TableCell align="right" sx={{
                                                     maxWidth: "150px"
                                                 }}>

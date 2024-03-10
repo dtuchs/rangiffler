@@ -18,16 +18,7 @@ export const TablePagination: FC<TablePaginationInterface> = ({hasNextValues, ha
             <Button type="button"
                     sx={{
                         margin: 2,
-                    }}
-                    variant="outlined"
-                    disabled={!hasNextValues}
-                    onClick={onNextClick}
-            >
-                Next
-            </Button>
-            <Button type="button"
-                    sx={{
-                        margin: 2,
+                        width: 100,
                     }}
                     variant="outlined"
                     disabled={!hasPreviousValues}
@@ -35,6 +26,18 @@ export const TablePagination: FC<TablePaginationInterface> = ({hasNextValues, ha
             >
                 Previous
             </Button>
+            <Button type="button"
+                    sx={{
+                        margin: 2,
+                        width: 100,
+                    }}
+                    variant="outlined"
+                    disabled={!hasNextValues}
+                    onClick={onNextClick}
+            >
+                Next
+            </Button>
+
         </Box>
     )
 }

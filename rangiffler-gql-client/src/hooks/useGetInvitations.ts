@@ -14,6 +14,7 @@ const GET_INVITATIONS = gql(`
                         location {
                             code
                             name
+                            flag
                         }
                         friendStatus
                     }
