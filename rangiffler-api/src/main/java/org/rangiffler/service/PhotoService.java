@@ -13,7 +13,7 @@ import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.input.PhotoInput;
 import org.rangiffler.model.type.LikeGql;
 import org.rangiffler.model.type.PhotoGql;
-import org.rangiffler.utils.DecodedBinary;
+import org.rangiffler.utils.StringAsBytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -45,7 +45,7 @@ public class PhotoService {
     PhotoEntity photo = new PhotoEntity();
     CountryEntity country = countryRepository.findByCode(photoInput.country().code())
         .orElseThrow(() -> new NotFoundException("Country not found by code: " + photoInput.country().code()));
-    photo.setPhoto(new DecodedBinary(photoInput.src()).bytes());
+    photo.setPhoto(new StringAsBytes(photoInput.src()).bytes());
     photo.setDescription(photoInput.description());
     photo.setCreatedDate(new Date());
     photo.setCountry(country);

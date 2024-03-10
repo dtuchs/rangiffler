@@ -45,20 +45,23 @@ public class UserMutationController {
    *    friendship(input: {
    *      user: "2e4bc114-c65c-4487-9fb3-dd9da16907ce",
    *      action: ADD
-   *    })
+   *    }) {
+   *      id
+   *      username
+   *      friendStatus
+   *     }
    *  }
    * </pre>
    */
   @MutationMapping
-  public void friendship(@AuthenticationPrincipal Jwt principal,
-                         @Argument FriendshipInput input) {
+  public UserGql friendship(@AuthenticationPrincipal Jwt principal,
+                            @Argument FriendshipInput input) {
     String username = principal.getClaim("sub");
-    switch (input.action()) {
+    return switch (input.action()) {
       case ADD -> userService.addFriend(username, input.user());
       case ACCEPT -> userService.acceptInvitation(username, input.user());
       case REJECT -> userService.declineInvitation(username, input.user());
       case DELETE -> userService.removeFriend(username, input.user());
-      default -> throw new UnsupportedOperationException("Action " + input.action() + " not implemented");
-    }
+    };
   }
 }

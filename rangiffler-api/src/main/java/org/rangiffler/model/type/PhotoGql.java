@@ -1,7 +1,7 @@
 package org.rangiffler.model.type;
 
 import org.rangiffler.data.PhotoEntity;
-import org.rangiffler.utils.EncodedBinary;
+import org.rangiffler.utils.BytesAsString;
 
 import java.util.Date;
 import java.util.UUID;
@@ -17,7 +17,7 @@ public record PhotoGql(
   public static PhotoGql fromEntity(PhotoEntity photoEntity) {
     return new PhotoGql(
         photoEntity.getId(),
-        new EncodedBinary(photoEntity.getPhoto()).string(),
+        new BytesAsString(photoEntity.getPhoto()).string(),
         CountryGql.fromEntity(photoEntity.getCountry()),
         photoEntity.getDescription(),
         photoEntity.getCreatedDate(),

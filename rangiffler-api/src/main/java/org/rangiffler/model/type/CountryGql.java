@@ -1,7 +1,7 @@
 package org.rangiffler.model.type;
 
 import org.rangiffler.data.CountryEntity;
-import org.rangiffler.utils.EncodedBinary;
+import org.rangiffler.utils.BytesAsString;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public record CountryGql(
         country.getId(),
         country.getName(),
         country.getCode(),
-        new EncodedBinary(country.getFlag()).string()
+        new BytesAsString(country.getFlag()).string()
     );
   }
 }

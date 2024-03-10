@@ -2,7 +2,7 @@ package org.rangiffler.model.type;
 
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.model.FriendStatus;
-import org.rangiffler.utils.EncodedBinary;
+import org.rangiffler.utils.BytesAsString;
 import org.springframework.data.domain.Slice;
 
 import java.util.UUID;
@@ -24,14 +24,14 @@ public record UserGql(
     return fromEntity(userEntity, null);
   }
 
-  public static UserGql fromEntity(UserEntity userEntity, FriendStatus friendshipStatus) {
+  public static UserGql fromEntity(UserEntity userEntity, FriendStatus friendStatus) {
     return new UserGql(
         userEntity.getId(),
         userEntity.getUsername(),
         userEntity.getFirstname(),
         userEntity.getSurname(),
-        new EncodedBinary(userEntity.getAvatar()).string(),
-        friendshipStatus,
+        new BytesAsString(userEntity.getAvatar()).string(),
+        friendStatus,
         null,
         null,
         null,

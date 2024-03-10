@@ -10,7 +10,7 @@ type Mutation {
     user(input: UserInput!): User!
     photo(input: PhotoInput!): Photo!
     deletePhoto(id: ID!): Boolean
-    friendship(input: FriendshipInput!): Boolean
+    friendship(input: FriendshipInput!): User!
 }
 
 type User {

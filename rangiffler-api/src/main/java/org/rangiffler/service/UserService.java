@@ -11,7 +11,7 @@ import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.FriendStatus;
 import org.rangiffler.model.input.UserInput;
 import org.rangiffler.model.type.UserGql;
-import org.rangiffler.utils.DecodedBinary;
+import org.rangiffler.utils.StringAsBytes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -19,8 +19,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
+
+import static org.rangiffler.model.FriendStatus.FRIEND;
+import static org.rangiffler.model.FriendStatus.INVITATION_SENT;
 
 @Service
 public class UserService {
@@ -44,7 +46,7 @@ public class UserService {
       userEntity.setSurname(user.surname());
     }
     if (user.avatar() != null) {
-      userEntity.setAvatar(new DecodedBinary(user.avatar()).bytes());
+      userEntity.setAvatar(new StringAsBytes(user.avatar()).bytes());
     }
     if (user.location() != null) {
       CountryEntity country = countryRepository.findByCode(user.location().code())
@@ -95,7 +97,7 @@ public class UserService {
             .findFirst()
             .map(
                 itm -> UserGql.fromEntity(ue, itm.getStatus() == FriendshipStatus.PENDING
-                    ? FriendStatus.INVITATION_SENT
+                    ? INVITATION_SENT
                     : FriendStatus.FRIEND)
             ).orElse(UserGql.fromEntity(ue));
       }
@@ -130,19 +132,20 @@ public class UserService {
     return userRepository.findOutcomeInvitations(
         getRequiredUser(username),
         pageable
-    ).map(o -> UserGql.fromEntity(o, FriendStatus.INVITATION_SENT));
+    ).map(o -> UserGql.fromEntity(o, INVITATION_SENT));
   }
 
   @Transactional
-  public void addFriend(@Nonnull String username, @Nonnull UUID friendId) {
+  public UserGql addFriend(@Nonnull String username, @Nonnull UUID friendId) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity friendEntity = getRequiredUser(friendId);
     currentUser.addFriends(FriendshipStatus.PENDING, friendEntity);
     userRepository.save(currentUser);
+    return UserGql.fromEntity(friendEntity, INVITATION_SENT);
   }
 
   @Transactional
-  public void acceptInvitation(@Nonnull String username, @Nonnull UUID invitationId) {
+  public UserGql acceptInvitation(@Nonnull String username, @Nonnull UUID invitationId) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity inviteUser = getRequiredUser(invitationId);
 
@@ -155,10 +158,11 @@ public class UserService {
     invite.setStatus(FriendshipStatus.ACCEPTED);
     currentUser.addFriends(FriendshipStatus.ACCEPTED, inviteUser);
     userRepository.save(currentUser);
+    return UserGql.fromEntity(inviteUser, FRIEND);
   }
 
   @Transactional
-  public void declineInvitation(@Nonnull String username, @Nonnull UUID invitationId) {
+  public UserGql declineInvitation(@Nonnull String username, @Nonnull UUID invitationId) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity friendToDecline = getRequiredUser(invitationId);
 
@@ -167,10 +171,11 @@ public class UserService {
 
     userRepository.save(currentUser);
     userRepository.save(friendToDecline);
+    return UserGql.fromEntity(friendToDecline);
   }
 
   @Transactional
-  public void removeFriend(@Nonnull String username, @Nonnull UUID friendId) {
+  public UserGql removeFriend(@Nonnull String username, @Nonnull UUID friendId) {
     UserEntity currentUser = getRequiredUser(username);
     UserEntity friendToRemove = getRequiredUser(friendId);
 
@@ -181,6 +186,7 @@ public class UserService {
 
     userRepository.save(currentUser);
     userRepository.save(friendToRemove);
+    return UserGql.fromEntity(friendToRemove);
   }
 
   @Nonnull
