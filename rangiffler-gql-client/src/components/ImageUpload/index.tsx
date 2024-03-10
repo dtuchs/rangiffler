@@ -1,4 +1,4 @@
-import {Box, Button, useTheme} from "@mui/material"
+import {Avatar, Box, Button, useTheme} from "@mui/material"
 import {ChangeEvent, FC } from "react";
 import PhotoCameraRoundedIcon from '@mui/icons-material/PhotoCameraRounded';
 import "./styles.css";
@@ -6,11 +6,12 @@ import "./styles.css";
 interface ImageUploadInterface {
     onFileUpload: (newFile?: string) => void;
     buttonText: string;
-    file?: string;
     error: boolean;
+    file?: string;
     helperText?: string;
+    isAvatar?: boolean
 }
-export const ImageUpload: FC<ImageUploadInterface> = ({onFileUpload, buttonText, file, error = false, helperText}) => {
+export const ImageUpload: FC<ImageUploadInterface> = ({onFileUpload, buttonText, file, error = false, helperText, isAvatar = false}) => {
 
     const theme = useTheme();
 
@@ -42,32 +43,38 @@ export const ImageUpload: FC<ImageUploadInterface> = ({onFileUpload, buttonText,
                 hidden
                 onChange={handleUpload}
             />
-            <Box sx={{
-                margin: "0 auto",
-                width: "300px",
-                height: "300px"
-            }}>
-                {
-                    file ? (
-                            <img
-                                className="image-upload__image"
-                                src={file}
-                                width="100%"
-                                height="100%"
+            {isAvatar ? (
+                <Box sx={{margin: "0 auto"}}>
+                    <Avatar src={file} sx={{width: 220, height: 220}}/>
+                </Box>
+            ) : (
+                <Box sx={{
+                    margin: "0 auto",
+                    width: "300px",
+                    height: "300px"
+                }}>
+                    {
+                        file ? (
+                                <img
+                                    className="image-upload__image"
+                                    src={file}
+                                    width="100%"
+                                    height="100%"
+                                />
+                            ):
+                            <PhotoCameraRoundedIcon
+                                sx={{
+                                    width: "100%",
+                                    height: "100%",
+                                    padding: 5,
+                                    color: theme.palette.primary.main,
+                                    border: `2px solid ${theme.palette.primary.main}`,
+                                    borderRadius: 3,
+                                }}
                             />
-                        ):
-                        <PhotoCameraRoundedIcon
-                            sx={{
-                                width: "100%",
-                                height: "100%",
-                                padding: 5,
-                                color: theme.palette.primary.main,
-                                border: `2px solid ${theme.palette.primary.main}`,
-                                borderRadius: 3,
-                            }}
-                        />
-                }
-            </Box>
+                    }
+                </Box>
+            )}
             <label htmlFor="image__input">
                 <Button variant="contained" component="span" sx={{marginTop: 1}}>{buttonText}</Button>
             </label>

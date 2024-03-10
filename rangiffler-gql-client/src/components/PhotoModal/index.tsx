@@ -1,7 +1,8 @@
 import {Box, Button, Grid, MenuItem, Modal as MuiModal, TextField, Typography} from "@mui/material";
 import {ChangeEvent, FormEvent, FC, useState } from "react";
 import { ImageUpload } from "../ImageUpload";
-import { PhotoFormProps, countries, formHasErrors, formValidate } from "./formValidate";
+import { PhotoFormProps, formHasErrors, formValidate } from "./formValidate";
+import { useCountries } from "../../context/CountriesContext";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -41,6 +42,7 @@ interface PhotoModalInterface {
 }
 
 export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formData, isEdit = false}) => {
+    const {countries} = useCountries();
 
     const [formValues, setFormValues] = useState<PhotoFormProps>(formData ?? formInitialState);
 
@@ -63,7 +65,7 @@ export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formDa
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         const validatedData = formValidate(formValues);
-        setFormValues(validatedData)
+        setFormValues(validatedData);
         if (!formHasErrors(validatedData)) {
             // update data, clear fields, close modal
             handleClose();
@@ -115,8 +117,8 @@ export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formDa
                             fullWidth
                         >
                             {countries.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.label}
+                                <MenuItem key={option.code} value={option.code}>
+                                    {option.name}
                                 </MenuItem>
                             ))}
                         </TextField>

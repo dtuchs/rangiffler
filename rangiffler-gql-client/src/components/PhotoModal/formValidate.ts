@@ -5,21 +5,6 @@ export const EMPTY_COUNTRY_ERROR = "You have to select country";
 
 export interface IStringIndex extends Record<string, any> {};
 
-export const countries = [
-    {
-        value: 'RU',
-        label: 'Russia',
-    },
-    {
-        value: 'GE',
-        label: 'Germany',
-    },
-    {
-        value: 'KZ',
-        label: 'Kazakhstan',
-    },
-];
-
 export type PhotoFormProps = IStringIndex & {
     description: {
         value: string,
@@ -64,7 +49,7 @@ export const formValidate = (formValues: PhotoFormProps): PhotoFormProps => {
     return newFormValues;
 };
 
-export const formHasErrors = (formValues: PhotoFormProps) => {
+export const formHasErrors = (formValues: Record<string, any>) => {
     const keys = Object.keys(formValues);
     return keys.some((key) => formValues[key].error === true);
 };

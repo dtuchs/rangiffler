@@ -1,0 +1,47 @@
+import { gql, useQuery } from "@apollo/client";
+
+const GET_PEOPLE = gql(`
+    query GetPeople($page: Int, $size: Int) {
+        users(page: $page, size: $size) {
+            edges {
+                node {
+                    id
+                    username
+                    firstname
+                    surname
+                    location {
+                        code
+                        name
+                    }
+                    friendStatus
+                }
+            }
+            pageInfo {
+                hasPreviousPage
+                hasNextPage
+            }
+       }
+    }
+`);
+
+type getPeopleRequestType = {
+    page: number
+}
+
+export const useQueryPeople = (req: getPeopleRequestType) => {
+    const {data, loading, error, refetch} = useQuery(GET_PEOPLE, {
+        variables: {
+            page: req.page ?? 0,
+            size: 10,
+        }});
+
+    console.log();
+    return {
+        data: data?.users?.edges?.map((e: any) => e?.node) ?? [],
+        hasPreviousPage: data?.users?.pageInfo?.hasPreviousPage,
+        hasNextPage: data?.users?.pageInfo?.hasNextPage,
+        loading,
+        error,
+        refetch,
+    };
+}

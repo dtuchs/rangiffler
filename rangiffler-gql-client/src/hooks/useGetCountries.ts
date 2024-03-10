@@ -2,7 +2,7 @@ import {gql, useQuery} from "@apollo/client";
 
 const GET_COUNTRIES = gql(`
     query GetCountries {
-        country {
+        countries {
             code
             name
             flag

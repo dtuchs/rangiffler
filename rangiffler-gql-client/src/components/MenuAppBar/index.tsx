@@ -6,13 +6,28 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
 import { Sidebar } from '../Sidebar';
-import { FC } from 'react';
+import { FC} from 'react';
+import { authClient } from '../../api/authClient';
+import { clearSession } from '../../api/authUtils';
+import { useSnackBar } from '../../context/SnackBarContext';
+import { useNavigate } from 'react-router-dom';
+import { apiClient } from '../../api/apolloClient';
 
 interface MenuAppBarInterface {
     sidebarState: boolean,
     handleChangeState: (isOpened: boolean) => void,
 }
 export const MenuAppBar: FC<MenuAppBarInterface> = ({sidebarState, handleChangeState}) => {
+    const snackbar = useSnackBar();
+    const navigate = useNavigate();
+
+    const onLogoutClick = async () => {
+        await authClient.logout();
+        clearSession();
+        snackbar.showSnackBar("Session completed", "info");
+        apiClient.cache.reset();
+        navigate("/", {replace: true});
+    }
     return (
         <Box sx={{
             flexGrow: 1,
@@ -41,7 +56,7 @@ export const MenuAppBar: FC<MenuAppBarInterface> = ({sidebarState, handleChangeS
                         <IconButton
                             size="large"
                             aria-label="Logout"
-                            onClick={() => {}}
+                            onClick={onLogoutClick}
                             color="inherit"
                         >
                             <ExitToAppOutlinedIcon />

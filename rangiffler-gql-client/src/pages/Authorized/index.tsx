@@ -13,10 +13,11 @@ export const AuthorizedPage = () => {
         if (res?.id_token) {
             localStorage.setItem("id_token", res.id_token);
             setTimeout(async () => {
-                navigate("/");
+                navigate("/", {replace: true});
             }, 500);
         } else {
-            console.log("Не удалось получить токен")
+            console.log("Не удалось получить токен");
+            navigate("/");
         }
     };
 
@@ -27,9 +28,9 @@ export const AuthorizedPage = () => {
             const data = getTokenFromUrlEncodedParams(code, verifier);
             getToken(data);
         } else {
-            console.log("Can not login to Cabinet")
+            console.log("Can not login to Cabinet");
+            navigate("/");
         }
-        navigate("/");
     }, []);
 
     return (

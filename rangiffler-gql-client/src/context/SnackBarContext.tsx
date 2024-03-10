@@ -2,7 +2,7 @@ import {Alert, Snackbar } from '@mui/material';
 import {FC, ReactNode, createContext, useContext, useState } from 'react';
 
 type SnackBarContextActions = {
-    showSnackBar: (text: string, typeColor: "error" | "success") => void;
+    showSnackBar: (text: string, typeColor: "error" | "success" | "info") => void;
 };
 
 const SnackBarContext = createContext({} as SnackBarContextActions);
@@ -14,9 +14,9 @@ interface SnackBarContextProviderProps {
 const SnackBarProvider: FC<SnackBarContextProviderProps> = ({children}) => {
     const [open, setOpen] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
-    const [typeColor, setTypeColor] = useState<"error"| "success">("success");
+    const [typeColor, setTypeColor] = useState<"error"| "success" | "info">("success");
 
-    const showSnackBar = (text: string, color: "error" | "success") => {
+    const showSnackBar = (text: string, color: "error" | "success" | "info") => {
         setMessage(text);
         setTypeColor(color);
         setOpen(true);
