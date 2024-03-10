@@ -1,8 +1,12 @@
-import {Box, Button, Grid, MenuItem, Modal as MuiModal, TextField, Typography} from "@mui/material";
+import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Modal as MuiModal,
+    OutlinedInput, Select, SelectChangeEvent, TextField, Typography} from "@mui/material";
 import {ChangeEvent, FormEvent, FC, useState } from "react";
 import { ImageUpload } from "../ImageUpload";
 import { PhotoFormProps, formHasErrors, formValidate } from "./formValidate";
 import { useCountries } from "../../context/CountriesContext";
+import { useCreatePhoto } from "../../hooks/useCreatePhoto";
+import { useSnackBar } from "../../context/SnackBarContext";
+import { MenuProps } from "../CountrySelect";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -22,7 +26,7 @@ const formInitialState: PhotoFormProps = {
         errorMessage: "",
     },
     country: {
-        value: "KZ",
+        value: "ru",
         error: false,
         errorMessage: "",
     },
@@ -43,6 +47,11 @@ interface PhotoModalInterface {
 
 export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formData, isEdit = false}) => {
     const {countries} = useCountries();
+    const snackbar = useSnackBar();
+    const {createPhoto} = useCreatePhoto({
+        onError: () => snackbar.showSnackBar("Can not create new post", "error"),
+        onCompleted: () => snackbar.showSnackBar("New post created", "success"),
+    });
 
     const [formValues, setFormValues] = useState<PhotoFormProps>(formData ?? formInitialState);
 
@@ -60,14 +69,35 @@ export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formDa
     const handleClose = () => {
         onClose();
         setFormValues(formInitialState);
-    }
+    };
+
+    const handleSelectValueChange = (event: SelectChangeEvent<string>) => {
+        const {name, value} = event.target;
+        setFormValues({
+            ...formValues,
+            [name]: {
+                ...formValues[name],
+                value,
+            }
+        })
+    };
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         const validatedData = formValidate(formValues);
         setFormValues(validatedData);
         if (!formHasErrors(validatedData)) {
-            // update data, clear fields, close modal
+            createPhoto({
+                variables: {
+                    input: {
+                        src: formValues.src.value!!,
+                        description: formValues.description.value,
+                        country: {
+                            code: formValues.country.value,
+                        }
+                    }
+                }
+            });
             handleClose();
         } else {
 
@@ -105,23 +135,30 @@ export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formDa
                         }
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField
-                            id="country"
-                            select
-                            value={formValues.country.value}
-                            error={formValues.country.error}
-                            helperText={formValues.country.error && formValues.country.errorMessage}
-                            onChange={handleChange}
-                            required
-                            label="Country"
-                            fullWidth
-                        >
-                            {countries.map((option) => (
-                                <MenuItem key={option.code} value={option.code}>
-                                    {option.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
+                        <FormControl sx={{width: "100%"}}>
+                            <InputLabel id="select-country-label">Country</InputLabel>
+                            <Select
+                                id="country"
+                                name="country"
+                                labelId="select-country-label"
+                                value={formValues.country.value}
+                                onChange={handleSelectValueChange}
+                                fullWidth
+                                input={
+                                    <OutlinedInput
+                                        id="select-country"
+                                        label="Location"
+                                        multiline={false}
+                                    />}
+                                MenuProps={MenuProps}
+                            >
+                                {countries.map((option) => (
+                                    <MenuItem key={option.code} value={option.code}>
+                                        {option.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField

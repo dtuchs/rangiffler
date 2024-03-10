@@ -1,21 +1,63 @@
-import {Box, Button, Grid, Typography } from '@mui/material';
+import {Box, Button, IconButton, Typography, useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import "./styles.css";
+import { Photo } from '../../types/Photo';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import { SessionContext } from '../../context/SessionContext';
+import { useDeletePhoto } from '../../hooks/useDeletePhoto';
+import { useSnackBar } from '../../context/SnackBarContext';
+import { useLikePhoto } from '../../hooks/useLikePhoto';
 
 interface PhotoCardInterface {
-    onDeleteClick: () => void;
+    photo: Photo;
     onEditClick: () => void;
 }
-export const PhotoCard: FC<PhotoCardInterface> = ({onDeleteClick, onEditClick}) => {
+export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
+    const {user} = useContext(SessionContext);
+    const snackbar = useSnackBar();
+    const theme = useTheme();
+
+
+    const {deletePhoto} = useDeletePhoto({
+        onError: () => snackbar.showSnackBar("Can not delete post", "error"),
+        onCompleted: () => snackbar.showSnackBar("Post deleted", "success"),
+    });
+
+    const {likePhoto} = useLikePhoto({
+        onError: () => snackbar.showSnackBar("Post was not liked", "error"),
+        onCompleted: () => snackbar.showSnackBar("Post was succesfully liked", "success"),
+    });
+
+    const handleDeletePhoto = () => {
+        deletePhoto({
+            variables: {
+                id: photo.id,
+            }
+        });
+    }
+
+    const handleLikePhoto = () => {
+        likePhoto({
+            variables: {
+                input: {
+                    id: photo.id,
+                    like: {
+                        user: user?.id!!,
+                    }
+                }
+            }
+        });
+    }
+
     return (
-        <Grid item xs={3}>
             <Paper elevation={3}>
                 <img
                     className="photo-card__image"
-                    src="https://images.unsplash.com/photo-1617296538902-887900d9b592?ixid=M3w0Njc5ODF8MHwxfGFsbHx8fHx8fHx8fDE2ODc5NzExMDB8&ixlib=rb-4.0.3&w=128&h=128&auto=format&fit=crop"
+                    src={photo.src}
+                    alt={photo.description}
                 />
                 <Box paddingX={1.25}>
                     <Box
@@ -26,8 +68,22 @@ export const PhotoCard: FC<PhotoCardInterface> = ({onDeleteClick, onEditClick}) 
                     >
                         <FavoriteOutlinedIcon sx={{width: 15}}/>
                         <Typography component="p" variant="body2" marginLeft={0.5}>
-                            20 likes
+                            {photo.likes.total} likes
                         </Typography>
+                        <IconButton
+                            aria-label="like" size="small"
+                            sx={{
+                                marginLeft: "auto",
+                                color: theme.palette.primary.main,
+                            }}
+                            onClick={handleLikePhoto}
+                        >
+                            {
+                                photo.likes?.likes.some((el) => el.user === user?.id!!) ?
+                                    <FavoriteOutlinedIcon/> :
+                                    <FavoriteBorderOutlinedIcon/>
+                            }
+                        </IconButton>
                     </Box>
                     <Box
                         sx={{
@@ -37,7 +93,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({onDeleteClick, onEditClick}) 
                     >
                         <PlaceOutlinedIcon sx={{width: 18}}/>
                         <Typography component="h3" variant="subtitle1" marginLeft={0.5}>
-                            Spain
+                            {photo.country.name}
                         </Typography>
                     </Box>
                     <Box
@@ -47,7 +103,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({onDeleteClick, onEditClick}) 
                         }}
                     >
                         <Typography component="p" variant="body2" className="photo-card__content" color="secondary">
-                            The best place I've ever been. Magic memories forever. I'll be back for sure! Best, best, best
+                            {photo.description}
                         </Typography>
                     </Box>
                     <Box
@@ -58,10 +114,9 @@ export const PhotoCard: FC<PhotoCardInterface> = ({onDeleteClick, onEditClick}) 
                         }}
                     >
                         <Button variant="contained" sx={{margin: 2}} onClick={onEditClick}>Edit</Button>
-                        <Button sx={{margin: 2}} onClick={onDeleteClick}>Delete</Button>
+                        <Button sx={{margin: 2}} onClick={handleDeletePhoto}>Delete</Button>
                     </Box>
                 </Box>
             </Paper>
-        </Grid>
     );
 };
