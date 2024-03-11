@@ -1,6 +1,5 @@
 import {Box, Button, IconButton, Typography, useTheme } from '@mui/material';
 import Paper from '@mui/material/Paper';
-import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import { FC, useContext } from 'react';
 import "./styles.css";
@@ -13,7 +12,7 @@ import { useLikePhoto } from '../../hooks/useLikePhoto';
 
 interface PhotoCardInterface {
     photo: Photo;
-    onEditClick: () => void;
+    onEditClick: (photo: Photo) => void;
 }
 export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
     const {user} = useContext(SessionContext);
@@ -112,7 +111,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
                             justifyContent: "space-between",
                         }}
                     >
-                        <Button variant="contained" sx={{margin: 2}} onClick={onEditClick}>Edit</Button>
+                        <Button variant="contained" sx={{margin: 2}} onClick={() => onEditClick(photo)}>Edit</Button>
                         <Button sx={{margin: 2}} onClick={handleDeletePhoto}>Delete</Button>
                     </Box>
                 </Box>

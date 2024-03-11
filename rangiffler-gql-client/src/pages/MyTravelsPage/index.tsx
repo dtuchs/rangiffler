@@ -4,14 +4,42 @@ import {WorldMap} from "../../components/WorldMap";
 import {Toggle} from "../../components/Toggle";
 import {useState} from "react";
 import { PhotoModal } from "../../components/PhotoModal";
-import {PhotoFormProps} from "../../components/PhotoModal/formValidate";
+import {PhotoFormProps, formInitialState} from "../../components/PhotoModal/formValidate";
+import { Photo } from "../../types/Photo";
+import { useGetFeed } from "../../hooks/useGetFeed";
+import { useGetPhotos } from "../../hooks/useGetPhotos";
 
 export const MyTravelsPage = () => {
-    const [modalState, setModalState] = useState<boolean>(false);
-    const [selectedImage, setSelectedImage] = useState<PhotoFormProps | null>(null);
+    const [modalState, setModalState] = useState<{ isVisible: boolean, formData: PhotoFormProps | null, }>({
+        isVisible: false,
+        formData: null
+    });
+
+    const [withMyFriends, setWithMyFriends] = useState(false);
+    const [page, setPage] = useState(0);
+    const {data} = useGetPhotos({page, withFriends: withMyFriends});
+    const feed = useGetFeed({withFriends: withMyFriends});
+
+    const handleSelectImage = (photo: Photo) => {
+        setModalState({
+            isVisible: true,
+            formData: {...formInitialState,
+                    description: {
+                    ...formInitialState.description,
+                        value: photo.description
+                    },
+                    src: {
+                    ...formInitialState.src,
+                        value: photo.src,
+                    }
+                }
+        });
+    }
 
     return (
-        <Container>
+        <Container sx={{
+            paddingBottom: 5,
+        }}>
             <Typography
                 variant="h5"
                 component="h2"
@@ -33,10 +61,10 @@ export const MyTravelsPage = () => {
                     <Box sx={{
                         margin: 1,
                     }}>
-                        <Toggle/>
+                        <Toggle withMyFriends={withMyFriends} setWithMyFriends={setWithMyFriends}/>
                     </Box>
                 </Box>
-                <WorldMap/>
+                <WorldMap data={feed.data}/>
                 <Box>
                     <Button
                         variant="contained"
@@ -45,22 +73,27 @@ export const MyTravelsPage = () => {
                             marginLeft: "auto",
                         }}
                         onClick={() => {
-                            setModalState(true)
+                            setModalState({
+                                isVisible: true,
+                                formData: null,
+                            })
                         }}
                     >Add photo
                     </Button>
                 </Box>
             </Box>
-            <PhotoContainer setSelectedImage={setSelectedImage}/>
-            <PhotoModal 
+            <PhotoContainer onSelectImage={handleSelectImage} data={data}/>
+            <PhotoModal
                 modalState={modalState}
-                isEdit={Boolean(selectedImage)}
-                formData={selectedImage}
+                isEdit={!!(modalState.formData)}
                 onClose={() => {
-                    setModalState(false);
-                    setSelectedImage(null);
+                    setModalState({
+                        isVisible: false,
+                        formData: null,
+                    });
                 }}
             />
         </Container>
     )
 }
+

@@ -26,24 +26,19 @@ const GET_PHOTOS = gql(`
                     hasPreviousPage
                     hasNextPage
                 }        
-            }
-            stat {
-                count
-                country {
-                    code
-                }
-            }      
+            }    
         }
     }
 `);
 
 type getPhotosRequestType = {
-    page: number
+    page: number,
+    withFriends: boolean,
 }
 export const useGetPhotos = (req: getPhotosRequestType) => {
     const {data, loading, error, refetch} = useQuery(GET_PHOTOS, {
         variables: {
-            withFriends: true,
+            withFriends: req.withFriends,
             page: req.page ?? 0,
             size: 10,
         }});

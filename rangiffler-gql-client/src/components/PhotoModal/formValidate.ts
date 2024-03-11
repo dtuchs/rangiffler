@@ -23,6 +23,24 @@ export type PhotoFormProps = IStringIndex & {
     }
 }
 
+export const formInitialState: PhotoFormProps = {
+    description: {
+        value: "",
+        error: false,
+        errorMessage: "",
+    },
+    country: {
+        value: "ru",
+        error: false,
+        errorMessage: "",
+    },
+    src: {
+        value: undefined,
+        error: false,
+        errorMessage: "",
+    }
+};
+
 
 export const formValidate = (formValues: PhotoFormProps): PhotoFormProps => {
     let newFormValues = {...formValues};

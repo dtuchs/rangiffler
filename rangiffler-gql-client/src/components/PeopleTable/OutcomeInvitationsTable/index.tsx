@@ -16,7 +16,6 @@ export const OutcomeInvitationsTable = () => {
         refetch();
     }
 
-
     return (
         <PeopleTable
             data={data}

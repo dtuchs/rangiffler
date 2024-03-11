@@ -2,7 +2,7 @@ import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Modal as MuiModal,
     OutlinedInput, Select, SelectChangeEvent, TextField, Typography} from "@mui/material";
 import {ChangeEvent, FormEvent, FC, useState } from "react";
 import { ImageUpload } from "../ImageUpload";
-import { PhotoFormProps, formHasErrors, formValidate } from "./formValidate";
+import { PhotoFormProps, formHasErrors, formInitialState, formValidate } from "./formValidate";
 import { useCountries } from "../../context/CountriesContext";
 import { useCreatePhoto } from "../../hooks/useCreatePhoto";
 import { useSnackBar } from "../../context/SnackBarContext";
@@ -19,33 +19,17 @@ const style = {
     p: 4,
 };
 
-const formInitialState: PhotoFormProps = {
-    description: {
-        value: "",
-        error: false,
-        errorMessage: "",
-    },
-    country: {
-        value: "ru",
-        error: false,
-        errorMessage: "",
-    },
-    src: {
-        value: undefined,
-        error: false,
-        errorMessage: "",
-    }
-};
-
 
 interface PhotoModalInterface {
-    modalState: boolean;
+    modalState: {
+        isVisible: boolean,
+        formData: PhotoFormProps | null,
+    };
     onClose: () => void;
-    formData: PhotoFormProps | null;
     isEdit: boolean;
 }
 
-export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formData, isEdit = false}) => {
+export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, isEdit = false}) => {
     const {countries} = useCountries();
     const snackbar = useSnackBar();
     const {createPhoto} = useCreatePhoto({
@@ -53,7 +37,7 @@ export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formDa
         onCompleted: () => snackbar.showSnackBar("New post created", "success"),
     });
 
-    const [formValues, setFormValues] = useState<PhotoFormProps>(formData ?? formInitialState);
+    const [formValues, setFormValues] = useState<PhotoFormProps>(modalState.formData ?? formInitialState);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {name, value} = event.target;
@@ -106,7 +90,7 @@ export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formDa
 
     return (
         <MuiModal
-            open={modalState}
+            open={modalState.isVisible}
             onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
@@ -119,7 +103,12 @@ export const PhotoModal: FC<PhotoModalInterface> = ({modalState, onClose, formDa
                     <Grid item xs={12}>
                         {
                             isEdit ? 
-                                <img src={formValues.src.value} alt={formValues.description.value ?? "Фото пользователя"}/>
+                                <img
+                                    width={300}
+                                    height={300}
+                                    src={formValues.src.value}
+                                    alt={formValues.description.value ?? "Фото пользователя"}
+                                />
                             :
                             <ImageUpload
                                 buttonText="Upload new image"

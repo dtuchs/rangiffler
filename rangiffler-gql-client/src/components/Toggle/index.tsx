@@ -1,28 +1,30 @@
 import {ToggleButton, ToggleButtonGroup } from "@mui/material"
-import { useState } from "react";
+import {FC } from "react";
 
-export const Toggle = () => {
-
-    const [filter, setFilter] = useState('my');
+interface ToggleInterface {
+    withMyFriends: boolean,
+    setWithMyFriends: (withMyFriends: boolean) => void;
+}
+export const Toggle: FC<ToggleInterface> = ({withMyFriends, setWithMyFriends}) => {
 
     const handleChange = (
         _event: React.MouseEvent<HTMLElement>,
         newFilter: "my" | "friends",
     ) => {
-        setFilter(newFilter);
+        setWithMyFriends(newFilter === "friends");
     };
 
     return (
         <ToggleButtonGroup
             color="primary"
             size="small"
-            value={filter}
+            value={withMyFriends ? "friends" : "my"}
             exclusive
             onChange={handleChange}
             aria-label="Travels filter"
         >
             <ToggleButton value="my">Only my travels</ToggleButton>
-            <ToggleButton value="friends">Include friends</ToggleButton>
+            <ToggleButton value="friends">With friends</ToggleButton>
         </ToggleButtonGroup>
     )
 }
