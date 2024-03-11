@@ -56,6 +56,238 @@
           "Content-Type": "application/json"
         }
       }
+    },
+    {
+      "priority": 2,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          }
+        },
+        "bodyPatterns" : [
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.operationName",
+              "contains" : "LikePhoto"
+            }
+          },
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.variables.input.id'",
+              "equalTo" : "024bd766-c703-4bf9-8094-abc303d82b79"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "data": {
+            "photo": {
+              "id": "024bd766-c703-4bf9-8094-abc303d82b79",
+              "country": {
+                "code": "cz",
+                "name": "Czech Republic",
+                "flag": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAMAAABpA6zvAAAA/FBMVEVHcEzT09OZCQ3W1tacCw3Q0NCgCxDW1taeCw+XCQylDRGmDhLQ0NCpDhPKysrR0dHU1NSaCQ3T09OBAADV1dXU1NTT09OcEBxTJkGeCw9qjKX////PDxPSEBbVEhfNDRISR4EUSoLWExjKDBAYUYgQRX8VTIWiCw4aVYwcWI4WToaXCQy1DREbVIfe3t4UQXITRHmvDBDU1NTi4+UZT30kXpLn5+cVSXjIyMjADRHX2NrOzs76+foPOmmiHzP54eLw8vSAn71BcZ7t7u80O2vwtba2xNN2KkmjscLHFByBHzbgV1tWMlrVGyD1ysvtm53dO0HnfoHnh4nGWFrwKIt0AAAAG3RSTlMA2ISEJsnXtaW5Ysrt7QhmH0egBEIvVQnH+b6/eQLhAAABpklEQVQ4y4XU13KCUBCA4WPHFlvUJIpiRIgFRRENtlhij6a9/7tk91CM2P7hivnYPQMzEAJFU664D4u7IvdRctpdykNI0uXoQXWs18IcPvR3JkpG4qF+nzwtespskDEbjGcdw4ccHo/HAabfqtf7RJKmq3HGHnqFLlE6OKYDsKyq6mSWuV7nlbQBlsvqanATSuCgaesaVBAie4Emg9sQmMTzU+UW1B1fURfXIG+5SkW4tB5gl7ecIAiF6fgibB9cAVKVy9AaB3GcdO6gygrgv3Ecx5VKpcnJB53/iqRbsLv30e5r+/05379h+/nPdpetiUQumM5kz1AOYlm4WDaLAWx0LQdM3uQMRpHpsrUqQsvJH2sbM1yeQnR0Ld2aOx2XzVMoC8a4Zc7GDk6HumuMzm9Fli82KUSHpztiRw7hUEa3tF7JMTMchQ0Ojnd+q+V0WJJHx+NOmAHlEbvWanqaphXPOE0EONw0obA3GAx6wyKtCQ8U86bTmmK16ifDTZgJuNPG/yPhjgWcjPdRtKpCXqebkIdAmiQStp+S7hm/388wzpgbb/0BriSbEKDsb5cAAAAASUVORK5CYII=",
+                "__typename": "Country"
+              },
+              "description": "Старая Прага завораживает!",
+              "likes": {
+                "total": 1,
+                "likes": [
+                  {
+                    "user": "1ba62f37-a3da-4e4f-ac99-40d83daa099c",
+                    "__typename": "Like"
+                  }
+                ],
+                "__typename": "Likes"
+              },
+              "__typename": "Photo"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 3,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          }
+        },
+        "bodyPatterns" : [
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.operationName",
+              "contains" : "LikePhoto"
+            }
+          },
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.variables.input.id'",
+              "equalTo" : "724ca615-9127-4ac7-a6cb-d3144ec1fc55"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "data": {
+            "photo": {
+              "id": "724ca615-9127-4ac7-a6cb-d3144ec1fc55",
+              "country": {
+                "code": "us",
+                "name": "United States",
+                "flag": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAMAAABpA6zvAAABjFBMVEVHcEyDGyNwFCOKGSdIR3CGHSmMIC2OHCt3ERyLGymFFyV1EBqEFiOWIzSSHy9fMEqNHi1JRm9JR3F3EBxGRW9RUXpPT3JQTndyDxmWIzOTHy////+vHzCrHS6zIjVOTH21JjhJSHqSGilgX4r+/v6mGytRUIBTUoHMd4FdXInu0NR8Eh2jGSifITGwITO3KTxFRHXWj5eLi6nKcHvpwsd7epy5N0i+TVulpL1KSXPjs7lycZaCFSFWVYSzP0347O7epKvWjJXfr7XRfYjz3+H68vPJaHTw1tlrapJZWISqKTn9+vrbnqXhqbCfFyXIYm+MGSfq6e1yDxnnvsNBP2++RlX25eeYIzTSgovXkpvDVGKEg6SeKDl3dpvj4eGwMUFFQ2zAYGrlt73Gvb7sy8/Hx8xPRXRlZI3Zlp7S0daMFSL89vfDWmdQT3iQkKy4SVWWlrKAf5/bpqzUh5CpTVe5mJzFa3WfW2Ofnri4hYrfx8nb2Nyra3OpqMCGKDKnRFCzrsGif4K6qaqUQUtekhT/AAAAG3RSTlMACQTuuCBCybZiMJTX161RiXCGfpssHdrZ6+kD0AUcAAADZElEQVQ4y2WUZ3vaSBSFx3EcjFvqbrILihACJLABCSGJJgGid0wz1VRTbGzce+r+8R0BiUPyfpFGus+cc88UACB/v3z97rnMuzevX6w8A3+wpFQA8Neb904n6zw+odx4y92q1+ubW6+UT/VLa8qt5WwWPI852QbB4kajGxdiDXQsxuv1PZl/NhUKxea/Woj55goQNljziai5DacofovFVCqvSaIZvhk3zxGZlHf/ADiPPxkF4wkhONBaFLMJXtWcUNDU6+RNwSN5cH8DnLhgYwk3bhQaRiLm7lu5KllxmUKqnxz16GI6C46hdMyBsm7UhhlPsb51hobjM+FAOcC0RY1ara4/AifqiBHCiYFwYGeydCKYTwbGnAbyEWKxWNQc04EeW7jB1jBEcaOBFYhY1DCT04Ui9lSSpulhqufVqVT7d+C4hgtwNncUrWHCCdUvZso+e0mn+oUjO1n3gJbTIRhgNKiDYqOUra+ZYi1mSL9Pxs9MLAii/Q9Ko7UGOsCNKGsgYgO0l/KHi9aZOwtsQ40giFjuwhzPcLmR6ABlKdRWQKdiiaDd5yfDmeo4Q9KuEvT4HRSoWwLFTjH0FkoXbH0YYiS0YBFmL116QAHHam5qQFFYAaMKg4KcyUduTFYke69UKpnsvjKP6LUe4GQx4sxx8LArMzr4ehEuaubuZHsIooeId13QOhv9JqTSwczLGZ6zwHaRJs/4grr9LjjYVekiqXK4yvN8NRwYSk/LrJsiv3nvPoORK8BZf1kwKAq3xdBl8iZmAZTyNL9zuA2+xK1WLnPhc9ntcNEumGpTjczMWeLcRIwjOxD95RXYEyuRRZMhk+QP881pF3r9jl68PvdCj1e70Ewpn6L9fn8llX/K8CgYyefhxp066N6A0X6H4WbbaZYIbHO4kHnCVJkc5sBjHLahgXsgEAiE28X4j+yak/E1c0Fet0V9Op3O3gCtuTo0JRYdXk/isjsZWJSOt6WHLni8n/6O9FyuTi/y82h5e65kJUCSdLIThMOHb2C0W0qGm2btHLPYLp/bvQsxJO7JzzlwdWnWZrPZ5Q142jeWPVMOD/e+tOFkkiSd08yldjuXWwXa7PKWcm1pfn88W3mhfLW64dme4pGfuVzuw/oaAArl0p+Xklz/dn1VZv3tyxX50//0Z/FTggRVDgAAAABJRU5ErkJggg==",
+                "__typename": "Country"
+              },
+              "description": "Нью-Йорк",
+              "likes": {
+                "total": 2,
+                "likes": [
+                  {
+                    "user": "fbe8f306-4bfe-4857-b1f1-090ecf7bd589",
+                    "__typename": "Like"
+                  },
+                  {
+                    "user": "1ba62f37-a3da-4e4f-ac99-40d83daa099c",
+                    "__typename": "Like"
+                  }
+                ],
+                "__typename": "Likes"
+              },
+              "__typename": "Photo"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 4,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          }
+        },
+        "bodyPatterns" : [
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.operationName",
+              "contains" : "LikePhoto"
+            }
+          },
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.variables.input.id'",
+              "equalTo" : "6380c6be-2dee-4eb5-8129-03ad765e5524"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "data": {
+            "photo": {
+              "id": "6380c6be-2dee-4eb5-8129-03ad765e5524",
+              "country": {
+                "code": "ru",
+                "name": "Russian Federation",
+                "flag": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAMAAABpA6zvAAAA+VBMVEVHcEyVFQ7S0tKXFg/R0dGYGBCcGRLU1NTW1takHhSeGxLW1tamHxWbFxfKysqhGxPU1NTR0dHT09PU1NTV1dXT09OSFA3///8AMp7MIRbPIxjKHhQAOacANaLRJRkAN6XTJxsAMJzWKx0APKjHHBMAQKsARa7X2NoAPqoCQqzWLiAALpnUKRyfGBCUFA4ISa61IBbm5ubMzMyuJBve3t4CKYgBI3YALJbDKR6uGBBJcbxUL2j5+ftskc7g4+luLFfr6+u+IBYAQqHt7vCpHhVDNnymudyMqdkoOI2JJkOnLTgAOZAAPpQsWrQAPZ1FIVa6yuf09PRBW5RdfvtPAAAAF3RSTlMAueiE0Cal/7jPTITtBwhlH2agL0JV2eqn9WIAAAGcSURBVDjLxdRbV4JAFIbhyfOx0jIlCNM0pBCPlYlCJB7LrP7/j2nvaSYH5aKuei9Zz3yzFhdDCHRcSOcTWD6dOz0m+x0WEoScpEMa1Me0OBZJoD/k6CSXD3W7JKFp9uSjyBt9TDrMhyIYmG683+8SrTMq7ofeppfYnQmADsCn4i/6R2j/YTEOcKTN5mNsPnu3g35CcfZJ4tp82GpdQ7qu1+v1hr4ejuein8zGrbt7Aoo7ZI3GFaYoV631EFvrpVKpAvD1eeu2TFHKSrl8gaFjcGeOsrLIKrcU+uc48zkO/c7Hvh3Cl2fm9pjgHhC+/bhARh2D4BbTqWVZ0+niQmB8DrrfAFw4qxtatWoYxmC1dKxFxTe3WXomsVYMVdFd0lRVRe/AJY6z7MlS7dEkvQF3BnMqdo5JkCzJEIfCnOp3EnV8cTsnMNExuDMnMokyBn9cIKOOQUMduG2W60oBrtYE2HZ7nudlklimiXkeHKjJMnPuY9M0D0jPy8SOoln2fmSjqaNwLNkUMk3zLBwlJJnKBrxK1McOoFg4FcUvX2nLmUOxnjYdAAAAAElFTkSuQmCC",
+                "__typename": "Country"
+              },
+              "description": "Петербург ",
+              "likes": {
+                "total": 1,
+                "likes": [
+                  {
+                    "user": "1ba62f37-a3da-4e4f-ac99-40d83daa099c",
+                    "__typename": "Like"
+                  }
+                ],
+                "__typename": "Likes"
+              },
+              "__typename": "Photo"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 5,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          }
+        },
+        "bodyPatterns" : [
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.operationName",
+              "contains" : "LikePhoto"
+            }
+          },
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.variables.input.id'",
+              "equalTo" : "21c6b81f-2a87-4a82-8e5b-cac0bc05535b"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "data": {
+            "photo": {
+              "id": "21c6b81f-2a87-4a82-8e5b-cac0bc05535b",
+              "country": {
+                "code": "nl",
+                "name": "Netherlands",
+                "flag": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAMAAABpA6zvAAAA/1BMVEVHcEwRKFkTLl+eLjkULmCfKDaYIi4TLWCUHikSK11XKkeXIi5KI0MXNGqdJjMVL2OWICwTK1mSGyaeJzSXIS4UL2KMFiEcJ3f///8cPoG2JjQXNncZOXsdQYW0JDEfQ4eqGSUjSI0WM3S7Lj2tGyawHiogRYqzIS64KTcaO36vHCi5KzkPJVWhKDYRKl4UMHAYNm+JFB6YHSjT1dixHyyZFyLr6uutKzmcIi/j4uITL2TExMQdPnefrsv5+PnnvMDfoqhhd6EaOnK0PkkvT47FWmOwvdXYj5anIS304uTuztGHlrZIZJl2irPReoK9MUC4kJTa4ey/yt6OoMOuJDIdoJ9KAAAAF3RSTlMAhDki17yuwtCnCV0E7YdlPR/qm3JV8qG33PwAAAGXSURBVDjL3dTHkoJAEIDhMSKGNW+JomIOICYQdBXFnPP7P8vOAOKgHva8/22mvuq+NQAwhy8WdbtcLnf0yxdy+MFbXp8Hqi9P45Gs5XHj3huKub/bbeBqNCSpgGJZtlpN3u9rWe6gIh5UpA0TxTZoSKfT08GSsMx9vV4jLnZEkWGKRR2+smQGValUBEEoler1YpHRIOYsDHMmxNw7g+4BPzPMGdDqcPZwCMoSyxYWx9UEtTouZlVBZ/o43TGzM5Bnq62SwFI24wn0gumkxWrT/wHnfuJjymY7Rm176AVht5f4Q/8SKpfrcjQaLa8X5TPsqhB2b+o8ByujsvP94bbsWnxvqbZ4sNvnck+WzaZhFEXN9+phB5fsDuqcTuUHHBhmTWcw5FC1Wo2m6RQs/4S6w1hNZ4YzoWWrwXDX5CFMf3YPpjkEp+mcudbKMKdBqlxOU8PptKWVoumXcchpcDhEIOAkCMIZGOg1W3nM8TzHEWDaCpBBu9e4H/6wPWgjnQP+GcdxTpsdACLufT9KuifhEpK0xcPo6xeMCp2COvRrhwAAAABJRU5ErkJggg==",
+                "__typename": "Country"
+              },
+              "description": "Амстердам!",
+              "likes": {
+                "total": 1,
+                "likes": [
+                  {
+                    "user": "1ba62f37-a3da-4e4f-ac99-40d83daa099c",
+                    "__typename": "Like"
+                  }
+                ],
+                "__typename": "Likes"
+              },
+              "__typename": "Photo"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
     }
   ]
 }
