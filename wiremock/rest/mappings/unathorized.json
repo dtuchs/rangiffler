@@ -1,0 +1,40 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "absent": true
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "priority": 2,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "matches": "^\\s*$"
+          }
+        }
+      },
+      "response": {
+        "status": 401,
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
