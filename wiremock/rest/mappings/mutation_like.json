@@ -1,0 +1,61 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          }
+        },
+        "bodyPatterns" : [
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.operationName",
+              "contains" : "LikePhoto"
+            }
+          },
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.variables.input.id'",
+              "equalTo" : "7f861642-aa10-4b8e-9df7-652acddf2c6"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "data": {
+            "photo": {
+              "id": "7f861642-aa10-4b8e-9df7-652acddf2c67",
+              "country": {
+                "code": "de",
+                "name": "Germany",
+                "flag": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAeCAMAAABpA6zvAAAA3lBMVEVHcEzKoQDEmQDGnAACAgIBAQEBAQHAkwAJCQkCAgK4iwDBlAAAAADKoQACAgI8HgCymwC9jgACAgICAgIBAQEDAwMAAAAEBAS/kQABAQHDmQDhAAAAAADcAADfAADaAAD/0ADXAAD/wgD/zAD/vwD/ywD/yQD/xwD/xQDAAQD/zgC9jgCnAADQqQDNAADJmgDfpgDpvQDbrQC6AADClQDjtADOoACEAAA4AADoTgDrXACcAAD3ogDmPgDjJwBsAAAZAADubgD1tgBaAADbDAAFAAB8AADxggC5RgDyiQC7QMvxAAAAG3RSTlMAyddivMnYtSauIkLt7WYDB4J+m1WKCUKa+YlMdDRUAAABY0lEQVQ4y93UyXaCMBSA4YAI4lBnawsWUdQqIChigaoIjn3/F2rCrKCn6/675Hw32V0AYIVWo0kTBEE3Gy+vhSpI1WnloWqT7E1vJN1O+E7hhS6zLCDYB53KZD6fJ8vBEbB/7P/Bk3Gwv1D2wdifsphhA3ZvSxzDMB9h3FQ63/i9cZ5OJXCeM0zSxV77RklzjuN4CLV5luv5cX58BLNZL2QRfMY8x2sefMZ858NnLHAp+IAl4G5rWpa13e6OXJbjtSuEO2cz7s9QQ5iwuVgm9Al23F7UFbiqfVjkhqPRGOVuLo5jmqbl/GyEwUAVgbwIXJJNUJ9eA5QQwNCNfDdJOR/OYpfJoIuh5+5/jV0I755LsRAOJwtdX3rp+kJIssC5CoS6Lq/X6wqOYRheUVBream7QuRcVRFFCshyhcqVasH+qBVLuXcKX6G8IWUliiJeLwKA5WrppVSFvt6lUN16qYiufgHjD5Xaw4jEUQAAAABJRU5ErkJggg==",
+                "__typename": "Country"
+              },
+              "description": "Мюнхен - мой любимый город!",
+              "likes": {
+                "total": 1,
+                "likes": [
+                  {
+                    "user": "1ba62f37-a3da-4e4f-ac99-40d83daa099c",
+                    "__typename": "Like"
+                  }
+                ],
+                "__typename": "Likes"
+              },
+              "__typename": "Photo"
+            }
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}

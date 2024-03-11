@@ -43,7 +43,7 @@ type getPhotosRequestType = {
 export const useGetPhotos = (req: getPhotosRequestType) => {
     const {data, loading, error, refetch} = useQuery(GET_PHOTOS, {
         variables: {
-            withFriends: false,
+            withFriends: true,
             page: req.page ?? 0,
             size: 10,
         }});

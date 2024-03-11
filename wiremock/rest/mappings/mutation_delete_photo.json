@@ -1,0 +1,35 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "url": "/graphql",
+        "headers": {
+          "Authorization": {
+            "contains": "Bearer"
+          }
+        },
+        "bodyPatterns" : [
+          {
+            "matchesJsonPath" : {
+              "expression" : "$.operationName",
+              "contains" : "DeletePhoto"
+            }
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "data": {
+            "deletePhoto": null
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}

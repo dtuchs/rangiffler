@@ -1,0 +1,25 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "request": {
+        "method": "OPTIONS",
+        "url": "/graphql",
+        "headers": {
+          "Access-Control-Request-Method": {
+            "contains": "POST"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Headers": "authorization, content-type",
+          "Access-Control-Allow-Methods": "POST",
+          "Access-Control-Allow-Origin": "http://127.0.0.1:3001"
+        }
+      }
+    }
+  ]
+}

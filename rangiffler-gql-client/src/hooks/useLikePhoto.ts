@@ -15,7 +15,6 @@ const LIKE_PHOTO = gql(`
     mutation LikePhoto($input: PhotoInput!) {
         photo(input: $input) {
             id
-            src
             country {
                 code
                 name
