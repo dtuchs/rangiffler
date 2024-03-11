@@ -6,8 +6,10 @@ import org.rangiffler.data.CountryEntity;
 import org.rangiffler.data.FriendshipEntity;
 import org.rangiffler.data.FriendshipStatus;
 import org.rangiffler.data.PhotoEntity;
+import org.rangiffler.data.StatisticEntity;
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.data.repository.CountryRepository;
+import org.rangiffler.data.repository.StatisticRepository;
 import org.rangiffler.data.repository.UserRepository;
 import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.FriendStatus;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,41 +39,38 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final CountryRepository countryRepository;
+  private final StatisticRepository statisticRepository;
 
   @Autowired
-  public UserService(UserRepository userRepository, CountryRepository countryRepository) {
+  public UserService(UserRepository userRepository,
+                     CountryRepository countryRepository,
+                     StatisticRepository statisticRepository) {
     this.userRepository = userRepository;
     this.countryRepository = countryRepository;
+    this.statisticRepository = statisticRepository;
   }
 
   @Transactional(readOnly = true)
   public List<StatGql> stat(@Nonnull String username, boolean withFriends) {
     UserEntity userEntity = getRequiredUser(username);
-    Map<CountryGql, Integer> countryStat = new HashMap<>();
-    Stream<PhotoEntity> photoStream;
+    List<StatisticEntity> stats;
+
     if (withFriends) {
-      photoStream = Stream.concat(
-          userRepository.findFriends(userEntity).stream()
-              .map(UserEntity::getPhotos)
-              .flatMap(List::stream),
-          userEntity.getPhotos().stream()
-      );
+      List<UserEntity> friendsWithMe = new ArrayList<>(userRepository.findFriends(userEntity));
+      friendsWithMe.add(userEntity);
+      stats = statisticRepository.findAllByUserIn(friendsWithMe);
     } else {
-      photoStream = userEntity.getPhotos().stream();
+      stats = statisticRepository.findAllByUserIn(
+          List.of(userEntity)
+      );
     }
-    long streamSize = photoStream.peek(ph -> {
-      CountryGql key = CountryGql.fromEntity(ph.getCountry());
-      if (countryStat.containsKey(key)) {
-        countryStat.put(key, countryStat.get(key) + 1);
-      } else {
-        countryStat.put(key, 1);
-      }
-    }).count();
-    return countryStat.entrySet().stream()
-        .map(entry -> new StatGql(
-            entry.getValue(),
-            entry.getKey()
-        )).toList();
+
+    return stats.stream().map(
+        se -> new StatGql(
+            se.getCount(),
+            CountryGql.fromEntity(se.getCountry())
+        )
+    ).toList();
   }
 
   @Transactional

@@ -5,9 +5,11 @@ import jakarta.annotation.Nonnull;
 import org.rangiffler.data.CountryEntity;
 import org.rangiffler.data.LikeEntity;
 import org.rangiffler.data.PhotoEntity;
+import org.rangiffler.data.StatisticEntity;
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.data.repository.CountryRepository;
 import org.rangiffler.data.repository.PhotoRepository;
+import org.rangiffler.data.repository.StatisticRepository;
 import org.rangiffler.data.repository.UserRepository;
 import org.rangiffler.ex.NotFoundException;
 import org.rangiffler.model.input.PhotoInput;
@@ -25,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Service
 public class PhotoService {
@@ -32,17 +35,24 @@ public class PhotoService {
   private final PhotoRepository photoRepository;
   private final UserRepository userRepository;
   private final CountryRepository countryRepository;
+  private final StatisticRepository statisticRepository;
 
   @Autowired
-  public PhotoService(PhotoRepository photoRepository, UserRepository userRepository, CountryRepository countryRepository) {
+  public PhotoService(PhotoRepository photoRepository,
+                      UserRepository userRepository,
+                      CountryRepository countryRepository,
+                      StatisticRepository statisticRepository) {
     this.photoRepository = photoRepository;
     this.userRepository = userRepository;
     this.countryRepository = countryRepository;
+    this.statisticRepository = statisticRepository;
   }
 
   @Transactional
   public PhotoGql addPhoto(@Nonnull String username,
                            @Nonnull PhotoInput photoInput) {
+    UserEntity user = getRequiredUser(username);
+
     PhotoEntity photo = new PhotoEntity();
     CountryEntity country = countryRepository.findByCode(photoInput.country().code())
         .orElseThrow(() -> new NotFoundException("Country not found by code: " + photoInput.country().code()));
@@ -50,7 +60,19 @@ public class PhotoService {
     photo.setDescription(photoInput.description());
     photo.setCreatedDate(new Date());
     photo.setCountry(country);
-    photo.setUser(getRequiredUser(username));
+    photo.setUser(user);
+
+    StatisticEntity statistic = statisticRepository.findByUserAndCountry(
+        user, country
+    ).orElseGet(() -> {
+      StatisticEntity se = new StatisticEntity();
+      se.setUser(user);
+      se.setCount(0);
+      se.setCountry(country);
+      return se;
+    });
+    statistic.setCount(statistic.getCount() + 1);
+    statisticRepository.save(statistic);
     return PhotoGql.fromEntity(photoRepository.save(photo));
   }
 
