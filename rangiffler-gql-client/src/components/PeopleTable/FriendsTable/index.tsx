@@ -4,7 +4,18 @@ import { useGetFriends } from "../../../hooks/useGetFriends";
 
 export const FriendsTable = () => {
     const [page, setPage] = useState(0);
-    const {data, hasNextPage, hasPreviousPage} = useGetFriends({page});
+    const [search, setSearch] = useState("");
+
+    const handleInputSearch = (value: string) => {
+        setSearch(value);
+        setPage(0);
+    }
+
+    const {data, hasNextPage, hasPreviousPage, refetch} = useGetFriends({page, search});
+
+    const onSearchSubmit = () => {
+        refetch();
+    }
 
     return (
         <PeopleTable
@@ -13,6 +24,8 @@ export const FriendsTable = () => {
             setPage={setPage}
             hasNextPage={hasNextPage}
             hasPreviousPage={hasPreviousPage}
+            setSearch={handleInputSearch}
+            onSearchSubmit={onSearchSubmit}
         />
     )
 }

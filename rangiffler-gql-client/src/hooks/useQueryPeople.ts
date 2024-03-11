@@ -27,7 +27,8 @@ const GET_PEOPLE = gql(`
 `);
 
 type getPeopleRequestType = {
-    page: number
+    page: number,
+    search: string,
 }
 
 export const useQueryPeople = (req: getPeopleRequestType) => {
@@ -35,6 +36,7 @@ export const useQueryPeople = (req: getPeopleRequestType) => {
         variables: {
             page: req.page ?? 0,
             size: 10,
+            searchQuery: req.search ?? "",
         }});
 
     console.log();

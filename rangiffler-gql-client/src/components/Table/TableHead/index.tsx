@@ -1,4 +1,4 @@
-import { TableHead as MuiTableHead, TableCell, TableRow} from "@mui/material";
+import { TableHead as MuiTableHead, TableCell, TableRow, useTheme} from "@mui/material";
 import { HeadCell } from "../HeadCell";
 
 
@@ -7,11 +7,15 @@ interface TableProps {
 }
 
 
+
 export const TableHead = (props: TableProps) => {
+    const theme = useTheme();
     const {  headCells } = props;
 
     return (
-        <MuiTableHead>
+        <MuiTableHead sx={{
+            backgroundColor: theme.palette.info.main,
+        }}>
             <TableRow>
                 {headCells.map((headCell) => (
                     <TableCell

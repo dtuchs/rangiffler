@@ -1,4 +1,15 @@
-import {Avatar, Box, Paper, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useTheme} from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Typography,
+    useTheme
+} from "@mui/material";
 import {HeadCell} from "../Table/HeadCell";
 import {TableHead} from "../Table/TableHead";
 import {TablePagination} from "../Table/Pagination";
@@ -6,6 +17,7 @@ import {User} from "../../types/User";
 import {FC} from "react";
 import {ActionButtons} from "../Table/ActionButtons";
 import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined';
+import {TableToolbar} from "../Table/TableToolbar";
 
 const headCells: readonly HeadCell[] = [
     {
@@ -46,21 +58,24 @@ interface PeopleTableInterface {
     hasPreviousPage: boolean;
     hasNextPage: boolean;
     setPage: (page: number) => void;
+    setSearch: (value: string) => void;
+    onSearchSubmit: () => void;
 }
 
-export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPage, hasNextPage, setPage}) => {
+export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPage, hasNextPage, setPage, setSearch, onSearchSubmit}) => {
 
     const theme = useTheme();
 
     return (
         <Paper sx={{width: '100%', mb: 2}}>
             <TableContainer>
-                {data?.length ? (
-                        <>
-                            <Table sx={{minWidth: 750}}
-                                   aria-labelledby="tableTitle"
-                            >
-                                <TableHead headCells={headCells}/>
+                <TableToolbar setSearch={setSearch} onSearchSubmit={onSearchSubmit}/>
+                <>
+                    <Table sx={{minWidth: 750}}
+                           aria-labelledby="tableTitle"
+                    >
+                        <TableHead headCells={headCells}/>
+                        {data?.length > 0 && (
                                 <TableBody>
                                     {data.map((row: User) => {
                                         return (
@@ -83,7 +98,8 @@ export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPa
                                                 <TableCell>{row.firstname ?? "---"}</TableCell>
                                                 <TableCell>{row.surname ?? "---"}</TableCell>
                                                 <TableCell>
-                                                    <img width={20} src={row.location?.flag ?? ""} alt={row.location?.name}/> {row.location?.name}
+                                                    <img width={20} src={row.location?.flag ?? ""}
+                                                         alt={row.location?.name}/> {row.location?.name}
                                                 </TableCell>
                                                 <TableCell align="right" sx={{
                                                     maxWidth: "150px"
@@ -93,17 +109,10 @@ export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPa
                                             </TableRow>
                                         );
                                     })}
-                                </TableBody>
-                            </Table>
-                            <TablePagination
-                                onPreviousClick={() => setPage(page - 1)}
-                                onNextClick={() => setPage(page + 1)}
-                                hasPreviousValues={hasPreviousPage}
-                                hasNextValues={hasNextPage}
-                            />
-                        </>
-                    ) :
-                    (
+                                </TableBody>)
+                        }
+                    </Table>
+                    {!data?.length &&  (
                         <Box sx={{
                             textAlign: "center",
                             width: "100%",
@@ -116,7 +125,7 @@ export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPa
                                 height: 150,
                                 margin: "0 auto",
                             }}>
-                                <PeopleOutlineOutlinedIcon   sx={{
+                                <PeopleOutlineOutlinedIcon sx={{
                                     width: "100%",
                                     height: "100%",
                                     padding: 4,
@@ -124,8 +133,14 @@ export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPa
                                 }}/>
                             </Box>
                         </Box>
-                    )
-                }
+                    )}
+                    <TablePagination
+                        onPreviousClick={() => setPage(page - 1)}
+                        onNextClick={() => setPage(page + 1)}
+                        hasPreviousValues={hasPreviousPage}
+                        hasNextValues={hasNextPage}
+                    />
+                </>
             </TableContainer>
         </Paper>
     )

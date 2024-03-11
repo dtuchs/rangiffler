@@ -12,6 +12,9 @@ const theme = createTheme({
         error: {
             main: "#d32f2f",
         },
+        info: {
+            main: "#ced0cd" ,
+        },
     },
 });
 

@@ -4,7 +4,18 @@ import { useGetOutcomeInvitations } from "../../../hooks/useGetOutcomeInvitation
 
 export const OutcomeInvitationsTable = () => {
     const [page, setPage] = useState(0);
-    const {data, hasNextPage, hasPreviousPage} = useGetOutcomeInvitations({page});
+    const [search, setSearch] = useState("");
+
+    const handleInputSearch = (value: string) => {
+        setSearch(value);
+        setPage(0);
+    }
+    const {data, hasNextPage, hasPreviousPage, refetch} = useGetOutcomeInvitations({page, search});
+
+    const onSearchSubmit = () => {
+        refetch();
+    }
+
 
     return (
         <PeopleTable
@@ -13,6 +24,8 @@ export const OutcomeInvitationsTable = () => {
             setPage={setPage}
             hasNextPage={hasNextPage}
             hasPreviousPage={hasPreviousPage}
+            setSearch={handleInputSearch}
+            onSearchSubmit={onSearchSubmit}
         />
     )
 }
