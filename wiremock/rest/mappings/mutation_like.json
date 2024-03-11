@@ -1,6 +1,7 @@
 {
   "mappings": [
     {
+      "priority": 3,
       "request": {
         "method": "POST",
         "url": "/graphql",
@@ -57,6 +58,7 @@
       }
     },
     {
+      "priority": 4,
       "request": {
         "method": "POST",
         "url": "/graphql",
@@ -113,6 +115,7 @@
       }
     },
     {
+      "priority": 5,
       "request": {
         "method": "POST",
         "url": "/graphql",
@@ -173,6 +176,7 @@
       }
     },
     {
+      "priority": 6,
       "request": {
         "method": "POST",
         "url": "/graphql",
@@ -229,6 +233,7 @@
       }
     },
     {
+      "priority": 7,
       "request": {
         "method": "POST",
         "url": "/graphql",

@@ -1,7 +1,7 @@
 {
   "mappings": [
     {
-      "priority": 1,
+      "priority": 3,
       "request": {
         "method": "POST",
         "url": "/graphql",
