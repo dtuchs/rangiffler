@@ -148,7 +148,14 @@ public class PhotoService {
   @Transactional
   public void deletePhoto(@Nonnull String username, @Nonnull UUID photoId) {
     PhotoEntity photo = getRequiredPhoto(photoId);
+    UserEntity user = photo.getUser();
+    CountryEntity country = photo.getCountry();
     if (userHasFullAccessToPhoto(username, photo)) {
+      StatisticEntity statistic = statisticRepository.findByUserAndCountry(
+          user, country
+      ).orElseThrow(() -> new NotFoundException("Can`t find statistic by userid: " + user.getId() + " and countryId: " + country.getId()));
+      statistic.setCount(statistic.getCount() - 1);
+      statisticRepository.save(statistic);
       photoRepository.delete(photo);
     } else
       throw new AccessDeniedException("Can`t access to photo");
