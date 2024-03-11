@@ -7,7 +7,6 @@ import { PhotoModal } from "../../components/PhotoModal";
 import {PhotoFormProps, formInitialState} from "../../components/PhotoModal/formValidate";
 import { Photo } from "../../types/Photo";
 import { useGetFeed } from "../../hooks/useGetFeed";
-import { useGetPhotos } from "../../hooks/useGetPhotos";
 
 export const MyTravelsPage = () => {
     const [modalState, setModalState] = useState<{ isVisible: boolean, formData: PhotoFormProps | null, }>({
@@ -17,8 +16,7 @@ export const MyTravelsPage = () => {
 
     const [withMyFriends, setWithMyFriends] = useState(false);
     const [page, setPage] = useState(0);
-    const {data} = useGetPhotos({page, withFriends: withMyFriends});
-    const feed = useGetFeed({withFriends: withMyFriends});
+    const {photos, stat} = useGetFeed({page, withFriends: withMyFriends});
 
     const handleSelectImage = (photo: Photo) => {
         setModalState({
@@ -64,7 +62,7 @@ export const MyTravelsPage = () => {
                         <Toggle withMyFriends={withMyFriends} setWithMyFriends={setWithMyFriends}/>
                     </Box>
                 </Box>
-                <WorldMap data={feed.data}/>
+                <WorldMap data={stat}/>
                 <Box>
                     <Button
                         variant="contained"
@@ -82,7 +80,7 @@ export const MyTravelsPage = () => {
                     </Button>
                 </Box>
             </Box>
-            <PhotoContainer onSelectImage={handleSelectImage} data={data}/>
+            <PhotoContainer onSelectImage={handleSelectImage} data={photos}/>
             <PhotoModal
                 modalState={modalState}
                 isEdit={!!(modalState.formData)}
