@@ -174,8 +174,9 @@ model-классов, получить перформанс и простое н
 
 Как ты понял из вышесказанного пункта, Rangiffler действительно использует пагинацию для фоток и пользователей. Это
 значит, что вам надо концептуально понять, как решается две задачи:
+
 - Что вернуть из контроллеров в качестве ответа с типом `{Typename}Connection` - с учетом что мы его не описываем руками
-и классы для него не создаем
+  и классы для него не создаем
 - Как сделать запрос в БД с пагинацией, что бы было, что возвращать. Ответы будут ниже
 
 ###### Pageble контроллеры (дата-фетчеры) для GraphQL
@@ -193,14 +194,15 @@ type User {
 
 ```graphql
 type Query {
-  users(page:Int, size:Int, searchQuery:String): UserConnection
+    users(page:Int, size:Int, searchQuery:String): UserConnection
 }
 ```
 
 Тогда создадим java-класс **только для типа User**, не создавая для UserConnection:
 
 ```java
-public record UserGql(UUID id, String username) {}
+public record UserGql(UUID id, String username) {
+}
 ```
 
 И опишем контроллер, возвращающий UserConnection. С точки зрения Spring-graphql типы `{Typename}Connection` не что иное,
@@ -209,15 +211,16 @@ public record UserGql(UUID id, String username) {}
 Таким образом в нашем примере контроллер для query `users` вернет `Slice<UserGql>`:
 
 ```java
-  @QueryMapping
-  public Slice<UserGql> users(@AuthenticationPrincipal Jwt principal,
-                              @Argument int page,
-                              @Argument int size,
-                              @Argument @Nullable String searchQuery) {
+
+@QueryMapping
+public Slice<UserGql> users(@AuthenticationPrincipal Jwt principal,
+                            @Argument int page,
+                            @Argument int size,
+                            @Argument @Nullable String searchQuery) {
   return userService.allUsers(
-          principal.getClaim("sub"),
-          PageRequest.of(page, size),
-          searchQuery
+      principal.getClaim("sub"),
+      PageRequest.of(page, size),
+      searchQuery
   );
 }
 ```
@@ -233,7 +236,7 @@ public record UserGql(UUID id, String username) {}
 public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
   @Query("select u from UserEntity u where u.username <> :username" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   Slice<UserEntity> findByUsernameNotAndSearchQuery(@Param("username") String username,
                                                     @Nonnull Pageable pageable,
                                                     @Param("searchQuery") String searchQuery);
@@ -259,7 +262,9 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
 
 ```java
 UserEntity user = findById(id);
-return user.getPhotos();
+return user.
+
+getPhotos();
 ```
 
 В этом коде _просто нет возможности использовать пагинацию._ Но что если нам нужно запросить фотографии юзера с
@@ -285,74 +290,74 @@ public interface UserRepository extends JpaRepository<UserEntity, UUID> {
                                       @Nonnull Pageable pageable);
 
   @Query("select u from UserEntity u where u.username <> :username" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   Slice<UserEntity> findByUsernameNotAndSearchQuery(@Param("username") String username,
                                                     @Nonnull Pageable pageable,
                                                     @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester")
+      " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester")
   Slice<UserEntity> findFriends(@Param("requester") UserEntity requester,
                                 @Nonnull Pageable pageable);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester" +
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   Slice<UserEntity> findFriends(@Param("requester") UserEntity requester,
                                 @Nonnull Pageable pageable,
                                 @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester")
+      " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester")
   List<UserEntity> findFriends(@Param("requester") UserEntity requester);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " where f.status = org.rangiffler.data.FriendshipStatus.ACCEPTED and f.requester = :requester" +
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   Slice<UserEntity> findFriends(@Param("requester") UserEntity requester,
                                 @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester")
   Slice<UserEntity> findOutcomeInvitations(@Param("requester") UserEntity requester,
                                            @Nonnull Pageable pageable);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester" +
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   Slice<UserEntity> findOutcomeInvitations(@Param("requester") UserEntity requester,
                                            @Nonnull Pageable pageable,
                                            @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester")
   List<UserEntity> findOutcomeInvitations(@Param("requester") UserEntity requester);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.addressee" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.requester = :requester" +
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   List<UserEntity> findOutcomeInvitations(@Param("requester") UserEntity requester,
                                           @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee")
   Slice<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee,
                                           @Nonnull Pageable pageable);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee" +
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   Slice<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee,
                                           @Nonnull Pageable pageable,
                                           @Param("searchQuery") String searchQuery);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee")
   List<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee);
 
   @Query("select u from UserEntity u join FriendshipEntity f on u = f.requester" +
-          " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee" +
-          " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
+      " where f.status = org.rangiffler.data.FriendshipStatus.PENDING and f.addressee = :addressee" +
+      " and (u.username like %:searchQuery% or u.firstname like %:searchQuery% or u.surname like %:searchQuery%)")
   List<UserEntity> findIncomeInvitations(@Param("addressee") UserEntity addressee,
                                          @Param("searchQuery") String searchQuery);
 
@@ -384,10 +389,14 @@ message UsersResponse {
 
 ```java
             List<UserGql> userGqlList = response.getUsersList()
-                    .stream()
-                    .map(UserGql::fromGrpcMessage)
-                    .toList();
-            return new SliceImpl<>(userGqlList, PageRequest.of(page, size), response.hasNext());
+    .stream()
+    .map(UserGql::fromGrpcMessage)
+    .toList();
+            return new SliceImpl<>(userGqlList,PageRequest.
+
+of(page, size),response.
+
+hasNext());
 ```
 
 Здесь объект `PageRequest.of(page, size)` - это изначальные параметры int page, int size, а `response.hasNext()` -
@@ -401,18 +410,19 @@ message UsersResponse {
 на /graphql должны быть запрещены:
 
 ```java
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        corsCustomizer.corsCustomizer(http);
 
-        http.authorizeHttpRequests(customizer ->
-                customizer.requestMatchers(antMatcher("/graphiql/**"))
-                        .permitAll()
-                        .anyRequest()
-                        .authenticated()
-        ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
-        return http.build();
-    }
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+  corsCustomizer.corsCustomizer(http);
+
+  http.authorizeHttpRequests(customizer ->
+      customizer.requestMatchers(antMatcher("/graphiql/**"))
+          .permitAll()
+          .anyRequest()
+          .authenticated()
+  ).oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));
+  return http.build();
+}
 ```
 
 ###### GraphQL контроллеры совместно с record
@@ -423,42 +433,45 @@ message UsersResponse {
 
 ```json
      query user {
-     user {
-       id
-       username
-       friends(page: 0, size: 10) {
-         edges {
-           node {
-             id
-             username
-           }
-         }
-         pageInfo {
-           hasPreviousPage
-           hasNextPage
-         }
-       }
-     }
-   }
+  user {
+  id
+  username
+  friends(page: 0,
+  size: 10) {
+  edges {
+  node {
+  id
+  username
+}
+}
+pageInfo {
+hasPreviousPage
+hasNextPage
+}
+}
+}
+}
 ```
 
 То бэкенд соберет ему ответ вот так:
 
 ```java
-  @QueryMapping
-  public UserGql user(@AuthenticationPrincipal Jwt principal) {
-    return userService.currentUser(principal.getClaim("sub")); // Здесь будет null в полe friends
-  }
-  
-    @SchemaMapping(typeName = "User", field = "friends") // будет вызван автоматически, т.к. в запросе фронт попросил friends
-    public Slice<UserGql> friends(UserGql user, @Argument int page, @Argument int size, @Argument @Nullable String searchQuery) {
-      // получит на вход UserGql user и добавит внутрь него Slice<UserGql> с друзьями
-      return userService.friends(
-              user.username(),
-              PageRequest.of(page, size),
-              searchQuery
-      );
-    }
+
+@QueryMapping
+public UserGql user(@AuthenticationPrincipal Jwt principal) {
+  return userService.currentUser(principal.getClaim("sub")); // Здесь будет null в полe friends
+}
+
+@SchemaMapping(typeName = "User", field = "friends")
+// будет вызван автоматически, т.к. в запросе фронт попросил friends
+public Slice<UserGql> friends(UserGql user, @Argument int page, @Argument int size, @Argument @Nullable String searchQuery) {
+  // получит на вход UserGql user и добавит внутрь него Slice<UserGql> с друзьями
+  return userService.friends(
+      user.username(),
+      PageRequest.of(page, size),
+      searchQuery
+  );
+}
 }
 ```
 
@@ -478,20 +491,21 @@ message UsersResponse {
 художниками, музеями. Например, было бы хорошо иметь тесты примерно такого вида:
 
 ```java
+
 @Test
 @DisplayName("...")
 @Tag("...")
 @ApiLogin(user = @TestUser(photos = @WithPhoto(country = RUSSIA)))
-void exampleTest(UserGql createdUser) { ... }
+void exampleTest(UserGql createdUser) { ...}
 
 @Test
 @DisplayName("...")
 @Tag("...")
 @ApiLogin(user = @TestUser(photos = @WithPhoto(country = INDIA), partners = {
-        @WithPartner(status = FRIEND, photos = @WithPhoto(country = CANADA, imageClasspath = "cat.jpeg")),
-        @WithPartner(status = INCOME_INVITATION, photos = @WithPhoto(country = CANADA, imageClasspath = "dog.jpeg")),
-        @WithPartner(status = OUTCOME_INVITATION, photos = @WithPhoto(country = AUSTRALIA, imageClasspath = "fish.jpeg"))}))
-void exampleTest2(UserGql createdUser) { ... }
+    @WithPartner(status = FRIEND, photos = @WithPhoto(country = CANADA, imageClasspath = "cat.jpeg")),
+    @WithPartner(status = INCOME_INVITATION, photos = @WithPhoto(country = CANADA, imageClasspath = "dog.jpeg")),
+    @WithPartner(status = OUTCOME_INVITATION, photos = @WithPhoto(country = AUSTRALIA, imageClasspath = "fish.jpeg"))}))
+void exampleTest2(UserGql createdUser) { ...}
 ```
 
 #### 7. Реализовать достаточное, на твой взгляд, покрытие e-2-e тестами

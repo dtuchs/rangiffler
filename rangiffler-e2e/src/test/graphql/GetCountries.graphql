@@ -1,0 +1,7 @@
+query GetCountries {
+    countries {
+        code
+        name
+        flag
+    }
+}

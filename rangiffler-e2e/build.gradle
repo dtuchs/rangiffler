@@ -3,6 +3,7 @@ buildscript {
         junitVersion = '5.11.1'
         allureVersion = '2.29.0'
         okhttp3Version = '4.11.0'
+        retrofitVersion = '2.11.0'
         logbackVersion = '1.4.11'
         slf4jVersion = '2.0.9'
         fakerVersion = '1.0.2'
@@ -27,10 +28,24 @@ allure {
 }
 
 apollo {
-    service("service") {
+    service("e2e") {
         generateKotlinModels.set(false)
         packageName.set("org.rangiffler")
+        srcDir("src/test/graphql")
+        mapScalar("Date", "java.util.Date")
+        introspection {
+            endpointUrl.set("http://127.0.0.1:8080/graphql")
+            schemaFile.set(file("src/test/graphql/schema.graphqls"))
+        }
+        outputDirConnection {
+            connectToJavaSourceSet("test")
+        }
     }
+    generateSourcesDuringGradleSync.set(true)
+}
+
+tasks.named { it == "generateE2eApolloSources" }.configureEach {
+    dependsOn("downloadE2eApolloSchemaFromIntrospection")
 }
 
 dependencies {
@@ -41,7 +56,16 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
     // GraphQL
     testImplementation 'com.apollographql.java:client:0.0.2'
+    testImplementation 'com.apollographql.java:rx2:0.0.2'
+    // REST
     testImplementation "com.squareup.okhttp3:logging-interceptor:${okhttp3Version}"
+    testImplementation "com.squareup.okhttp3:okhttp-urlconnection:${okhttp3Version}"
+    testImplementation("com.squareup.retrofit2:retrofit:${retrofitVersion}") {
+        exclude group: "com.squareup.okhttp3"
+    }
+    testImplementation("com.squareup.retrofit2:converter-jackson:${retrofitVersion}") {
+        exclude group: "com.squareup.okhttp3"
+    }
     // Allure
     testImplementation("io.qameta.allure:allure-junit5:${allureVersion}") {
         exclude group: "org.junit.jupiter"
@@ -63,7 +87,17 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+sourceSets {
+    test {
+        java {
+            srcDir('src/test/java')
+            srcDir("$buildDir/generated/source/apollo/e2e")
+        }
+    }
+}
+
 test {
+    dependsOn("generateE2eApolloSources")
     options {
         systemProperties(System.getProperties())
     }

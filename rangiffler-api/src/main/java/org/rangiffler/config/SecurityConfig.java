@@ -3,7 +3,9 @@ package org.rangiffler.config;
 import org.rangiffler.service.CorsCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -13,6 +15,7 @@ import static org.springframework.security.web.util.matcher.AntPathRequestMatche
 
 
 @EnableWebSecurity
+@EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
 
@@ -30,7 +33,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(customizer ->
             customizer.requestMatchers(
                     antMatcher("/graphiql/**"),
-                    antMatcher("/favicon.ico")
+                    antMatcher("/favicon.ico"),
+                    antMatcher(HttpMethod.POST, "/graphql")
                 ).permitAll()
                 .anyRequest()
                 .authenticated()
