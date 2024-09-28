@@ -3,13 +3,17 @@ plugins {
 }
 
 group = 'org.rangiffler'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
 
-repositories {
-    mavenCentral()
-}
+allprojects {
+    apply plugin: 'java'
 
-tasks.named('test') {
-    useJUnitPlatform()
+    repositories {
+        mavenCentral()
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
 }

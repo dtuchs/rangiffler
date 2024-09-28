@@ -1,0 +1,73 @@
+buildscript {
+    ext {
+        junitVersion = '5.11.1'
+        allureVersion = '2.29.0'
+        okhttp3Version = '4.11.0'
+        logbackVersion = '1.4.11'
+        slf4jVersion = '2.0.9'
+        fakerVersion = '1.0.2'
+    }
+}
+
+plugins {
+    id 'io.qameta.allure' version '2.12.0'
+    id 'io.qameta.allure-adapter' version '2.12.0'
+    id 'com.apollographql.apollo' version '4.0.0'
+}
+
+group = 'org.rangiffler'
+version = '1.0'
+
+allure {
+    version.set("${allureVersion}")
+    adapter {
+        aspectjVersion.set("1.9.22")
+        aspectjWeaver.set(true)
+    }
+}
+
+apollo {
+    service("service") {
+        generateKotlinModels.set(false)
+        packageName.set("org.rangiffler")
+    }
+}
+
+dependencies {
+    // Logs
+    testImplementation "ch.qos.logback:logback-classic:${logbackVersion}"
+    testImplementation "org.slf4j:slf4j-api:${slf4jVersion}"
+    // JUnit
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    // GraphQL
+    testImplementation 'com.apollographql.java:client:0.0.2'
+    testImplementation "com.squareup.okhttp3:logging-interceptor:${okhttp3Version}"
+    // Allure
+    testImplementation("io.qameta.allure:allure-junit5:${allureVersion}") {
+        exclude group: "org.junit.jupiter"
+    }
+    testImplementation("io.qameta.allure:allure-okhttp3:${allureVersion}") {
+        exclude group: "com.squareup.okhttp3"
+    }
+    // Utils
+    testImplementation("com.github.javafaker:javafaker:${fakerVersion}") {
+        exclude group: 'org.yaml'
+    }
+    testImplementation 'commons-io:commons-io:2.16.1'
+    testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
+    testCompileOnly 'org.projectlombok:lombok:1.18.34'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    options {
+        systemProperties(System.getProperties())
+    }
+    testLogging.showStandardStreams = true
+    testLogging.exceptionFormat = 'full'
+    useJUnitPlatform()
+}

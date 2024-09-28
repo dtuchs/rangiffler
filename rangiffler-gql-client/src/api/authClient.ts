@@ -1,5 +1,4 @@
 const BASE_URL = `${import.meta.env.VITE_AUTH_URL}`;
-import {Buffer} from "buffer";
 
 export const authClient = {
     getToken: async (url: string, data: URLSearchParams) => {
@@ -7,8 +6,7 @@ export const authClient = {
             method: "POST",
             credentials: "include",
             headers: {
-                "Content-type": "application/x-www-form-urlencoded",
-                "Authorization": `Basic ${Buffer.from("client:secret").toString("base64")}`,
+                "Content-type": "application/x-www-form-urlencoded"
             },
             body: data.toString()
         });

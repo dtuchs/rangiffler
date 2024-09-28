@@ -1,3 +1,4 @@
 rootProject.name = 'rangiffler'
 include 'rangiffler-api'
 include 'rangiffler-auth'
+include 'rangiffler-e2e'
