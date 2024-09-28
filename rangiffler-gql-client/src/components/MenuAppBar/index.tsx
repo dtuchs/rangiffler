@@ -12,6 +12,8 @@ import {clearSession} from '../../api/authUtils';
 import {useSnackBar} from '../../context/SnackBarContext';
 import {useNavigate} from 'react-router-dom';
 import {apiClient} from '../../api/apolloClient';
+import {Link} from 'react-router-dom';
+import './styles.css';
 
 interface MenuAppBarInterface {
     sidebarState: boolean,
@@ -50,10 +52,15 @@ export const MenuAppBar: FC<MenuAppBarInterface> = ({sidebarState, handleChangeS
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h4" component="h1" sx={{flexGrow: 1}}>
-                        <span>R</span>angiffler
-                    </Typography>
-                    <Box>
+                    <Link to={"/my-travels"} className="link">
+                        <Typography variant="h4" component="h1" sx={{flexGrow: 1}}>
+                            <span className="link-accent">R</span>angiffler
+                        </Typography>
+                    </Link>
+                    <Box sx={{
+                        marginLeft: "auto",
+                    }}
+                    >
                         <IconButton
                             size="large"
                             aria-label="Logout"

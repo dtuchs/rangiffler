@@ -49,7 +49,7 @@
             </form>
             <div class="form" th:unless="${username == null}">
                 <p class="form__paragraph form__paragraph_success">Congratulations! You've registered!</p>
-                <p class="form__paragraph">
+                <p class="form__paragraph form__paragraph_link">
                     <a class="form_sign-in" th:href="@{|${frontUri}|}">Sign in!</a>
                 </p>
             </div>

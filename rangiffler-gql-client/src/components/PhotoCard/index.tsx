@@ -53,7 +53,7 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
     }
 
     return (
-        <Paper elevation={3}>
+        <Paper elevation={3} sx={{padding: 1, boxSizing: "border-box"}}>
             <img
                 className="photo-card__image"
                 src={photo.src}
@@ -99,21 +99,28 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
                     sx={{
                         display: "flex",
                         alignItems: "center",
+                        marginTop: 1,
+                        height: 12,
                     }}
                 >
-                    <Typography component="p" variant="body2" className="photo-card__content" color="secondary">
+                    <Typography
+                        component="p"
+                        variant="body2"
+                        className="photo-card__content"
+                        color="secondary">
                         {photo.description}
                     </Typography>
                 </Box>
                 <Box
                     sx={{
                         display: "flex",
+                        marginTop: 2,
                         alignItems: "center",
                         justifyContent: "space-between",
                     }}
                 >
-                    <Button variant="contained" sx={{margin: 2}} onClick={() => onEditClick(photo)}>Edit</Button>
-                    <Button sx={{margin: 2}} onClick={handleDeletePhoto}>Delete</Button>
+                    <Button variant="contained" sx={{margin: 1, width: "100%"}} onClick={() => onEditClick(photo)}>Edit</Button>
+                    <Button variant="outlined" sx={{margin: 1, width: "100%"}} onClick={handleDeletePhoto}>Delete</Button>
                 </Box>
             </Box>
         </Paper>

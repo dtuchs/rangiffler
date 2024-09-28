@@ -195,7 +195,7 @@ export const ProfileForm = () => {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={8} sx={{
+                    <Grid item xs={12} sx={{
                         margin: "0 auto",
                     }}>
                         <Box sx={{

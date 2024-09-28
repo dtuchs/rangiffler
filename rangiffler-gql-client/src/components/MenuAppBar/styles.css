@@ -1,0 +1,13 @@
+.link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: #ced0cd;
+    font: inherit;
+    font-weight: 600;
+}
+
+.link-accent {
+    color: #768c7d;
+}

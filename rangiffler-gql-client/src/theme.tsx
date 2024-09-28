@@ -8,6 +8,7 @@ const theme = createTheme({
         },
         secondary: {
             main: "#768c7d",
+            light: "#FAFAFD",
         },
         error: {
             main: "#d32f2f",
@@ -29,10 +30,6 @@ const theme = createTheme({
         },
         MuiOutlinedInput: {
             styleOverrides: {
-                input: {
-                    padding: "13px 16px",
-                    backgroundColor: "#FAFAFD",
-                },
                 notchedOutline: {
                     borderRadius: "8px",
                     border: "1px solid #E4E6F1",
@@ -43,7 +40,6 @@ const theme = createTheme({
             styleOverrides: {
                 root: {
                     padding: "12px 16px",
-                    fontWeight: "600",
                     borderRadius: "8px"
                 }
             }

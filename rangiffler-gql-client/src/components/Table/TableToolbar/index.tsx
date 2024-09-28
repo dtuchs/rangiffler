@@ -22,21 +22,23 @@ export const TableToolbar: FC<TableToolbarProps> = ({setSearch, onSearchSubmit})
         <Toolbar
             sx={{
                 pl: {sm: 2},
-                pr: {xs: 1, sm: 1},
-                pt: {sm: 1},
-                backgroundColor: theme.palette.info.main,
+                pr: {sm: 2},
+                pt: {sm: 2},
+                pb: {sm: 2},
+                backgroundColor: theme.palette.secondary.main,
+                borderRadius: 1,
             }}
         >
             <Paper
                 component="form"
-                sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: "100%"}}
+                sx={{p: '4px 4px', display: 'flex', alignItems: 'center', width: "100%"}}
                 onSubmit={handleSubmitSearch}
             >
                 <InputBase
                     sx={{ml: 1, flex: 1}}
                     placeholder="Search people"
                     value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => setValue(e.target.value)}
                     inputProps={{'aria-label': 'search people'}}
                 />
                 <IconButton type="submit" sx={{p: '10px'}} aria-label="search">

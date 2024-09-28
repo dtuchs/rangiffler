@@ -13,7 +13,7 @@ export const TableHead = (props: TableProps) => {
 
     return (
         <MuiTableHead sx={{
-            backgroundColor: theme.palette.info.main,
+            backgroundColor: theme.palette.secondary.main,
         }}>
             <TableRow>
                 {headCells.map((headCell) => (
@@ -21,6 +21,10 @@ export const TableHead = (props: TableProps) => {
                         key={headCell.id}
                         align={headCell.numeric ? 'right' : 'left'}
                         padding={'normal'}
+                        sx={{
+                            color: theme.palette.secondary.light,
+                            fontWeight: 600,
+                        }}
                     >
                         {headCell.label}
                     </TableCell>
