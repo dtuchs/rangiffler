@@ -10,7 +10,6 @@ public class ContextHolderExtension implements BeforeEachCallback, AfterEachCall
 
   @Override
   public void beforeEach(ExtensionContext context) throws Exception {
-    System.out.println("### SAVE CONTEXT ###");
     holder.set(context);
   }
 
