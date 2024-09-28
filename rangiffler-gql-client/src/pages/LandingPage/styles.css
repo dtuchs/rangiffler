@@ -31,7 +31,12 @@
 .landing__content {
     text-align: center;
     padding: 10px;
+    align-self: center;
+}
 
+.landing__content-button {
+    width: 100%;
+    max-width: 360px;
 }
 
 .landing__header {

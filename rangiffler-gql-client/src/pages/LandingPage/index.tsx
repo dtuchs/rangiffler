@@ -44,7 +44,7 @@ export const LandingPage = () => {
                                         margin: 2,
                                     }}
                                     className="landing__header">
-                                    <span className="landing__header-accent">R</span>angiffler
+                                        <span className="landing__header-accent">R</span>angiffler
                                 </Typography>
                                 <img className="landing__logo"
                                      src={deerLogo}
@@ -56,6 +56,7 @@ export const LandingPage = () => {
                                     </Typography>
                                     <Button
                                         variant="contained"
+                                        className="landing__content-button"
                                         sx={{margin: 2, marginBottom: 4}}
                                         onClick={onLoginClick}
                                     >Login
@@ -65,6 +66,7 @@ export const LandingPage = () => {
                                     </Typography>
                                     <Button
                                         variant="outlined"
+                                        className="landing__content-button"
                                         sx={{margin: 2}}
                                         component="a"
                                         href={`${import.meta.env.VITE_AUTH_URL}/register`}>

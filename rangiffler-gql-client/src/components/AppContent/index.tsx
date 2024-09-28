@@ -6,9 +6,8 @@ import {MyTravelsPage} from "../../pages/MyTravelsPage";
 import {ProfilePage} from "../../pages/ProfilePage";
 import {LandingPage} from "../../pages/LandingPage";
 import {PeoplePage} from "../../pages/PeoplePage";
-import {FC} from "react";
 
-export const AppContent: FC = () => {
+export const AppContent = () => {
     return (
         <BrowserRouter>
             <Routes>
