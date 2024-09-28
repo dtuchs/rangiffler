@@ -17,7 +17,7 @@ export const MyTravelsPage = () => {
 
     const handleAddClick = () => {
         dialog.showDialog({
-            title: "Edit photo",
+            title: "Add photo",
             isEdit: false,
             formData: {...formInitialState,},
         });
