@@ -1,0 +1,5 @@
+{
+  "operationName": "GetCountries",
+  "variables": {},
+  "query": "query GetCountries {\n        countries {\n            code\n            name\n            flag\n        }\n    }"
+}

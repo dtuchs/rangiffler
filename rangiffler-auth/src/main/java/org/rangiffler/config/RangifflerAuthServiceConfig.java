@@ -32,6 +32,7 @@ import org.springframework.security.web.authentication.LoginUrlAuthenticationEnt
 
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @Configuration
@@ -72,23 +73,24 @@ public class RangifflerAuthServiceConfig {
 
   @Bean
   public RegisteredClientRepository registeredClientRepository() {
-    RegisteredClient registeredClient = RegisteredClient.withId(UUID.randomUUID().toString())
+    RegisteredClient publicClient = RegisteredClient.withId(UUID.randomUUID().toString())
         .clientId("client")
-        .clientSecret("{noop}secret")
-        .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+        .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
         .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-        .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
         .redirectUri(rangifflerFrontUri + "/authorized")
         .scope(OidcScopes.OPENID)
+        .scope(OidcScopes.PROFILE)
         .clientSettings(ClientSettings.builder()
-            .requireAuthorizationConsent(true).build())
+            .requireAuthorizationConsent(true)
+            .requireProofKey(true)
+            .build()
+        )
         .tokenSettings(TokenSettings.builder()
-            .accessTokenTimeToLive(Duration.ofHours(10))
-            .refreshTokenTimeToLive(Duration.ofHours(10))
+            .accessTokenTimeToLive(Duration.of(2, ChronoUnit.HOURS))
             .build())
         .build();
 
-    return new InMemoryRegisteredClientRepository(registeredClient);
+    return new InMemoryRegisteredClientRepository(publicClient);
   }
 
   @Bean
