@@ -107,8 +107,8 @@ const DialogProvider: FC<DialogContextProps> = ({children}) => {
                 }
             });
             handleClose();
+            setOpen(false);
         }
-        setOpen(false);
     }
 
     const handleUpdate = (e: FormEvent) => {
