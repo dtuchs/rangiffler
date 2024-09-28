@@ -1,212 +1,235 @@
 *, ::before, ::after {
-  box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+@font-face {
+    font-family: "Inter";
+    src: url("../fonts/Inter-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
 }
 
 body {
-  --color-primary: #174536;
-  --color-secondary: #768c7d;
-  --color-error: #d32f2f;
-  --color-link: #53875a;
-  --color-heading: #6b706e;
-  --color-ligth: #f6f6f6;
-  margin: 0;
-  padding: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  font-size: 14px;
-  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    --color-primary: #174536;
+    --color-secondary: #768c7d;
+    --color-error: #d32f2f;
+    --color-link: #53875a;
+    --color-heading: #6b706e;
+    --color-ligth: #f6f6f6;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 .content {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-ligth);
-  background-image: linear-gradient(45deg, var(--color-primary), var(--color-ligth));
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-ligth);
+    background-image: linear-gradient(45deg, var(--color-primary), var(--color-ligth));
 }
 
 .content__wrapper {
-  width: 70%;
-  max-width: 1280px;
-  height: calc(100% - 80px);
-  margin-bottom: 40px;
-  margin-top: 40px;
-  background-color: var(--color-ligth);
-  border: 10px solid var(--color-ligth);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  box-sizing: border-box;
-  overflow: scroll;
+    width: 70%;
+    max-width: 1280px;
+    height: calc(100% - 80px);
+    margin-bottom: 40px;
+    margin-top: 40px;
+    background-color: var(--color-ligth);
+    border: 10px solid var(--color-ligth);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    box-sizing: border-box;
+    overflow: scroll;
 }
 
 .header {
-  color: var(--color-heading);
-  font-style: normal;
-  font-weight: 700;
-  font-size: 48px;
-  text-align: center;
-  margin: 20px;
+    color: var(--color-heading);
+    font-style: normal;
+    font-weight: 700;
+    font-size: 48px;
+    text-align: center;
+    margin: 20px;
 }
 
 .header__accent {
-  color: var(--color-primary);
+    color: var(--color-primary);
 }
 
 .header__logo {
-  margin: 0 auto;
-  display: block;
+    margin: 0 auto;
+    display: block;
 }
 
 .main__hero {
-  background-color: var(--color-ligth);
-  opacity: 0.8;
-  background-image:url("./../images/forest.jpg");
-  background-position: center;
-  background-size: cover;
-  width: 100%;
-  height: 100%;
+    background-color: var(--color-ligth);
+    opacity: 0.8;
+    background-image: url("./../images/forest.jpg");
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.main__form {
+    margin-top: 5rem;
 }
 
 .form {
-  text-align: center;
-  padding: 10px;
-  border-radius: 8px;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 460px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 460px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
 }
 
 .form__label {
-  position: relative;
-  max-width: 350px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  font-weight: 400;
+    position: relative;
+    max-width: 350px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-weight: 400;
 }
 
 .form__input {
-  width: 100%;
-  display: block;
-  margin-top: 8px;
-  margin-bottom: 20px;
-  font-family: inherit;
-  box-sizing: border-box;
-  font-size: 14px;
-  padding: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.87);
-  border-radius: 8px;
-  font-weight: normal;
-  color: black;
-  text-transform: none;
+    width: 100%;
+    display: block;
+    font-family: inherit;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin-top: 8px;
+    margin-bottom: 12px;
+    padding: 13px 16px;
+    border: 1px solid var(--color-secondary);
+    background-color: var(--color-ligth);
+    border-radius: 8px;
+    font-weight: normal;
+    text-transform: none;
 }
 
+.form__input:focus {
+    border: 1px solid var(--color-primary);
+}
+
+
 .form__password-button {
-  position: absolute;
-  background-size: contain;
-  background-color: transparent;
-  background-image: url("../images/eye.svg");
-  right: 10px;
-  top: 30px;
-  border: none;
-  width: 25px;
-  height: 25px;
-  z-index: 5;
-  cursor: pointer;
+    position: absolute;
+    background-size: contain;
+    background-color: transparent;
+    background-image: url("../images/eye.svg");
+    right: 10px;
+    top: 36px;
+    border: none;
+    width: 25px;
+    height: 25px;
+    z-index: 5;
+    cursor: pointer;
 }
 
 .form__password-button_active {
-  background-image: url("../images/eye-active.svg");
+    background-image: url("../images/eye-active.svg");
 }
 
 .form__submit,
 .form_sign-in {
-  font-family: inherit;
-  font-weight: 500;
-  text-transform: uppercase;
-  text-decoration: none;
-  display: block;
-  padding: 6px 16px;
-  margin: 0 20px;
-  border-radius: 6px;
-  border: none;
-  color: var(--color-ligth);
-  background-color: var(--color-primary);
-  line-height: 1.75;
-  cursor: pointer;
+    font-family: inherit;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 16px;
+    text-decoration: none;
+    display: block;
+    padding: 13px 16px;
+    margin: 18px 0;
+    border-radius: 8px;
+    border: none;
+    color: var(--color-ligth);
+    background-color: var(--color-primary);
+    width: 100%;
+    max-width: 360px;
+    line-height: 1.75;
+    cursor: pointer;
 }
 
 .form__submit:hover,
 .form_sign-in:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
 .form__link {
-  color: var(--color-link);
+    color: var(--color-link);
 }
 
 .form__link:active,
 .form__link:visited {
-  color: var(--color-link);
+    color: var(--color-link);
 }
 
 .form__error {
-  color: var(--color-error);
-  font-size: 14px;
-  margin-bottom: 10px;
-  font-weight: 700;
-  word-break: break-word;
+    color: var(--color-error);
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    word-break: break-word;
 }
 
 .form__paragraph_success {
-  margin-top: 120px;
+    margin-top: 120px;
 }
 
 @media screen and (max-width: 900px) {
-  .content__wrapper {
-    width: 90%;
-  }
+    .content__wrapper {
+        width: 90%;
+    }
 
-  .main__hero {
-    background-image:url("./../images/forest_small.jpg");
-    background-position-y: 60%;
-  }
+    .main__hero {
+        background-image: url("./../images/forest_small.jpg");
+        background-position-y: 60%;
+    }
 }
 
 @media screen and (max-width: 600px) {
-  .content {
-    display: flex;
-  }
+    .main__form {
+        margin-top: 2rem;
+    }
 
+    .content {
+        display: flex;
+    }
 
-  .content__wrapper {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    overflow: auto;
-  }
+    .content__wrapper {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        overflow: auto;
+    }
 
-  .main__hero {
-    height: 200px;
-    flex-shrink: 0;
-  }
+    .main__hero {
+        height: 200px;
+        flex-shrink: 0;
+    }
 
-  .header {
-    font-size: 32px;
-    margin: 16px;
-  }
+    .header {
+        font-size: 32px;
+        margin: 16px;
+    }
 
-  .form__paragraph_success {
-    margin-top: 20px;
-  }
+    .form__paragraph_success {
+        margin-top: 20px;
+    }
 }

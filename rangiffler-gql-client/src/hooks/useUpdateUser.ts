@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import {gql, useMutation} from "@apollo/client";
 
 interface UserInput {
     variables: {
@@ -38,7 +38,7 @@ type UpdateUserReturnType = {
     updateUser: (updateUserInput: UserInput) => void,
     loading: boolean,
 }
-export const useUpdateUser = (req: UpdateUserRequestType) : UpdateUserReturnType => {
+export const useUpdateUser = (req: UpdateUserRequestType): UpdateUserReturnType => {
     const [updateUser, {loading}] = useMutation(UPDATE_USER, {
         onError: req.onError,
         onCompleted: req.onCompleted,

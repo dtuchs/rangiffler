@@ -1,6 +1,6 @@
-import {FC, ReactNode, createContext, useContext } from "react";
-import { Country } from "../types/Country";
-import { useGetCountries } from "../hooks/useGetCountries";
+import {createContext, FC, ReactNode, useContext} from "react";
+import {Country} from "../types/Country";
+import {useGetCountries} from "../hooks/useGetCountries";
 
 type CountriesContextData = {
     countries: Country[];
@@ -11,11 +11,12 @@ const CountriesContext = createContext({} as CountriesContextData);
 interface CountriesContextProviderProps {
     children: ReactNode;
 }
+
 const CountriesProvider: FC<CountriesContextProviderProps> = ({children}) => {
     const {data} = useGetCountries();
 
     return (
-        <CountriesContext.Provider value={{ countries: data?.countries ?? [] }}>
+        <CountriesContext.Provider value={{countries: data?.countries ?? []}}>
             {children}
         </CountriesContext.Provider>
     );
@@ -31,4 +32,4 @@ const useCountries = (): CountriesContextData => {
     return context;
 };
 
-export { CountriesProvider, useCountries };
+export {CountriesProvider, useCountries};

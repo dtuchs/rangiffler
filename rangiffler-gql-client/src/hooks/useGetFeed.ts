@@ -1,6 +1,6 @@
 import {gql, useQuery} from "@apollo/client";
 
-const GET_FEED = gql(`
+export const GET_FEED = gql(`
     query GetFeed($page: Int, $size: Int, $withFriends: Boolean!) {
         feed(withFriends: $withFriends) {
             photos(page: $page, size: $size) {
@@ -42,12 +42,13 @@ type getFeedRequestType = {
     withFriends: boolean,
 }
 export const useGetFeed = (req: getFeedRequestType) => {
-    const {data, loading, error, refetch} = useQuery(GET_FEED, {
+    const {data, loading, error, refetch, fetchMore} = useQuery(GET_FEED, {
         variables: {
             withFriends: req.withFriends,
             page: req.page ?? 0,
-            size: 10,
-        }});
+            size: 12,
+        }
+    });
     return {
         photos: data?.feed?.photos?.edges?.map((e: any) => e?.node) ?? [],
         stat: data?.feed?.stat,
@@ -56,5 +57,6 @@ export const useGetFeed = (req: getFeedRequestType) => {
         loading,
         error,
         refetch,
+        fetchMore,
     };
 }

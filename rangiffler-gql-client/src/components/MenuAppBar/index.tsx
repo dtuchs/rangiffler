@@ -5,18 +5,19 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ExitToAppOutlinedIcon from '@mui/icons-material/ExitToAppOutlined';
-import { Sidebar } from '../Sidebar';
-import { FC} from 'react';
-import { authClient } from '../../api/authClient';
-import { clearSession } from '../../api/authUtils';
-import { useSnackBar } from '../../context/SnackBarContext';
-import { useNavigate } from 'react-router-dom';
-import { apiClient } from '../../api/apolloClient';
+import {Sidebar} from '../Sidebar';
+import {FC} from 'react';
+import {authClient} from '../../api/authClient';
+import {clearSession} from '../../api/authUtils';
+import {useSnackBar} from '../../context/SnackBarContext';
+import {useNavigate} from 'react-router-dom';
+import {apiClient} from '../../api/apolloClient';
 
 interface MenuAppBarInterface {
     sidebarState: boolean,
     handleChangeState: (isOpened: boolean) => void,
 }
+
 export const MenuAppBar: FC<MenuAppBarInterface> = ({sidebarState, handleChangeState}) => {
     const snackbar = useSnackBar();
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ export const MenuAppBar: FC<MenuAppBarInterface> = ({sidebarState, handleChangeS
             marginBottom: 2,
             display: "flex",
         }}>
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1}}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -47,10 +48,10 @@ export const MenuAppBar: FC<MenuAppBarInterface> = ({sidebarState, handleChangeS
                         onClick={() => handleChangeState(!sidebarState)}
                         component="button"
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        Rangiffler
+                    <Typography variant="h4" component="h1" sx={{flexGrow: 1}}>
+                        <span>R</span>angiffler
                     </Typography>
                     <Box>
                         <IconButton
@@ -59,7 +60,7 @@ export const MenuAppBar: FC<MenuAppBarInterface> = ({sidebarState, handleChangeS
                             onClick={onLogoutClick}
                             color="inherit"
                         >
-                            <ExitToAppOutlinedIcon />
+                            <ExitToAppOutlinedIcon/>
                         </IconButton>
                     </Box>
                 </Toolbar>

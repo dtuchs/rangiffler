@@ -1,4 +1,4 @@
-import { IStringIndex } from "../PhotoModal/formValidate";
+import {IStringIndex} from "../PhotoModal/formValidate";
 
 export const MAX_FIRST_NAME_LENGTH = 50;
 export const MAX_FIRST_NAME_ERROR = `First name length has to be not longer that ${MAX_FIRST_NAME_LENGTH} symbols`;
@@ -64,13 +64,13 @@ export type UserFormProps = IStringIndex & {
 
 export const formValidate = (formValues: UserFormProps): UserFormProps => {
     let newFormValues = {...formValues};
-    
+
     newFormValues = {
         ...newFormValues,
-        firstname : {
+        firstname: {
             ...newFormValues.firstname,
             error: formValues.firstname.value?.length > MAX_FIRST_NAME_LENGTH ? true : false,
-            errorMessage: formValues.firstname.value?.length > MAX_FIRST_NAME_LENGTH  ? MAX_FIRST_NAME_ERROR : "",
+            errorMessage: formValues.firstname.value?.length > MAX_FIRST_NAME_LENGTH ? MAX_FIRST_NAME_ERROR : "",
         },
         surname: {
             ...newFormValues.surname,

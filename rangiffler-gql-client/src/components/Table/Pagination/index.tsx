@@ -1,5 +1,5 @@
 import {Box, Button} from "@mui/material"
-import { FC } from "react"
+import {FC} from "react"
 
 interface TablePaginationInterface {
     hasNextValues: boolean;
@@ -7,7 +7,13 @@ interface TablePaginationInterface {
     onPreviousClick: () => void;
     onNextClick: () => void;
 }
-export const TablePagination: FC<TablePaginationInterface> = ({hasNextValues, hasPreviousValues, onPreviousClick, onNextClick}) => {
+
+export const TablePagination: FC<TablePaginationInterface> = ({
+                                                                  hasNextValues,
+                                                                  hasPreviousValues,
+                                                                  onPreviousClick,
+                                                                  onNextClick
+                                                              }) => {
     return (
         <Box sx={{
             display: "flex",

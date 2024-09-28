@@ -5,7 +5,6 @@ import jakarta.annotation.Nullable;
 import org.rangiffler.data.CountryEntity;
 import org.rangiffler.data.FriendshipEntity;
 import org.rangiffler.data.FriendshipStatus;
-import org.rangiffler.data.PhotoEntity;
 import org.rangiffler.data.StatisticEntity;
 import org.rangiffler.data.UserEntity;
 import org.rangiffler.data.repository.CountryRepository;
@@ -25,11 +24,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import static org.rangiffler.model.FriendStatus.FRIEND;
 import static org.rangiffler.model.FriendStatus.INVITATION_SENT;

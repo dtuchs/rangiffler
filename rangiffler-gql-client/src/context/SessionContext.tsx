@@ -1,5 +1,5 @@
 import {createContext} from "react";
-import { User } from "../types/User";
+import {User} from "../types/User";
 
 interface SessionContextInterface {
     updateUser: () => void;
@@ -7,7 +7,8 @@ interface SessionContextInterface {
 }
 
 const defaultState = {
-    updateUser: () => {},
+    updateUser: () => {
+    },
     user: undefined,
 };
 

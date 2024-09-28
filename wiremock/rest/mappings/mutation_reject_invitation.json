@@ -10,7 +10,7 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
             "matchesJsonPath": {
               "expression": "$.operationName",
@@ -18,15 +18,15 @@
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.input.user",
-              "equalTo" : "28d4981f-f9c0-4b21-a250-825b935910a1"
+            "matchesJsonPath": {
+              "expression": "$.variables.input.user",
+              "equalTo": "28d4981f-f9c0-4b21-a250-825b935910a1"
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.input.action",
-              "equalTo" : "REJECT"
+            "matchesJsonPath": {
+              "expression": "$.variables.input.action",
+              "equalTo": "REJECT"
             }
           }
         ]

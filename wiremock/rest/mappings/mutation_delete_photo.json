@@ -10,11 +10,11 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "DeletePhoto"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "DeletePhoto"
             }
           }
         ]

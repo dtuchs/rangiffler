@@ -1,4 +1,4 @@
-import { useState} from "react";
+import {useState} from "react";
 import {PeopleTable} from ".."
 import {useQueryPeople} from "../../../hooks/useQueryPeople";
 

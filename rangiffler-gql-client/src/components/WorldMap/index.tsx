@@ -1,4 +1,4 @@
-import {FC } from 'react';
+import {FC} from 'react';
 import SvgWorldMap from 'react-svg-worldmap';
 import "./styles.css";
 
@@ -8,9 +8,11 @@ type WorldMapData = {
     },
     count: number,
 }
+
 interface WorldMapInterface {
     data: WorldMapData[],
 }
+
 export const WorldMap: FC<WorldMapInterface> = ({data = []}) => {
     const mapData = data.map((v) => ({
         country: v.country.code,
@@ -18,12 +20,12 @@ export const WorldMap: FC<WorldMapInterface> = ({data = []}) => {
     }));
 
     return (
-            <SvgWorldMap
-                color="#174536"
-                value-suffix="people"
-                size="xl"
-                data={mapData}
-                richInteraction={true}
-            />
+        <SvgWorldMap
+            color="#174536"
+            value-suffix="people"
+            size="xl"
+            data={mapData}
+            richInteraction={true}
+        />
     );
 }

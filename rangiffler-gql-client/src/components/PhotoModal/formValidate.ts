@@ -3,9 +3,10 @@ export const MAX_PHOTO_DESCRIPTION_ERROR = "Description length has to be not lon
 export const EMPTY_SRC_ERROR = "Please upload an image";
 export const EMPTY_COUNTRY_ERROR = "You have to select country";
 
-export interface IStringIndex extends Record<string, any> {};
+export interface IStringIndex extends Record<string, any> {
+};
 
-export type PhotoFormProps = IStringIndex & {
+export type PhotoFormProps = {
     description: {
         value: string,
         error: boolean,
@@ -20,7 +21,8 @@ export type PhotoFormProps = IStringIndex & {
         value?: string,
         error: boolean,
         errorMessage: string,
-    }
+    },
+    id?: string,
 }
 
 export const formInitialState: PhotoFormProps = {
@@ -44,13 +46,13 @@ export const formInitialState: PhotoFormProps = {
 
 export const formValidate = (formValues: PhotoFormProps): PhotoFormProps => {
     let newFormValues = {...formValues};
-    
+
     newFormValues = {
         ...newFormValues,
-        description : {
+        description: {
             ...newFormValues.description,
             error: formValues.description.value?.length > MAX_PHOTO_DESCRIPTION_LENGTH ? true : false,
-            errorMessage: formValues.description.value?.length > MAX_PHOTO_DESCRIPTION_LENGTH ? MAX_PHOTO_DESCRIPTION_ERROR: "",
+            errorMessage: formValues.description.value?.length > MAX_PHOTO_DESCRIPTION_LENGTH ? MAX_PHOTO_DESCRIPTION_ERROR : "",
         },
         src: {
             ...newFormValues.src,
@@ -59,7 +61,7 @@ export const formValidate = (formValues: PhotoFormProps): PhotoFormProps => {
         },
         country: {
             ...newFormValues.country,
-            error: !Boolean(formValues.country.value) ? true : false, 
+            error: !Boolean(formValues.country.value) ? true : false,
             errorMessage: !Boolean(formValues.country.value) ? EMPTY_COUNTRY_ERROR : "",
         }
     }

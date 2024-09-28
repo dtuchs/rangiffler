@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useMemo, useState } from "react";
+import {createContext, ReactNode, useMemo, useState} from "react";
 
 interface AlertMessageContextInterface {
     error: string | null;
@@ -10,15 +10,18 @@ interface AlertMessageContextInterface {
 
 const defaultState = {
     error: null,
-    addError: () => {},
+    addError: () => {
+    },
     message: null,
-    addMessage: () => {},
+    addMessage: () => {
+    },
 };
 export const AlertMessageContext = createContext<AlertMessageContextInterface>(defaultState);
 
 interface AlertMessageProviderInterface {
     children: ReactNode;
 }
+
 export const AlertMessageProvider = ({children}: AlertMessageProviderInterface) => {
     const [error, setError] = useState<string | null>(null);
     const [message, setMessage] = useState<string | null>(null);
@@ -38,13 +41,13 @@ export const AlertMessageProvider = ({children}: AlertMessageProviderInterface) 
 
 
     const alertContextValue = useMemo(
-        () => ({ error, addError, message, addMessage}),
+        () => ({error, addError, message, addMessage}),
         [error, message]
     );
 
     return (
-      <AlertMessageContext.Provider value={alertContextValue}>
-          {children}
-      </AlertMessageContext.Provider>
+        <AlertMessageContext.Provider value={alertContextValue}>
+            {children}
+        </AlertMessageContext.Provider>
     );
 }

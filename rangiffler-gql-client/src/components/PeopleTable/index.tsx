@@ -62,7 +62,15 @@ interface PeopleTableInterface {
     onSearchSubmit: () => void;
 }
 
-export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPage, hasNextPage, setPage, setSearch, onSearchSubmit}) => {
+export const PeopleTable: FC<PeopleTableInterface> = ({
+                                                          data,
+                                                          page,
+                                                          hasPreviousPage,
+                                                          hasNextPage,
+                                                          setPage,
+                                                          setSearch,
+                                                          onSearchSubmit
+                                                      }) => {
 
     const theme = useTheme();
 
@@ -76,43 +84,43 @@ export const PeopleTable: FC<PeopleTableInterface> = ({data, page, hasPreviousPa
                     >
                         <TableHead headCells={headCells}/>
                         {data?.length > 0 && (
-                                <TableBody>
-                                    {data.map((row: User) => {
-                                        return (
-                                            <TableRow
-                                                hover
-                                                tabIndex={-1}
-                                                key={row.id}
+                            <TableBody>
+                                {data.map((row: User) => {
+                                    return (
+                                        <TableRow
+                                            hover
+                                            tabIndex={-1}
+                                            key={row.id}
+                                        >
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                                sx={{
+                                                    paddingTop: 0,
+                                                    paddingBottom: 0,
+                                                }}
                                             >
-                                                <TableCell
-                                                    component="th"
-                                                    scope="row"
-                                                    sx={{
-                                                        paddingTop: 0,
-                                                        paddingBottom: 0,
-                                                    }}
-                                                >
-                                                    <Avatar src={row.avatar}/>
-                                                </TableCell>
-                                                <TableCell>{row.username}</TableCell>
-                                                <TableCell>{row.firstname ?? "---"}</TableCell>
-                                                <TableCell>{row.surname ?? "---"}</TableCell>
-                                                <TableCell>
-                                                    <img width={20} src={row.location?.flag ?? ""}
-                                                         alt={row.location?.name}/> {row.location?.name}
-                                                </TableCell>
-                                                <TableCell align="right" sx={{
-                                                    maxWidth: "150px"
-                                                }}>
-                                                    <ActionButtons userId={row.id} friendStatus={row.friendStatus}/>
-                                                </TableCell>
-                                            </TableRow>
-                                        );
-                                    })}
-                                </TableBody>)
+                                                <Avatar src={row.avatar}/>
+                                            </TableCell>
+                                            <TableCell>{row.username}</TableCell>
+                                            <TableCell>{row.firstname ?? "---"}</TableCell>
+                                            <TableCell>{row.surname ?? "---"}</TableCell>
+                                            <TableCell>
+                                                <img width={20} src={row.location?.flag ?? ""}
+                                                     alt={row.location?.name}/> {row.location?.name}
+                                            </TableCell>
+                                            <TableCell align="right" sx={{
+                                                maxWidth: "150px"
+                                            }}>
+                                                <ActionButtons userId={row.id} friendStatus={row.friendStatus}/>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })}
+                            </TableBody>)
                         }
                     </Table>
-                    {!data?.length &&  (
+                    {!data?.length && (
                         <Box sx={{
                             textAlign: "center",
                             width: "100%",

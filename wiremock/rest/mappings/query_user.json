@@ -10,11 +10,11 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "GetUser"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "GetUser"
             }
           }
         ]

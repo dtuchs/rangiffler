@@ -7,7 +7,8 @@ import {drawerWidth} from "../Drawer";
 import {SessionContext} from "../../context/SessionContext";
 import {useGetUser} from "../../hooks/useGetUser";
 import {Loader} from "../Loader";
-import { CountriesProvider } from "../../context/CountriesContext";
+import {CountriesProvider} from "../../context/CountriesContext";
+import {DialogProvider} from "../../context/DialogContext.tsx";
 
 export const PrivateRoute = () => {
     const [sidebarState, setSidebarState] = useState(false);
@@ -21,20 +22,22 @@ export const PrivateRoute = () => {
             <Loader/>
             :
             data ? (
-                <SessionContext.Provider value={sessionContext}>
-                    <CountriesProvider>
-                        <MenuAppBar sidebarState={sidebarState} handleChangeState={setSidebarState}/>
-                        <Box component="main" sx={{
-                            height: 100,
-                            flexGrow: 1,
-                            p: 3,
-                            marginLeft: sidebarState ? `${drawerWidth}px` : 7,
-                        }}>
-                            <DrawerHeader/>
-                            <Outlet/>
-                        </Box>
-                    </CountriesProvider>
-                </SessionContext.Provider>
+                    <SessionContext.Provider value={sessionContext}>
+                        <CountriesProvider>
+                            <DialogProvider>
+                                <MenuAppBar sidebarState={sidebarState} handleChangeState={setSidebarState}/>
+                                <Box component="main" sx={{
+                                    height: 100,
+                                    flexGrow: 1,
+                                    p: 3,
+                                    marginLeft: sidebarState ? `${drawerWidth}px` : 7,
+                                }}>
+                                    <DrawerHeader/>
+                                    <Outlet/>
+                                </Box>
+                            </DialogProvider>
+                        </CountriesProvider>
+                    </SessionContext.Provider>
                 ) :
                 (
                     <Navigate to="/" replace={true}/>

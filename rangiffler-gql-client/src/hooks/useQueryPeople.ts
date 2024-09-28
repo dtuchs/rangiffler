@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import {gql, useQuery} from "@apollo/client";
 
 const GET_PEOPLE = gql(`
     query GetPeople($page: Int, $size: Int, $searchQuery: String) {
@@ -37,7 +37,8 @@ export const useQueryPeople = (req: getPeopleRequestType) => {
             page: req.page ?? 0,
             size: 10,
             searchQuery: req.search ?? "",
-        }});
+        }
+    });
 
     console.log();
     return {

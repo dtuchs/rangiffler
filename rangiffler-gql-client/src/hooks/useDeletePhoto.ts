@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import {gql, useMutation} from "@apollo/client";
 
 interface DeletePhotoInput {
     variables: {
@@ -22,7 +22,7 @@ type DeletePhotoReturnType = {
     loading: boolean,
 }
 
-export const useDeletePhoto = (req: DeletePhotoRequestType) : DeletePhotoReturnType => {
+export const useDeletePhoto = (req: DeletePhotoRequestType): DeletePhotoReturnType => {
     const [deletePhoto, {loading}] = useMutation(DELETE_PHOTO, {
         onError: req.onError,
         onCompleted: req.onCompleted,

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.function.Supplier;
 
 @Service
 public class PhotoService {
@@ -94,6 +93,9 @@ public class PhotoService {
       if (photoInput.description() != null) {
         photo.setDescription(photoInput.description());
       }
+      if (photoInput.src() != null) {
+        photo.setPhoto(new StringAsBytes(photoInput.src()).bytes());
+      }
     }
     return PhotoGql.fromEntity(
         photoRepository.save(photo)
@@ -104,7 +106,7 @@ public class PhotoService {
   public Slice<PhotoGql> allUserPhotos(@Nonnull String username,
                                        @Nonnull Pageable pageable) {
     UserEntity userEntity = getRequiredUser(username);
-    return photoRepository.findByUser(
+    return photoRepository.findByUserOrderByCreatedDateDesc(
         userEntity,
         pageable
     ).map(PhotoGql::fromEntity);
@@ -124,7 +126,7 @@ public class PhotoService {
   public Slice<PhotoGql> allFriendsPhotos(@Nonnull String username,
                                           @Nonnull Pageable pageable) {
     UserEntity userEntity = getRequiredUser(username);
-    return photoRepository.findByUserIn(
+    return photoRepository.findByUserInOrderByCreatedDateDesc(
         userRepository.findFriends(userEntity),
         pageable
     ).map(PhotoGql::fromEntity);
@@ -139,7 +141,7 @@ public class PhotoService {
     );
     meAndFriends.add(getRequiredUser(username));
 
-    return photoRepository.findByUserIn(
+    return photoRepository.findByUserInOrderByCreatedDateDesc(
         meAndFriends,
         pageable
     ).map(PhotoGql::fromEntity);

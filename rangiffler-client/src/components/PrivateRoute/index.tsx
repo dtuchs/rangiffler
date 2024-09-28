@@ -4,11 +4,11 @@ import {UserContext} from "../../context/UserContext/index";
 
 export const PrivateRoute = () => {
 
-  const {user} = useContext(UserContext);
+    const {user} = useContext(UserContext);
 
-  return (
-      <>
-        {user?.username ? <Outlet/> : <Navigate to={"/"} replace/>}
-      </>
-  )
+    return (
+        <>
+            {user?.username ? <Outlet/> : <Navigate to={"/"} replace/>}
+        </>
+    )
 }

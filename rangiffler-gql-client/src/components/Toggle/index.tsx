@@ -1,10 +1,11 @@
-import {ToggleButton, ToggleButtonGroup } from "@mui/material"
-import {FC } from "react";
+import {ToggleButton, ToggleButtonGroup} from "@mui/material"
+import {FC} from "react";
 
 interface ToggleInterface {
     withMyFriends: boolean,
     setWithMyFriends: (withMyFriends: boolean) => void;
 }
+
 export const Toggle: FC<ToggleInterface> = ({withMyFriends, setWithMyFriends}) => {
 
     const handleChange = (

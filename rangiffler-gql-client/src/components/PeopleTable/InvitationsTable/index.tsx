@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { PeopleTable } from "..";
-import { useGetInvitations } from "../../../hooks/useGetInvitations";
+import {useState} from "react";
+import {PeopleTable} from "..";
+import {useGetInvitations} from "../../../hooks/useGetInvitations";
 
 export const InvitationsTable = () => {
     const [page, setPage] = useState(0);

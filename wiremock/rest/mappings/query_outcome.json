@@ -12,9 +12,9 @@
         },
         "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "GetOutcomeInvitations"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "GetOutcomeInvitations"
             }
           }
         ]

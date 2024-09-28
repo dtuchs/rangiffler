@@ -3,35 +3,28 @@ import {PhotoContainer} from "../../components/PhotoContainer";
 import {WorldMap} from "../../components/WorldMap";
 import {Toggle} from "../../components/Toggle";
 import {useState} from "react";
-import { PhotoModal } from "../../components/PhotoModal";
-import {PhotoFormProps, formInitialState} from "../../components/PhotoModal/formValidate";
-import { Photo } from "../../types/Photo";
-import { useGetFeed } from "../../hooks/useGetFeed";
+import {useGetFeed} from "../../hooks/useGetFeed";
+import {useDialog} from "../../context/DialogContext.tsx";
+import {formInitialState} from "../../components/PhotoModal/formValidate.ts";
 
 export const MyTravelsPage = () => {
-    const [modalState, setModalState] = useState<{ isVisible: boolean, formData: PhotoFormProps | null, }>({
-        isVisible: false,
-        formData: null
-    });
-
     const [withMyFriends, setWithMyFriends] = useState(false);
     const [page, setPage] = useState(0);
-    const {photos, stat} = useGetFeed({page, withFriends: withMyFriends});
+    const {photos, stat, hasNextPage, loading} = useGetFeed({page, withFriends: withMyFriends});
 
-    const handleSelectImage = (photo: Photo) => {
-        setModalState({
-            isVisible: true,
-            formData: {...formInitialState,
-                    description: {
-                    ...formInitialState.description,
-                        value: photo.description
-                    },
-                    src: {
-                    ...formInitialState.src,
-                        value: photo.src,
-                    }
-                }
+
+    const dialog = useDialog();
+
+    const handleAddClick = () => {
+        dialog.showDialog({
+            title: "Edit photo",
+            isEdit: false,
+            formData: {...formInitialState,},
         });
+    };
+
+    const loadMore = () => {
+        setPage(page + 1);
     }
 
     return (
@@ -39,7 +32,7 @@ export const MyTravelsPage = () => {
             paddingBottom: 5,
         }}>
             <Typography
-                variant="h5"
+                variant="h4"
                 component="h2"
                 sx={{
                     marginBottom: 2,
@@ -70,26 +63,17 @@ export const MyTravelsPage = () => {
                             margin: 1,
                             marginLeft: "auto",
                         }}
-                        onClick={() => {
-                            setModalState({
-                                isVisible: true,
-                                formData: null,
-                            })
-                        }}
-                    >Add photo
+                        onClick={handleAddClick}
+                    >
+                        Add photo
                     </Button>
                 </Box>
             </Box>
-            <PhotoContainer onSelectImage={handleSelectImage} data={photos}/>
-            <PhotoModal
-                modalState={modalState}
-                isEdit={!!(modalState.formData)}
-                onClose={() => {
-                    setModalState({
-                        isVisible: false,
-                        formData: null,
-                    });
-                }}
+            <PhotoContainer
+                loading={loading}
+                data={photos}
+                hasNextPage={hasNextPage}
+                loadMore={loadMore}
             />
         </Container>
     )

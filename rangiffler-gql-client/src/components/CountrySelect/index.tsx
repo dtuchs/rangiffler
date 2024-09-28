@@ -3,8 +3,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Box, Chip, IconButton} from '@mui/material';
+import Select, {SelectChangeEvent} from '@mui/material/Select';
+import {Box, Chip, IconButton} from '@mui/material';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 
 
@@ -34,7 +34,7 @@ export const CountrySelect = () => {
 
     const handleChange = (event: SelectChangeEvent<typeof country>) => {
         const {
-            target: { value },
+            target: {value},
         } = event;
         setCountry(
             typeof value === 'string' ? value.split(',') : value,
@@ -50,7 +50,7 @@ export const CountrySelect = () => {
             display: "flex",
             alignItens: "center",
         }}>
-            <FormControl sx={{ m: 1, width: 240 }}>
+            <FormControl sx={{m: 1, width: 240}}>
                 <InputLabel size="small" id="demo-multiple-chip-label">Countries</InputLabel>
                 <Select
                     labelId="demo-multiple-chip-label"
@@ -62,27 +62,29 @@ export const CountrySelect = () => {
                     onChange={handleChange}
                     input={<OutlinedInput id="select-multiple-chip" label="Countries" size="small" multiline={false}/>}
                     renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, maxHeight: '200px', overflowY: 'scroll' }}>
+                        <Box
+                            sx={{display: 'flex', flexWrap: 'wrap', gap: 0.5, maxHeight: '200px', overflowY: 'scroll'}}>
                             {selected.map((value) => (
-                                <Chip key={value} label={value} />
+                                <Chip key={value} label={value}/>
                             ))}
                         </Box>
                     )}
                     MenuProps={MenuProps}
                 >
-                        {names.map((name) => (
-                            <MenuItem
-                                key={name}
-                                value={name}
-                            >
-                                {name}
-                            </MenuItem>
-                        ))}
+                    {names.map((name) => (
+                        <MenuItem
+                            key={name}
+                            value={name}
+                        >
+                            {name}
+                        </MenuItem>
+                    ))}
 
                 </Select>
             </FormControl>
-            <IconButton color="primary" aria-label="Clear country filters" onClick={handleClearCountries} disabled={country.length === 0}>
-                <FilterAltOffIcon />
+            <IconButton color="primary" aria-label="Clear country filters" onClick={handleClearCountries}
+                        disabled={country.length === 0}>
+                <FilterAltOffIcon/>
             </IconButton>
         </Box>
     );

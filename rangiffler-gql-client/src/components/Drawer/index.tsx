@@ -1,4 +1,4 @@
-import {CSSObject, Theme, styled } from "@mui/material";
+import {CSSObject, Theme, styled} from "@mui/material";
 import MuiDrawer from '@mui/material/Drawer';
 
 export const drawerWidth = 240;
@@ -24,7 +24,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
 });
 
 export const Drawer = styled(MuiDrawer)(
-    ({ theme, open }) => ({
+    ({theme, open}) => ({
         width: drawerWidth,
         flexShrink: 0,
         whiteSpace: 'nowrap',

@@ -4,7 +4,7 @@ import "./styles.css";
 import {Navigate} from "react-router-dom";
 import {initLocalStorageAndRedirectToAuth} from "../../api/authUtils";
 import {Loader} from "../../components/Loader";
-import { useGetUser } from "../../hooks/useGetUser";
+import {useGetUser} from "../../hooks/useGetUser";
 
 export const LandingPage = () => {
     const {data, loading} = useGetUser();

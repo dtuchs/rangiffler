@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import {gql, useMutation} from "@apollo/client";
 
 interface PhotoInput {
     variables: {
@@ -41,7 +41,7 @@ type LikePhotoReturnType = {
     loading: boolean,
 }
 
-export const useLikePhoto = (req: LikePhotoRequestType) : LikePhotoReturnType => {
+export const useLikePhoto = (req: LikePhotoRequestType): LikePhotoReturnType => {
     const [likePhoto, {loading}] = useMutation(LIKE_PHOTO, {
         onError: req.onError,
         onCompleted: req.onCompleted,

@@ -1,6 +1,6 @@
-import { styled } from "@mui/material";
+import {styled} from "@mui/material";
 
-export const DrawerHeader = styled('div')(({ theme }) => ({
+export const DrawerHeader = styled('div')(({theme}) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',

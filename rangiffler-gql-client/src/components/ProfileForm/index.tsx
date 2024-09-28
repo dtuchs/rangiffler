@@ -14,12 +14,12 @@ import {
 import {useCountries} from "../../context/CountriesContext";
 import {MenuProps} from "../CountrySelect";
 import {ChangeEvent, FormEvent, useContext, useState} from "react";
-import { ImageUpload } from "../ImageUpload";
-import {UserFormProps, formInitialState, formValidate } from "./formValidate";
-import { formHasErrors } from "../PhotoModal/formValidate";
-import { useUpdateUser } from "../../hooks/useUpdateUser";
-import { useSnackBar } from "../../context/SnackBarContext";
-import { SessionContext } from "../../context/SessionContext";
+import {ImageUpload} from "../ImageUpload";
+import {UserFormProps, formInitialState, formValidate} from "./formValidate";
+import {formHasErrors} from "../PhotoModal/formValidate";
+import {useUpdateUser} from "../../hooks/useUpdateUser";
+import {useSnackBar} from "../../context/SnackBarContext";
+import {SessionContext} from "../../context/SessionContext";
 
 export const ProfileForm = () => {
     const {countries} = useCountries();
@@ -105,13 +105,15 @@ export const ProfileForm = () => {
                     buttonText="Update avatar"
                     file={formValues.avatar.value}
                     error={formValues.avatar.error}
-                    helperText={formValues.avatar.error ? formValues.avatar.errorMessage: ""}
+                    helperText={formValues.avatar.error ? formValues.avatar.errorMessage : ""}
                     isAvatar
                     onFileUpload={(file) => {
-                        setFormValues({...formValues, avatar: {
+                        setFormValues({
+                            ...formValues, avatar: {
                                 ...formValues.avatar,
                                 value: file,
-                            }})
+                            }
+                        })
                     }}/>
             </Grid>
             <Grid item xs={8}>

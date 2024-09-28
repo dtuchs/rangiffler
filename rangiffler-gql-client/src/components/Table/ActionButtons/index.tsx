@@ -1,7 +1,7 @@
-import {FC, useState } from "react";
-import { useSnackBar } from "../../../context/SnackBarContext";
-import { useUpdateFriendshipStatus } from "../../../hooks/useUpdateFriendshipStatus";
-import { Button, Chip } from "@mui/material";
+import {FC, useState} from "react";
+import {useSnackBar} from "../../../context/SnackBarContext";
+import {useUpdateFriendshipStatus} from "../../../hooks/useUpdateFriendshipStatus";
+import {Button, Chip} from "@mui/material";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 
@@ -9,6 +9,7 @@ interface ActionButtonsInterface {
     userId: string;
     friendStatus?: "FRIEND" | "INVITATION_SENT" | "INVITATION_RECEIVED";
 }
+
 export const ActionButtons: FC<ActionButtonsInterface> = ({userId, friendStatus}) => {
     const snackbar = useSnackBar();
 
@@ -73,10 +74,10 @@ export const ActionButtons: FC<ActionButtonsInterface> = ({userId, friendStatus}
         });
     }
 
-    if(!friendStatus) {
+    if (!friendStatus) {
         return (
             <Button
-                startIcon={<AddOutlinedIcon  />}
+                startIcon={<AddOutlinedIcon/>}
                 type="button"
                 variant="outlined"
                 size="small"

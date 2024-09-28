@@ -38,7 +38,8 @@ export const useGetInvitations = (req: getInvitationsRequestType) => {
             page: req.page ?? 0,
             size: 10,
             searchQuery: req.search ?? "",
-        }});
+        }
+    });
     return {
         data: data?.user?.incomeInvitations?.edges?.map((e: any) => e?.node) ?? [],
         hasPreviousPage: data?.user?.incomeInvitations?.pageInfo?.hasPreviousPage,

@@ -1,15 +1,16 @@
-import {Box, List, useTheme } from "@mui/material";
-import { FC } from "react";
+import {Box, List, useTheme} from "@mui/material";
+import {FC} from "react";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import PersonSearchRoundedIcon from '@mui/icons-material/PersonSearchRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
-import { SidebarItem } from "./SidebarItem";
-import { DrawerHeader } from "../Drawer/DrawerHeader";
-import { Drawer } from "../Drawer";
+import {SidebarItem} from "./SidebarItem";
+import {DrawerHeader} from "../Drawer/DrawerHeader";
+import {Drawer} from "../Drawer";
 
 interface SidebarProps {
     sidebarState: boolean,
 }
+
 export const Sidebar: FC<SidebarProps> = ({sidebarState}) => {
     const theme = useTheme();
 
@@ -26,7 +27,7 @@ export const Sidebar: FC<SidebarProps> = ({sidebarState}) => {
             }}
         >
             <DrawerHeader/>
-            <Box sx={{ width: 250, overflow: "auto" }}>
+            <Box sx={{width: 250, overflow: "auto"}}>
                 <List>
                     <SidebarItem
                         sidebarState={sidebarState}
@@ -45,7 +46,7 @@ export const Sidebar: FC<SidebarProps> = ({sidebarState}) => {
                         name="People"
                         icon={<PersonSearchRoundedIcon/>}
                         link="/people"
-                        />
+                    />
                 </List>
             </Box>
         </Drawer>

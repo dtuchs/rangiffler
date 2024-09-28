@@ -12,14 +12,14 @@
         },
         "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "GetFeed"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "GetFeed"
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.withFriends",
+            "matchesJsonPath": {
+              "expression": "$.variables.withFriends",
               "equalTo": "false"
             }
           }

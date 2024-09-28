@@ -10,17 +10,17 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "LikePhoto"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "LikePhoto"
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.input.id",
-              "equalTo" : "7f861642-aa10-4b8e-9df7-652acddf2c67"
+            "matchesJsonPath": {
+              "expression": "$.variables.input.id",
+              "equalTo": "7f861642-aa10-4b8e-9df7-652acddf2c67"
             }
           }
         ]
@@ -67,17 +67,17 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "LikePhoto"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "LikePhoto"
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.input.id",
-              "equalTo" : "024bd766-c703-4bf9-8094-abc303d82b79"
+            "matchesJsonPath": {
+              "expression": "$.variables.input.id",
+              "equalTo": "024bd766-c703-4bf9-8094-abc303d82b79"
             }
           }
         ]
@@ -124,17 +124,17 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "LikePhoto"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "LikePhoto"
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.input.id",
-              "equalTo" : "724ca615-9127-4ac7-a6cb-d3144ec1fc55"
+            "matchesJsonPath": {
+              "expression": "$.variables.input.id",
+              "equalTo": "724ca615-9127-4ac7-a6cb-d3144ec1fc55"
             }
           }
         ]
@@ -185,17 +185,17 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "LikePhoto"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "LikePhoto"
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.input.id",
-              "equalTo" : "6380c6be-2dee-4eb5-8129-03ad765e5524"
+            "matchesJsonPath": {
+              "expression": "$.variables.input.id",
+              "equalTo": "6380c6be-2dee-4eb5-8129-03ad765e5524"
             }
           }
         ]
@@ -242,17 +242,17 @@
             "contains": "Bearer"
           }
         },
-        "bodyPatterns" : [
+        "bodyPatterns": [
           {
-            "matchesJsonPath" : {
-              "expression" : "$.operationName",
-              "contains" : "LikePhoto"
+            "matchesJsonPath": {
+              "expression": "$.operationName",
+              "contains": "LikePhoto"
             }
           },
           {
-            "matchesJsonPath" : {
-              "expression" : "$.variables.input.id",
-              "equalTo" : "21c6b81f-2a87-4a82-8e5b-cac0bc05535b"
+            "matchesJsonPath": {
+              "expression": "$.variables.input.id",
+              "equalTo": "21c6b81f-2a87-4a82-8e5b-cac0bc05535b"
             }
           }
         ]

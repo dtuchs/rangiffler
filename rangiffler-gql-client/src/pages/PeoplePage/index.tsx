@@ -1,10 +1,10 @@
-import {Box, Container, Tab, Tabs } from "@mui/material"
-import {SyntheticEvent,  useState } from "react";
-import { TabPanel } from "../../components/TabPanel";
-import { AllTable } from "../../components/PeopleTable/AllTable";
-import { InvitationsTable } from "../../components/PeopleTable/InvitationsTable";
-import { OutcomeInvitationsTable } from "../../components/PeopleTable/OutcomeInvitationsTable";
-import { FriendsTable } from "../../components/PeopleTable/FriendsTable";
+import {Box, Container, Tab, Tabs} from "@mui/material"
+import {SyntheticEvent, useState} from "react";
+import {TabPanel} from "../../components/TabPanel";
+import {AllTable} from "../../components/PeopleTable/AllTable";
+import {InvitationsTable} from "../../components/PeopleTable/InvitationsTable";
+import {OutcomeInvitationsTable} from "../../components/PeopleTable/OutcomeInvitationsTable";
+import {FriendsTable} from "../../components/PeopleTable/FriendsTable";
 
 export const PeoplePage = () => {
 
@@ -14,7 +14,7 @@ export const PeoplePage = () => {
     }
 
     const resolveTab = () => {
-        switch(tabValue) {
+        switch (tabValue) {
             case "all":
                 return (
                     <TabPanel value="all">
@@ -44,11 +44,11 @@ export const PeoplePage = () => {
 
     return (
         <Container>
-            <Box sx={{ width: '100%' }}>
+            <Box sx={{width: '100%'}}>
                 <Tabs value={tabValue} onChange={handleChangeTab} aria-label="People tabs">
-                    <Tab label="Friends" value="friends" />
-                    <Tab label="All People" value="all" />
-                    <Tab label="Outcome invitations" value="outcome" />
+                    <Tab label="Friends" value="friends"/>
+                    <Tab label="All People" value="all"/>
+                    <Tab label="Outcome invitations" value="outcome"/>
                     <Tab label="Income invitations" value="income"/>
                 </Tabs>
             </Box>

@@ -38,7 +38,8 @@ export const useGetFriends = (req: getFriendsRequestType) => {
             page: req.page ?? 0,
             size: 10,
             searchQuery: req.search ?? "",
-        }});
+        }
+    });
     return {
         data: data?.user?.friends?.edges?.map((e: any) => e?.node) ?? [],
         hasPreviousPage: data?.user?.friends?.pageInfo?.hasPreviousPage,

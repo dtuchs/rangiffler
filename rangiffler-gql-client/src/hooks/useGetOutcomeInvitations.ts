@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import {gql, useQuery} from "@apollo/client";
 
 const GET_OUTCOME_INVITATIONS = gql(`
     query GetOutcomeInvitations($page: Int, $size: Int, $searchQuery: String) {
@@ -38,7 +38,8 @@ export const useGetOutcomeInvitations = (req: getInvitationsRequestType) => {
             page: req.page ?? 0,
             size: 10,
             searchQuery: req.search ?? ""
-        }});
+        }
+    });
     return {
         data: data?.user?.outcomeInvitations?.edges?.map((e: any) => e?.node) ?? [],
         hasPreviousPage: data?.user?.outcomeInvitations?.pageInfo?.hasPreviousPage,

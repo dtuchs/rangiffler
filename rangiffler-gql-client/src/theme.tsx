@@ -1,4 +1,4 @@
-import { createTheme } from '@mui/material/styles';
+import {createTheme} from '@mui/material/styles';
 
 // A custom theme for this app
 const theme = createTheme({
@@ -13,7 +13,7 @@ const theme = createTheme({
             main: "#d32f2f",
         },
         info: {
-            main: "#ced0cd" ,
+            main: "#ced0cd",
         },
     },
 });

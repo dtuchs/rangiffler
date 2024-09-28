@@ -1,5 +1,5 @@
 import {Avatar, Box, Button, useTheme} from "@mui/material"
-import {ChangeEvent, FC } from "react";
+import {ChangeEvent, FC} from "react";
 import PhotoCameraRoundedIcon from '@mui/icons-material/PhotoCameraRounded';
 import "./styles.css";
 
@@ -11,7 +11,15 @@ interface ImageUploadInterface {
     helperText?: string;
     isAvatar?: boolean
 }
-export const ImageUpload: FC<ImageUploadInterface> = ({onFileUpload, buttonText, file, error = false, helperText, isAvatar = false}) => {
+
+export const ImageUpload: FC<ImageUploadInterface> = ({
+                                                          onFileUpload,
+                                                          buttonText,
+                                                          file,
+                                                          error = false,
+                                                          helperText,
+                                                          isAvatar = false
+                                                      }) => {
 
     const theme = useTheme();
 
@@ -61,7 +69,7 @@ export const ImageUpload: FC<ImageUploadInterface> = ({onFileUpload, buttonText,
                                     width="100%"
                                     height="100%"
                                 />
-                            ):
+                            ) :
                             <PhotoCameraRoundedIcon
                                 sx={{
                                     width: "100%",
