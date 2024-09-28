@@ -15,7 +15,7 @@ import {useCountries} from "../../context/CountriesContext";
 import {MenuProps} from "../CountrySelect";
 import {ChangeEvent, FormEvent, useContext, useState} from "react";
 import {ImageUpload} from "../ImageUpload";
-import {UserFormProps, formInitialState, formValidate} from "./formValidate";
+import {formInitialState, formValidate, UserFormProps} from "./formValidate";
 import {formHasErrors} from "../PhotoModal/formValidate";
 import {useUpdateUser} from "../../hooks/useUpdateUser";
 import {useSnackBar} from "../../context/SnackBarContext";

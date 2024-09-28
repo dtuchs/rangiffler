@@ -44,7 +44,7 @@ export const LandingPage = () => {
                                         margin: 2,
                                     }}
                                     className="landing__header">
-                                        <span className="landing__header-accent">R</span>angiffler
+                                    <span className="landing__header-accent">R</span>angiffler
                                 </Typography>
                                 <img className="landing__logo"
                                      src={deerLogo}

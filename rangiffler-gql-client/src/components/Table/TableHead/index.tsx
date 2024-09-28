@@ -1,4 +1,4 @@
-import {TableHead as MuiTableHead, TableCell, TableRow, useTheme} from "@mui/material";
+import {TableCell, TableHead as MuiTableHead, TableRow, useTheme} from "@mui/material";
 import {HeadCell} from "../HeadCell";
 
 

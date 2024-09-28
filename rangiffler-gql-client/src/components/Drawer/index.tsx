@@ -1,4 +1,4 @@
-import {CSSObject, Theme, styled} from "@mui/material";
+import {CSSObject, styled, Theme} from "@mui/material";
 import MuiDrawer from '@mui/material/Drawer';
 
 export const drawerWidth = 240;

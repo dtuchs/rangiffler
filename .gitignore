@@ -6,6 +6,9 @@ build/**
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### GraphQL Schema ###
+rangiffler-e2e/src/test/graphql/schema.graphqls
+
 ### STS ###
 .apt_generated
 .classpath
@@ -36,4 +39,3 @@ out/
 
 ### VS Code ###
 .vscode/
-

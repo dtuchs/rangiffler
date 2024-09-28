@@ -6,11 +6,13 @@ import org.rangiffler.model.type.UserGql;
 import org.rangiffler.service.UserService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@PreAuthorize("isAuthenticated()")
 public class UserMutationController {
 
   private final UserService userService;
