@@ -40,7 +40,6 @@ export const useQueryPeople = (req: getPeopleRequestType) => {
         }
     });
 
-    console.log();
     return {
         data: data?.users?.edges?.map((e: any) => e?.node) ?? [],
         hasPreviousPage: data?.users?.pageInfo?.hasPreviousPage,

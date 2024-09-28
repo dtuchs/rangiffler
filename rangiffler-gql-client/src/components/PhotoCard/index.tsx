@@ -13,9 +13,11 @@ import {useLikePhoto} from '../../hooks/useLikePhoto';
 interface PhotoCardInterface {
     photo: Photo;
     onEditClick: (photo: Photo) => void;
+    withFriends: boolean;
+    page: number;
 }
 
-export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
+export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick, withFriends, page}) => {
     const {user} = useContext(SessionContext);
     const snackbar = useSnackBar();
     const theme = useTheme();
@@ -24,6 +26,8 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick}) => {
     const {deletePhoto} = useDeletePhoto({
         onError: () => snackbar.showSnackBar("Can not delete post", "error"),
         onCompleted: () => snackbar.showSnackBar("Post deleted", "success"),
+        page,
+        withFriends,
     });
 
     const {likePhoto} = useLikePhoto({

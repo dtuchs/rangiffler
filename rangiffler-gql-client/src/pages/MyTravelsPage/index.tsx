@@ -8,10 +8,9 @@ import {useDialog} from "../../context/DialogContext.tsx";
 import {formInitialState} from "../../components/PhotoModal/formValidate.ts";
 
 export const MyTravelsPage = () => {
-    const [withMyFriends, setWithMyFriends] = useState(false);
+    const [withFriends, setWithFriends] = useState(false);
     const [page, setPage] = useState(0);
-    const {photos, stat, hasNextPage, loading} = useGetFeed({page, withFriends: withMyFriends});
-
+    const {photos, stat, hasNextPage, hasPreviousPage, loading, fetchMore} = useGetFeed({page, withFriends});
 
     const dialog = useDialog();
 
@@ -23,8 +22,26 @@ export const MyTravelsPage = () => {
         });
     };
 
-    const loadMore = () => {
+    const loadNext = () => {
+        fetchMore({
+            variables: {
+                page: page + 1,
+                size: 10,
+                withFriends,
+            },
+        });
         setPage(page + 1);
+    }
+
+    const loadPrevious = () => {
+        fetchMore({
+            variables: {
+                page: page - 1,
+                size: 10,
+                withFriends,
+            },
+        });
+        setPage(page - 1);
     }
 
     return (
@@ -52,7 +69,7 @@ export const MyTravelsPage = () => {
                     <Box sx={{
                         margin: 1,
                     }}>
-                        <Toggle withMyFriends={withMyFriends} setWithMyFriends={setWithMyFriends}/>
+                        <Toggle withMyFriends={withFriends} setWithMyFriends={setWithFriends}/>
                     </Box>
                 </Box>
                 <WorldMap data={stat}/>
@@ -70,10 +87,14 @@ export const MyTravelsPage = () => {
                 </Box>
             </Box>
             <PhotoContainer
+                withFriends={withFriends}
                 loading={loading}
                 data={photos}
                 hasNextPage={hasNextPage}
-                loadMore={loadMore}
+                hasPreviousPage={hasPreviousPage}
+                loadNext={loadNext}
+                loadPrevious={loadPrevious}
+                page={page}
             />
         </Container>
     )

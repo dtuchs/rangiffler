@@ -48,6 +48,7 @@ interface DialogDataInterface {
     title: string,
     formData: PhotoFormProps,
     isEdit: boolean,
+    withFriends: boolean,
 }
 
 interface DialogContextActions {
@@ -70,7 +71,7 @@ const DialogProvider: FC<DialogContextProps> = ({children}) => {
     const {createPhoto} = useCreatePhoto({
         onError: () => snackbar.showSnackBar("Can not create new post", "error"),
         onCompleted: () => snackbar.showSnackBar("New post created", "success"),
-        withFriends: false,
+        withFriends: dialogData?.withFriends,
     });
 
     const {updatePhoto} = useUpdatePhoto({

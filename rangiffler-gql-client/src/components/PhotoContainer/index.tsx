@@ -3,7 +3,7 @@ import Grid from "@mui/material/Grid";
 import {FC} from "react";
 import {PhotoCard} from "../PhotoCard";
 import {Photo} from "../../types/Photo";
-import {Button} from "@mui/material";
+import {Box, Button} from "@mui/material";
 import {Loader} from "../Loader";
 import {useDialog} from "../../context/DialogContext.tsx";
 import {formInitialState} from "../PhotoModal/formValidate.ts";
@@ -11,11 +11,15 @@ import {formInitialState} from "../PhotoModal/formValidate.ts";
 interface PhotoContainerInterface {
     data: Photo[];
     hasNextPage: boolean;
-    loadMore: () => void;
-    loading: boolean
+    loadNext: () => void;
+    hasPreviousPage: boolean;
+    loadPrevious: () => void;
+    loading: boolean;
+    withFriends: boolean;
+    page: number;
 }
 
-export const PhotoContainer: FC<PhotoContainerInterface> = ({data, hasNextPage, loadMore, loading}) => {
+export const PhotoContainer: FC<PhotoContainerInterface> = ({data, hasNextPage, loadNext, hasPreviousPage, loadPrevious, loading, withFriends, page}) => {
     const dialog = useDialog();
 
     const handleSelectImage = (image: Photo) => {
@@ -58,23 +62,50 @@ export const PhotoContainer: FC<PhotoContainerInterface> = ({data, hasNextPage, 
                                 <PhotoCard
                                     photo={item}
                                     onEditClick={() => handleSelectImage(item)}
+                                    withFriends={withFriends}
+                                    page={page}
                                 />
                             </Grid>
                         ))}
                     </Grid>
                     {
-                        hasNextPage &&
-                        <Button
-                            type="button"
-                            variant="contained"
-                            sx={{
-                                margin: "2rem auto",
-                                display: "block",
-                            }}
-                            onClick={loadMore}
-                        >
-                            Next
-                        </Button>
+                        data?.length > 0 &&
+                        (
+                            <Box sx={{
+                                display: "flex",
+                                width: "100%",
+                                justifyContent: "space-between",
+                            }}>
+                                <Button
+                                    type="button"
+                                    variant="contained"
+                                    disabled={!hasPreviousPage}
+                                    sx={{
+                                        margin: "2rem auto",
+                                        display: "block",
+                                        width: "100%",
+                                        maxWidth: "200px",
+                                    }}
+                                    onClick={loadPrevious}
+                                >
+                                    Previous
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="contained"
+                                    disabled={!hasNextPage}
+                                    sx={{
+                                        margin: "2rem auto",
+                                        display: "block",
+                                        width: "100%",
+                                        maxWidth: "200px",
+                                    }}
+                                    onClick={loadNext}
+                                >
+                                    Next
+                                </Button>
+                            </Box>
+                        )
                     }
                 </>
             }

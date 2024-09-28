@@ -47,7 +47,8 @@ export const useGetFeed = (req: getFeedRequestType) => {
             withFriends: req.withFriends,
             page: req.page ?? 0,
             size: 12,
-        }
+        },
+        fetchPolicy: "cache-and-network",
     });
     return {
         photos: data?.feed?.photos?.edges?.map((e: any) => e?.node) ?? [],
