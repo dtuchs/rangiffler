@@ -1,8 +1,11 @@
 package org.rangiffler.controller.query;
 
 import org.rangiffler.model.type.FeedGql;
+import org.rangiffler.model.type.LikeGql;
+import org.rangiffler.model.type.LikesGql;
 import org.rangiffler.model.type.PhotoGql;
 import org.rangiffler.model.type.StatGql;
+import org.rangiffler.model.type.UserGql;
 import org.rangiffler.service.PhotoService;
 import org.rangiffler.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,27 @@ public class FeedController {
     return userService.stat(
         feed.username(),
         feed.withFriends()
+    );
+  }
+
+  @SchemaMapping(typeName = "Photo", field = "likes")
+  public LikesGql likes(PhotoGql photo) {
+    List<LikeGql> likes = photoService.photoLikes(
+        photo.id()
+    );
+    return new LikesGql(
+        likes.size(),
+        likes
+    );
+  }
+
+  @SchemaMapping(typeName = "User", field = "photos")
+  public Slice<PhotoGql> photos(UserGql user,
+                                @Argument int page,
+                                @Argument int size) {
+    return photoService.allUserPhotos(
+        user.username(),
+        PageRequest.of(page, size)
     );
   }
 
