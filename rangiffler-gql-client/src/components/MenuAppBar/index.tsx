@@ -10,9 +10,8 @@ import {FC} from 'react';
 import {authClient} from '../../api/authClient';
 import {clearSession} from '../../api/authUtils';
 import {useSnackBar} from '../../context/SnackBarContext';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {apiClient} from '../../api/apolloClient';
-import {Link} from 'react-router-dom';
 import './styles.css';
 
 interface MenuAppBarInterface {

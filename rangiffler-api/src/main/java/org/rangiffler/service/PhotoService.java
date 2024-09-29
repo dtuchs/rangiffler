@@ -139,7 +139,7 @@ public class PhotoService {
     List<UserEntity> meAndFriends = new ArrayList<>(
         userRepository.findFriends(userEntity)
     );
-    meAndFriends.add(getRequiredUser(username));
+    meAndFriends.add(userEntity);
 
     return photoRepository.findByUserInOrderByCreatedDateDesc(
         meAndFriends,

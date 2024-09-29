@@ -12,11 +12,14 @@ import java.util.UUID;
 
 public interface PhotoRepository extends JpaRepository<PhotoEntity, UUID> {
 
+  @Nonnull
   Slice<PhotoEntity> findByUserOrderByCreatedDateDesc(@Nonnull UserEntity user,
                                                       @Nonnull Pageable pageable);
 
+  @Nonnull
   List<PhotoEntity> findByUserOrderByCreatedDateDesc(@Nonnull UserEntity user);
 
+  @Nonnull
   Slice<PhotoEntity> findByUserInOrderByCreatedDateDesc(@Nonnull List<UserEntity> users,
                                                         @Nonnull Pageable pageable);
 }

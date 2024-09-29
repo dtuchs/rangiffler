@@ -13,5 +13,6 @@ public interface CountryRepository extends JpaRepository<CountryEntity, UUID> {
   @Nonnull
   Optional<CountryEntity> findByCode(String code);
 
+  @Nonnull
   List<CountryEntity> findByOrderByNameAsc();
 }

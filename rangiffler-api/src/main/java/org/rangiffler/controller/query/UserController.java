@@ -1,10 +1,15 @@
 package org.rangiffler.controller.query;
 
+import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.SelectedField;
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
+import org.rangiffler.ex.TooManySubQueriesException;
 import org.rangiffler.model.type.LikeGql;
 import org.rangiffler.model.type.LikesGql;
 import org.rangiffler.model.type.PhotoGql;
 import org.rangiffler.model.type.UserGql;
+import org.rangiffler.service.FriendRequestSubscription;
 import org.rangiffler.service.PhotoService;
 import org.rangiffler.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +33,7 @@ public class UserController {
   private final PhotoService photoService;
 
   @Autowired
-  public UserController(UserService userService, PhotoService photoService) {
+  public UserController(UserService userService, PhotoService photoService, FriendRequestSubscription friendRequestSubscription) {
     this.userService = userService;
     this.photoService = photoService;
   }
@@ -137,7 +142,18 @@ public class UserController {
    * </pre>
    */
   @QueryMapping
-  public UserGql user(@AuthenticationPrincipal Jwt principal) {
+  public UserGql user(@AuthenticationPrincipal Jwt principal,
+                      DataFetchingEnvironment env) {
+    checkSubQueries(env, 2, "friends");
     return userService.currentUser(principal.getClaim("sub"));
+  }
+
+  private void checkSubQueries(@Nonnull DataFetchingEnvironment env, int depth, @Nonnull String... queryKeys) {
+    for (String queryKey : queryKeys) {
+      List<SelectedField> selectors = env.getSelectionSet().getFieldsGroupedByResultKey().get(queryKey);
+      if (selectors != null && selectors.size() > depth) {
+        throw new TooManySubQueriesException("Can`t fetch over 2 " + queryKey + " sub-queries");
+      }
+    }
   }
 }

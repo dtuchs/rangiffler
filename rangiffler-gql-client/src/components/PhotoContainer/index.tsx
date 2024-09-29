@@ -19,7 +19,16 @@ interface PhotoContainerInterface {
     page: number;
 }
 
-export const PhotoContainer: FC<PhotoContainerInterface> = ({data, hasNextPage, loadNext, hasPreviousPage, loadPrevious, loading, withFriends, page}) => {
+export const PhotoContainer: FC<PhotoContainerInterface> = ({
+                                                                data,
+                                                                hasNextPage,
+                                                                loadNext,
+                                                                hasPreviousPage,
+                                                                loadPrevious,
+                                                                loading,
+                                                                withFriends,
+                                                                page
+                                                            }) => {
     const dialog = useDialog();
 
     const handleSelectImage = (image: Photo) => {
