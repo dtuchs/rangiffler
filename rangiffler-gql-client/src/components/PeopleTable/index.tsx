@@ -1,14 +1,4 @@
-import {
-    Avatar,
-    Box,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-    Typography,
-    useTheme
-} from "@mui/material";
+import {Avatar, Box, Table, TableBody, TableCell, TableContainer, TableRow, Typography, useTheme} from "@mui/material";
 import {HeadCell} from "../Table/HeadCell";
 import {TableHead} from "../Table/TableHead";
 import {TablePagination} from "../Table/Pagination";

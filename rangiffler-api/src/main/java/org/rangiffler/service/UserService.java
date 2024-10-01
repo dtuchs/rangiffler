@@ -36,14 +36,17 @@ public class UserService {
   private final UserRepository userRepository;
   private final CountryRepository countryRepository;
   private final StatisticRepository statisticRepository;
+  private final FriendRequestSubscription friendRequestSubscription;
+
 
   @Autowired
   public UserService(UserRepository userRepository,
                      CountryRepository countryRepository,
-                     StatisticRepository statisticRepository) {
+                     StatisticRepository statisticRepository, FriendRequestSubscription friendRequestSubscription) {
     this.userRepository = userRepository;
     this.countryRepository = countryRepository;
     this.statisticRepository = statisticRepository;
+    this.friendRequestSubscription = friendRequestSubscription;
   }
 
   @Transactional(readOnly = true)
@@ -204,7 +207,12 @@ public class UserService {
     UserEntity friendEntity = getRequiredUser(friendId);
     currentUser.addFriends(FriendshipStatus.PENDING, friendEntity);
     userRepository.save(currentUser);
-    return UserGql.fromEntity(friendEntity, INVITATION_SENT);
+    UserGql targetUser = UserGql.fromEntity(friendEntity, INVITATION_SENT);
+    friendRequestSubscription.addFriendRequest(
+        friendId.toString(),
+        UserGql.fromEntity(currentUser)
+    );
+    return targetUser;
   }
 
   @Transactional

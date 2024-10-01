@@ -10,6 +10,8 @@ spring:
     schema:
       introspection:
         enabled: true
+    websocket:
+      path: /graphql
   security:
     oauth2:
       resourceserver:

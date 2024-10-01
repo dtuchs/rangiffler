@@ -15,6 +15,7 @@ public record PhotoGql(
     LikesGql likes
 ) {
   public static PhotoGql fromEntity(PhotoEntity photoEntity) {
+//    List<LikeGql> likes = photoEntity.getLikes().stream().map(LikeGql::fromEntity).toList();
     return new PhotoGql(
         photoEntity.getId(),
         new BytesAsString(photoEntity.getPhoto()).string(),
@@ -22,6 +23,10 @@ public record PhotoGql(
         photoEntity.getDescription(),
         photoEntity.getCreatedDate(),
         null
+//        new LikesGql(
+//            likes.size(),
+//            likes
+//        )
     );
   }
 }

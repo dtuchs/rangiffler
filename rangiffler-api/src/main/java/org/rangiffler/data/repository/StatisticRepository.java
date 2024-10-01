@@ -1,5 +1,6 @@
 package org.rangiffler.data.repository;
 
+import jakarta.annotation.Nonnull;
 import org.rangiffler.data.CountryEntity;
 import org.rangiffler.data.StatisticEntity;
 import org.rangiffler.data.UserEntity;
@@ -11,7 +12,9 @@ import java.util.UUID;
 
 public interface StatisticRepository extends JpaRepository<StatisticEntity, UUID> {
 
+  @Nonnull
   List<StatisticEntity> findAllByUserIn(List<UserEntity> user);
 
+  @Nonnull
   Optional<StatisticEntity> findByUserAndCountry(UserEntity user, CountryEntity country);
 }

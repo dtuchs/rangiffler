@@ -1,0 +1,16 @@
+query GetFriends($page: Int, $size: Int, $searchQuery: String) {
+    user {
+        friends(page: $page, size: $size, searchQuery: $searchQuery) {
+            edges {
+                node {
+                    id
+                    username
+                }
+            }
+            pageInfo {
+                hasPreviousPage
+                hasNextPage
+            }
+        }
+    }
+}

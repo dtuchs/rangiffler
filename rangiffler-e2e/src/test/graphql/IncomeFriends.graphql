@@ -1,0 +1,5 @@
+subscription IncomeFriends($userId: ID!) {
+    incomeFriends(userId: $userId) {
+        username
+    }
+}

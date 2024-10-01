@@ -1,11 +1,11 @@
 package org.rangiffler.controller.query;
 
+import graphql.schema.DataFetchingEnvironment;
+import graphql.schema.SelectedField;
+import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
-import org.rangiffler.model.type.LikeGql;
-import org.rangiffler.model.type.LikesGql;
-import org.rangiffler.model.type.PhotoGql;
+import org.rangiffler.ex.TooManySubQueriesException;
 import org.rangiffler.model.type.UserGql;
-import org.rangiffler.service.PhotoService;
 import org.rangiffler.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -25,12 +25,10 @@ import java.util.List;
 public class UserController {
 
   private final UserService userService;
-  private final PhotoService photoService;
 
   @Autowired
-  public UserController(UserService userService, PhotoService photoService) {
+  public UserController(UserService userService) {
     this.userService = userService;
-    this.photoService = photoService;
   }
 
   @SchemaMapping(typeName = "User", field = "friends")
@@ -66,27 +64,6 @@ public class UserController {
         user.username(),
         PageRequest.of(page, size),
         searchQuery
-    );
-  }
-
-  @SchemaMapping(typeName = "Photo", field = "likes")
-  public LikesGql likes(PhotoGql photo) {
-    List<LikeGql> likes = photoService.photoLikes(
-        photo.id()
-    );
-    return new LikesGql(
-        likes.size(),
-        likes
-    );
-  }
-
-  @SchemaMapping(typeName = "User", field = "photos")
-  public Slice<PhotoGql> photos(UserGql user,
-                                @Argument int page,
-                                @Argument int size) {
-    return photoService.allUserPhotos(
-        user.username(),
-        PageRequest.of(page, size)
     );
   }
 
@@ -137,7 +114,18 @@ public class UserController {
    * </pre>
    */
   @QueryMapping
-  public UserGql user(@AuthenticationPrincipal Jwt principal) {
+  public UserGql user(@AuthenticationPrincipal Jwt principal,
+                      DataFetchingEnvironment env) {
+    checkSubQueries(env, 2, "friends");
     return userService.currentUser(principal.getClaim("sub"));
+  }
+
+  private void checkSubQueries(@Nonnull DataFetchingEnvironment env, int depth, @Nonnull String... queryKeys) {
+    for (String queryKey : queryKeys) {
+      List<SelectedField> selectors = env.getSelectionSet().getFieldsGroupedByResultKey().get(queryKey);
+      if (selectors != null && selectors.size() > depth) {
+        throw new TooManySubQueriesException("Can`t fetch over 2 " + queryKey + " sub-queries");
+      }
+    }
   }
 }

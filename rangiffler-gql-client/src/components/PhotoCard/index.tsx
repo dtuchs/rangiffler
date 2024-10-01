@@ -123,8 +123,10 @@ export const PhotoCard: FC<PhotoCardInterface> = ({photo, onEditClick, withFrien
                         justifyContent: "space-between",
                     }}
                 >
-                    <Button variant="contained" sx={{margin: 1, width: "100%"}} onClick={() => onEditClick(photo)}>Edit</Button>
-                    <Button variant="outlined" sx={{margin: 1, width: "100%"}} onClick={handleDeletePhoto}>Delete</Button>
+                    <Button variant="contained" sx={{margin: 1, width: "100%"}}
+                            onClick={() => onEditClick(photo)}>Edit</Button>
+                    <Button variant="outlined" sx={{margin: 1, width: "100%"}}
+                            onClick={handleDeletePhoto}>Delete</Button>
                 </Box>
             </Box>
         </Paper>
