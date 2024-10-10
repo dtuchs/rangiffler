@@ -4,8 +4,6 @@ services:
     image: mysql:8.3.0
     environment:
       - MYSQL_ROOT_PASSWORD=secret
-    volumes:
-      - rangiffler:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 3s
@@ -90,10 +88,6 @@ services:
       - "4444:4444"
     networks:
       - rangiffler-network
-
-volumes:
-  rangiffler:
-    external: true
 
 networks:
   rangiffler-network:
