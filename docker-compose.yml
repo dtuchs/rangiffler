@@ -1,0 +1,66 @@
+services:
+  rangiffler-mysql:
+    container_name: rangiffler-mysql
+    image: mysql:8.3.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+    volumes:
+      - rangiffler:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+    expose:
+      - 3306
+    networks:
+      - rangiffler-network
+    dns_search: .
+
+  auth.rangiffler.dc:
+    container_name: auth.rangiffler.dc
+    image: dtuchs/rangiffler-auth:latest
+    ports:
+      - 9000:9000
+    depends_on:
+      rangiffler-mysql:
+        condition: service_healthy
+    networks:
+      - rangiffler-network
+    dns_search: .
+
+  api.rangiffler.dc:
+    container_name: api.rangiffler.dc
+    image: dtuchs/rangiffler-api:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      auth.rangiffler.dc:
+        condition: service_started
+    networks:
+      - rangiffler-network
+    dns_search: .
+
+  client.rangiffler.dc:
+    container_name: client.rangiffler.dc
+    image: dtuchs/rangiffler-client:latest
+    build:
+      context: ./rangiffler-gql-client
+      dockerfile: ./Dockerfile
+      args:
+        VERSION: ${FRONT_VERSION}
+    ports:
+      - 80:80
+    depends_on:
+      api.rangiffler.dc:
+        condition: service_started
+    networks:
+      - rangiffler-network
+
+volumes:
+  rangiffler:
+    external: true
+
+networks:
+  rangiffler-network:
+    driver: bridge

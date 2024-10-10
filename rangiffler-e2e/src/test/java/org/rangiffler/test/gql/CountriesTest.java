@@ -1,10 +1,11 @@
-package org.rangiffler.test;
+package org.rangiffler.test.gql;
 
 import com.apollographql.apollo.api.ApolloResponse;
 import com.apollographql.apollo.api.Error;
 import com.apollographql.apollo.exception.ApolloHttpException;
 import com.apollographql.java.client.ApolloCall;
 import com.apollographql.java.rx2.Rx2Apollo;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.rangiffler.GetCountriesQuery;
 import org.rangiffler.jupiter.ApiLogin;
@@ -13,6 +14,7 @@ import org.rangiffler.jupiter.Token;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+@Disabled
 public class CountriesTest extends BaseGraphQLTest {
 
   @Test

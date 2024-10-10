@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '3.3.4'
     id 'io.spring.dependency-management' version '1.1.6'
+    id 'com.google.cloud.tools.jib' version '3.4.1'
 }
 
 group = 'org.rangiffler'
@@ -23,6 +24,40 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
+}
+
+jib {
+    container {
+        ports = ['9000']
+        jvmFlags = ['-Dspring.profiles.active=docker']
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+        labels = [
+                'maintainer': 'Dmitrii Tuchs @dtuchs',
+                'version'   : "${project.version}".toString()
+        ]
+    }
+    from {
+        image = "${project.ext.dockerImage}"
+        platforms {
+            platform {
+                architecture = "${project.ext.dockerArch}"
+                os = 'linux'
+            }
+        }
+    }
+    to {
+        image = "dtuchs/${project.name}"
+        tags = ['latest', "${project.version}"]
+    }
+}
+
+tasks.jib.dependsOn test
+tasks.jibDockerBuild.dependsOn test
+
+tasks.register('printVersion') {
+    doLast {
+        println project.version
+    }
 }
 
 test {

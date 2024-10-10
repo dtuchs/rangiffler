@@ -1,0 +1,94 @@
+services:
+  rangiffler-mysql:
+    container_name: rangiffler-mysql
+    image: mysql:8.3.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 3s
+      timeout: 3s
+      retries: 5
+    expose:
+      - 3306
+    networks:
+      - rangiffler-network
+    dns_search: .
+
+  auth.rangiffler.dc:
+    container_name: auth.rangiffler.dc
+    image: dtuchs/rangiffler-auth:latest
+    ports:
+      - 9000:9000
+    depends_on:
+      rangiffler-mysql:
+        condition: service_healthy
+    networks:
+      - rangiffler-network
+    dns_search: .
+
+  api.rangiffler.dc:
+    container_name: api.rangiffler.dc
+    image: dtuchs/rangiffler-api:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      auth.rangiffler.dc:
+        condition: service_started
+    networks:
+      - rangiffler-network
+    dns_search: .
+
+  client.rangiffler.dc:
+    container_name: client.rangiffler.dc
+    image: dtuchs/rangiffler-client:latest
+    build:
+      context: ./rangiffler-gql-client
+      dockerfile: ./Dockerfile
+      args:
+        VERSION: ${FRONT_VERSION}
+    ports:
+      - 80:80
+    depends_on:
+      api.rangiffler.dc:
+        condition: service_started
+    networks:
+      - rangiffler-network
+
+  rangiffler-e2e:
+    container_name: rangiffler-e2e
+    image: dtuchs/rangiffler-e2e:latest
+    build:
+      context: ./
+      dockerfile: ./rangiffler-e2e/Dockerfile
+      args:
+        ALLURE_DOCKER_API: ${ALLURE_DOCKER_API}
+        BUILD_URL: ${BUILD_URL}
+        HEAD_COMMIT_MESSAGE: ${HEAD_COMMIT_MESSAGE}
+        EXECUTION_TYPE: ${EXECUTION_TYPE}
+    environment:
+      - ALLURE_DOCKER_API=${ALLURE_DOCKER_API}
+      - BUILD_URL=${BUILD_URL}
+      - HEAD_COMMIT_MESSAGE=${HEAD_COMMIT_MESSAGE}
+      - EXECUTION_TYPE=${EXECUTION_TYPE}
+    depends_on:
+      client.rangiffler.dc:
+        condition: service_started
+    networks:
+      - rangiffler-network
+
+  selenoid:
+    image: aerokube/selenoid:latest-release
+    platform: linux/${ARCH}
+    volumes:
+      - /selenoid:/etc/selenoid
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: ["-conf", "/etc/selenoid/browsers.json", "-limit", "3", "-video-output-dir", "/opt/selenoid/video", "-log-output-dir", "/opt/selenoid/logs", "-container-network", "rangiffler_rangiffler-network"]
+    ports:
+      - "4444:4444"
+    networks:
+      - rangiffler-network
+
+networks:
+  rangiffler-network:
+    driver: bridge
