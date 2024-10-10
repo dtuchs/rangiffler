@@ -1,11 +1,5 @@
 server:
   port: 9000
-  # ONLY FOR TESTING
-  servlet:
-    session:
-      cookie:
-        http-only: false
-        secure: false
 
 spring:
   application:
@@ -13,7 +7,6 @@ spring:
   mvc:
     log-request-details: true
   datasource:
-    url: 'jdbc:mysql://127.0.0.1:3306/rangiffler-auth?serverTimezone=UTC&createDatabaseIfNotExist=true'
     hikari:
       connection-timeout: 20000
       minimum-idle: 10
@@ -45,12 +38,31 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
-#    org.springframework.boot.autoconfigure: DEBUG
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: INFO
+    org.springframework.boot.autoconfigure: INFO
 
+---
+spring:
+  config:
+    activate:
+      on-profile: 'local'
+  datasource:
+    url: 'jdbc:mysql://127.0.0.1:3306/rangiffler-auth?serverTimezone=UTC&createDatabaseIfNotExist=true'
 rangiffler-front:
   base-uri: 'http://127.0.0.1:3001'
 rangiffler-auth:
   base-uri: 'http://127.0.0.1:9000'
+---
+spring:
+  config:
+    activate:
+      on-profile: 'docker'
+  datasource:
+    url: 'jdbc:mysql://rangiffler-mysql:3306/rangiffler-auth?serverTimezone=UTC&createDatabaseIfNotExist=true'
+rangiffler-front:
+  base-uri: 'http://client.rangiffler.dc'
+rangiffler-auth:
+  base-uri: 'http://auth.rangiffler.dc:9000'
+---

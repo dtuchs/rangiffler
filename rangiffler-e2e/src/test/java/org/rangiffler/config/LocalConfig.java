@@ -26,4 +26,9 @@ public class LocalConfig implements Config {
   public String apiJdbcUrl() {
     return "jdbc:mysql://127.0.0.1:3306/rangiffler-api?serverTimezone=UTC";
   }
+
+  @Override
+  public String allureDockerUrl() {
+    return null;
+  }
 }

@@ -1,4 +1,4 @@
-package org.rangiffler.test;
+package org.rangiffler.test.gql;
 
 import com.apollographql.java.client.ApolloClient;
 import io.qameta.allure.okhttp3.AllureOkHttp3;

@@ -3,7 +3,9 @@ package org.rangiffler.config;
 public interface Config {
 
   static Config getInstance() {
-    return LocalConfig.INSTANCE;
+    return "docker".equals(System.getProperty("test.env"))
+        ? DockerConfig.INSTANCE
+        : LocalConfig.INSTANCE;
   }
 
   String authUrl();
@@ -13,5 +15,7 @@ public interface Config {
   String apiUrl();
 
   String apiJdbcUrl();
+
+  String allureDockerUrl();
 
 }

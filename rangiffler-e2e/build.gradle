@@ -2,6 +2,7 @@ buildscript {
     ext {
         junitVersion = '5.11.1'
         allureVersion = '2.29.0'
+        selenideVersion = '7.4.2'
         okhttp3Version = '4.11.0'
         retrofitVersion = '2.11.0'
         logbackVersion = '1.4.11'
@@ -54,6 +55,8 @@ dependencies {
     testImplementation "org.slf4j:slf4j-api:${slf4jVersion}"
     // JUnit
     testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+    // Web
+    testImplementation "com.codeborne:selenide:${selenideVersion}"
     // GraphQL
     testImplementation 'com.apollographql.java:client:0.0.2'
     testImplementation 'com.apollographql.java:rx2:0.0.2'
@@ -74,9 +77,7 @@ dependencies {
         exclude group: "com.squareup.okhttp3"
     }
     // Utils
-    testImplementation("com.github.javafaker:javafaker:${fakerVersion}") {
-        exclude group: 'org.yaml'
-    }
+    testImplementation "com.github.javafaker:javafaker:${fakerVersion}"
     testImplementation 'commons-io:commons-io:2.16.1'
     testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.34'
